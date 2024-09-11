@@ -3,6 +3,7 @@ import App from './App';
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Pages/Login';
+import DashBoardTarefas from './Pages/DashBoardTarefas';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login/>,
+  },
+  {
+    path: "/dashboartarefas",
+    element: <DashBoardTarefas/>,
   },
 ]);
 
