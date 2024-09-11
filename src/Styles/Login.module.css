@@ -13,11 +13,46 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 7vh;
-    width: 50vw;
+    align-items: center;
     display: flex;
+    gap: 1.5rem;
 }
 .logo {
     width: 250px;
-    height: 1250px;
+}
+.highbox {
+    background-color: #235BD5;
+    width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    height: 40px;
+    gap: 10px;
+}
+.text {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.hand {
+    color: white;
+}
+.inputdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.lowcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.lowtext {
+    color: #565656;
 }
