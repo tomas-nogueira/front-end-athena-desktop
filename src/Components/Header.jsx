@@ -11,7 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { TextField } from '@mui/material';
+
+import Logo from '../Photos/logo_athena 3.png'
 
 function Header({textBar1, textBar2, textBar3}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,7 +36,7 @@ function Header({textBar1, textBar2, textBar3}) {
       setAnchorElUser(null);
     };
   return (
-  <AppBar position="static" style={{marginBottom: 20, borderBottom: "2px solid black"}}>
+  <AppBar position="static" style={{borderBottom: "2px solid black", paddingTop: 5, paddingBottom: 5, backgroundColor: "#394255"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -53,7 +54,7 @@ function Header({textBar1, textBar2, textBar3}) {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            <img src={Logo} style={{maxWidth: 250}} />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -85,7 +86,7 @@ function Header({textBar1, textBar2, textBar3}) {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                  <Typography sx={{ textAlign: 'center', textDecorationColor: 'black' }}>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -106,14 +107,14 @@ function Header({textBar1, textBar2, textBar3}) {
               textDecoration: 'none',
             }}
           >
-            LOGO
-          </Typography>
+            <img src={Logo} style={{width: 200}} />
+            </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block', fontSize: 20 }}
+                sx={{ my: 2, color: 'white', display: 'block', fontSize: 18 }}
               >
                 {page}
               </Button>
@@ -121,7 +122,7 @@ function Header({textBar1, textBar2, textBar3}) {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings" style={{display: "flex", flexDirection: "row", justifyContent: "center", alignContent: 'center', alignItems: "center", gap: 10}}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0}}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
