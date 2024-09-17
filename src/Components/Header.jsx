@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 import Logo from '../Photos/logo_athena 3.png'
+import { useNavigate } from 'react-router-dom';
 
 function Header({textBar1, textBar2, textBar3}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,6 +36,9 @@ function Header({textBar1, textBar2, textBar3}) {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
+
+    const navigate = useNavigate();
+
   return (
   <AppBar position="static" style={{borderBottom: "2px solid black", paddingTop: 5, paddingBottom: 5, backgroundColor: "#394255"}}>
       <Container maxWidth="xl">
@@ -72,24 +76,38 @@ function Header({textBar1, textBar2, textBar3}) {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                  vertical: 'bottom',
+                  horizontal: 'left',
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                  vertical: 'top',
+                  horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
-            >
+          >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center', textDecorationColor: 'black' }}>{page}</Typography>
-                </MenuItem>
+                  <MenuItem 
+                      key={page} 
+                      onClick={() => {
+                          handleCloseNavMenu();
+                          if (page === 'Home') {
+                              navigate('/');
+                          } 
+                          else if (page === 'Lançamentos') {
+                              navigate('/');
+                          } 
+                          else if (page === 'Cadastre um Produto') {
+                              navigate('/');
+                          }
+                      }}
+                  >
+                      <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                  </MenuItem>
               ))}
-            </Menu>
+          </Menu>
           </Box>
           <Typography
             variant="h5"
@@ -109,17 +127,28 @@ function Header({textBar1, textBar2, textBar3}) {
           >
             <img src={Logo} style={{width: 200}} />
             </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block', fontSize: 18 }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        {pages.map((page) => (
+                            <Button
+                                key={page}
+                                onClick={() => {
+                                    handleCloseNavMenu();
+                                    if (page === 'Home') {
+                                        navigate('/login');
+                                    } 
+                                    else if (page === 'Lançamentos') {
+                                        navigate('/');
+                                    } 
+                                    else if (page === 'Cadastre um Produto') {
+                                        navigate('/');
+                                    }
+                                }}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                {page}
+                            </Button>
+                        ))}
+                    </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings" style={{display: "flex", flexDirection: "row", justifyContent: "center", alignContent: 'center', alignItems: "center", gap: 10}}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0}}>

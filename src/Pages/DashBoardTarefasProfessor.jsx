@@ -16,11 +16,15 @@ function DashBoardTarefas() {
       </Typography>
       <Container style={{display: 'flex', flexFlow: 'row', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', justifyContent: 'center'}}>
         <VictoryPie
+        colorScale={['#83E509', '#FFA500', '#FF4C4C']}
         data={[
-            { x: "Cats", y: 15 },
-            { x: "Dogs", y: 40 },
-            { x: "Birds", y: 55 }
+            { x: "Tarefas Feitas", y: 25 },
+            { x: "Tarefas em Andamento", y: 25 },
+            { x: "Tarefas em Atraso", y: 50 }
         ]}
+        animate={{
+          duration: 2000
+        }}
         />
       </Container >
     </Container>
