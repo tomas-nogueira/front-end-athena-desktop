@@ -6,6 +6,7 @@ import Login from './Pages/Login';
 import DashBoardTarefasAluno from './Pages/DashBoardTarefasAluno';
 import DashBoardTarefasProfessor from './Pages/DashBoardTarefasProfessor';
 import CadastroTarefas from './Pages/CadastroTarefas'
+import DashBoardDiretoria from './Pages/DashBoardDiretoria';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastrotarefas",
     element: <CadastroTarefas/>,
+  },
+  {
+    path: "/dashboarddiretoria",
+    element: <DashBoardDiretoria/>,
   },
 ]);
 

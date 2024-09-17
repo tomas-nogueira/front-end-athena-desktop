@@ -15,6 +15,7 @@ function DashBoardTarefas() {
       </Typography>
       <Container sx={{maxWidth: '1080px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <Graph
+        type='pie'
           data={[
             { name: 'Tarefas Feitas', value: 25, color: '#83E509' },
             { name: 'Tarefas em Andamento', value: 25, color: '#FFA500' },
