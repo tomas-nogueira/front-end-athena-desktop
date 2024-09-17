@@ -1,5 +1,4 @@
 import React from 'react'
-import Card from '../Components/CardTarefaGeral'
 import Style from '../Styles/Style.css'
 import Header from '../Components/Header'
 import { Container, Typography } from '@mui/material'
@@ -13,7 +12,6 @@ function DashBoardTarefas() {
       <Typography style={{textAlign: 'center', fontSize: "8vh"}}>
         SUAS TAREFAS PROPOSTAS
       </Typography>
-      <Container style={{display: 'flex', flexFlow: 'row', flexWrap: 'wrap', gap: '2rem', alignItems: 'center', justifyContent: 'center'}}>
       </Container >
     </Container>
     <Footer/>
