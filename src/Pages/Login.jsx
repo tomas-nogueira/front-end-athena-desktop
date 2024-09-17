@@ -10,15 +10,42 @@ import Button from '@mui/material/Button';
 import MailIcon from '@mui/icons-material/Mail';
 import CallIcon from '@mui/icons-material/Call';
 import DescriptionIcon from '@mui/icons-material/Description';
-import Select from '../Components/Select';
+import CustomSelect from '../Components/Select'; // O Select reutilizável
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
+  const [school, setSchool] = useState('');
+  const [role, setRole] = useState('');
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
   };
+
+  const handleSchoolChange = (event) => {
+    setSchool(event.target.value);
+  };
+
+    const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  };
+
+  const schoolOptions = [
+    { value: 10, label: 'SESI' },
+    { value: 20, label: 'SENAI' },
+    { value: 30, label: 'COC' },
+  ];
+
+  const roleOptions = [
+    { value: 'inspetor', label: 'Inspetor' },
+    { value: 'estudante', label: 'Estudante' },
+    { value: 'professor', label: 'Professor' },
+    { value: 'diretor', label: 'Diretor' },
+    { value: 'limpeza', label: 'Limpeza' },
+    { value: 'cozinha', label: 'Cozinha' },
+    { value: 'coordenador', label: 'Coordenador' },
+    { value: 'outro', label: 'Outro' },
+  ];
 
   return (
     <div className={Style.bg}>
@@ -59,7 +86,12 @@ function Login() {
                   <Input name="Digite seu e-mail" icon={MailIcon} />
                   <Input name="Digite seu telefone" icon={CallIcon} />
                   <Input name="Digite seu CPF" icon={DescriptionIcon} />
-                  <Select />
+                  <CustomSelect
+                    label="Escola"
+                    menuItems={schoolOptions}
+                    value={school}
+                    onChange={handleSchoolChange}
+                  />
                 </div>
                 
                 {/* Coluna da direita: informações de endereço */}
@@ -68,7 +100,12 @@ function Login() {
                   <Input name="Digite sua cidade" icon={LocationCityIcon} />
                   <Input name="Digite seu CEP" icon={LocationCityIcon} />
                   <Input name="Digite seu Estado" icon={LocationCityIcon} />
-                  <Select />
+                  <CustomSelect
+                    label="Função"
+                    menuItems={roleOptions}
+                    value={role}
+                    onChange={handleRoleChange}
+                  />
                 </div>
               </div>
               <div>

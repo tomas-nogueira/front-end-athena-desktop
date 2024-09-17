@@ -102,6 +102,12 @@ function Header({textBar1, textBar2, textBar3}) {
                           else if (page === 'Cadastre um Produto') {
                               navigate('/');
                           }
+                          else if (page === 'Cadastro') {
+                            navigate('/login');
+                        }
+                        else if (page === 'Login') {
+                          navigate('/login');
+                      }
                       }}
                   >
                       <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
@@ -142,6 +148,12 @@ function Header({textBar1, textBar2, textBar3}) {
                                     else if (page === 'Cadastre um Produto') {
                                         navigate('/');
                                     }
+                                    else if (page === 'Login') {
+                                      navigate('/login');
+                                  }
+                                  else if (page === 'Cadastro') {
+                                    navigate('/login');
+                                }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >

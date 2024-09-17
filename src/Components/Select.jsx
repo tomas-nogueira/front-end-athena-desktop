@@ -5,27 +5,23 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function BasicSelect() {
-  const [school, setSchool] = React.useState('');
-
-  const handleChange = (event) => {
-    setSchool(event.target.value);
-  };
-
+export default function CustomSelect({ label, menuItems, value, onChange }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Escola</InputLabel>
+        <InputLabel id={`${label}-select-label`}>{label}</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={school}
-          label="School"
-          onChange={handleChange}
+          labelId={`${label}-select-label`}
+          id={`${label}-select`}
+          value={value}
+          label={label}
+          onChange={onChange}
         >
-          <MenuItem value={10}>SESI</MenuItem>
-          <MenuItem value={20}>SENAI</MenuItem>
-          <MenuItem value={30}>COC</MenuItem>
+          {menuItems.map((item) => (
+            <MenuItem key={item.value} value={item.value}>
+              {item.label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
