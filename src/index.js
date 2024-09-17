@@ -3,7 +3,9 @@ import App from './App';
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Pages/Login';
-import DashBoardTarefas from './Pages/DashBoardTarefas';
+import DashBoardTarefasAluno from './Pages/DashBoardTarefasAluno';
+import DashBoardTarefasProfessor from './Pages/DashBoardTarefasProfessor';
+import CadastroTarefas from './Pages/CadastroTarefas'
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,16 @@ const router = createBrowserRouter([
     element: <Login/>,
   },
   {
-    path: "/dashboartarefas",
-    element: <DashBoardTarefas/>,
+    path: "/dashboardtarefasaluno",
+    element: <DashBoardTarefasAluno/>,
+  },
+  {
+    path: "/dashboardtarefasprofessor",
+    element: <DashBoardTarefasProfessor/>,
+  },
+  {
+    path: "/cadastrotarefas",
+    element: <CadastroTarefas/>,
   },
 ]);
 
