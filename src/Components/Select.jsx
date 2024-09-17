@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 
 export default function CustomSelect({ label, menuItems, value, onChange }) {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ width: '250px' }}>
       <FormControl fullWidth>
         <InputLabel id={`${label}-select-label`}>{label}</InputLabel>
         <Select

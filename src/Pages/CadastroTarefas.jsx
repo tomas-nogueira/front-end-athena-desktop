@@ -1,23 +1,203 @@
-import { Container, Typography, Box, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import React, { useState } from 'react';
-import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
+import { Container, Typography, Box, Button,IconButton  } from '@mui/material';
+import React, { useState, useRef } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
+import CloseIcon from '@mui/icons-material/Close';
 import Header from '../Components/Header';
+import Select from '../Components/Select';
+import Input from '../Components/Input';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
+const subjectOptions = [
+  { value: 'portuguesa', label: 'Língua Portuguesa' },
+  { value: 'matematica', label: 'Matemática' },
+  { value: 'biologia', label: 'Biologia' },
+  { value: 'fisica', label: 'Física' },
+  { value: 'quimica', label: 'Química' },
+  { value: 'historia', label: 'História' },
+  { value: 'geografia', label: 'Geografia' },
+  { value: 'inglesa', label: 'Língua Inglesa' },
+  { value: 'educacao_fisica', label: 'Educação Física' },
+  { value: 'artes', label: 'Artes' }
+];
+
+const topicOptions = {
+  portuguesa: [
+    { value: '1', label: 'Trovadorismo' },
+    { value: '2', label: 'Modernismo' },
+    { value: '3', label: 'Realismo' },
+    { value: '4', label: 'Romantismo' },
+    { value: '5', label: 'Poesia Barroca' },
+    { value: '6', label: 'Parnasianismo' },
+    { value: '7', label: 'Simbolismo' },
+    { value: '8', label: 'Literatura Colonial' },
+    { value: '9', label: 'Conto' },
+    { value: '10', label: 'Crônica' }
+  ],
+  matematica: [
+    { value: '1', label: 'Equação de 1º Grau' },
+    { value: '2', label: 'Geometria' },
+    { value: '3', label: 'Funções' },
+    { value: '4', label: 'Trigonometria' },
+    { value: '5', label: 'Progressões Aritméticas' },
+    { value: '6', label: 'Progressões Geométricas' },
+    { value: '7', label: 'Polígonos' },
+    { value: '8', label: 'Sistemas Lineares' },
+    { value: '9', label: 'Álgebra Linear' },
+    { value: '10', label: 'Probabilidade e Estatística' }
+  ],
+  biologia: [
+    { value: '1', label: 'Genética' },
+    { value: '2', label: 'Ecologia' },
+    { value: '3', label: 'Botânica' },
+    { value: '4', label: 'Zoologia' },
+    { value: '5', label: 'Microbiologia' },
+    { value: '6', label: 'Anatomia' },
+    { value: '7', label: 'Fisiologia' },
+    { value: '8', label: 'Evolução' },
+    { value: '9', label: 'Biotecnologia' },
+    { value: '10', label: 'Biologia Celular' }
+  ],
+  fisica: [
+    { value: '1', label: 'Leis de Newton' },
+    { value: '2', label: 'Termodinâmica' },
+    { value: '3', label: 'Óptica' },
+    { value: '4', label: 'Eletromagnetismo' },
+    { value: '5', label: 'Mecânica Quântica' },
+    { value: '6', label: 'Relatividade' },
+    { value: '7', label: 'Ondulatória' },
+    { value: '8', label: 'Astronomia' },
+    { value: '9', label: 'Física de Partículas' },
+    { value: '10', label: 'Acústica' }
+  ],
+  quimica: [
+    { value: '1', label: 'Química Orgânica' },
+    { value: '2', label: 'Química Inorgânica' },
+    { value: '3', label: 'Físico-Química' },
+    { value: '4', label: 'Bioquímica' },
+    { value: '5', label: 'Química Analítica' },
+    { value: '6', label: 'Química Ambiental' },
+    { value: '7', label: 'Química Industrial' },
+    { value: '8', label: 'Estereoquímica' },
+    { value: '9', label: 'Reações Químicas' },
+    { value: '10', label: 'Equilíbrios Químicos' }
+  ],
+  historia: [
+    { value: '1', label: 'Idade Antiga' },
+    { value: '2', label: 'Idade Média' },
+    { value: '3', label: 'Idade Moderna' },
+    { value: '4', label: 'Idade Contemporânea' },
+    { value: '5', label: 'História da Grécia Antiga' },
+    { value: '6', label: 'História de Roma' },
+    { value: '7', label: 'Renascimento' },
+    { value: '8', label: 'Revolução Francesa' },
+    { value: '9', label: 'Revolução Industrial' },
+    { value: '10', label: 'Guerra Fria' }
+  ],
+  geografia: [
+    { value: '1', label: 'Cartografia' },
+    { value: '2', label: 'Climatologia' },
+    { value: '3', label: 'Geopolítica' },
+    { value: '4', label: 'Geomorfologia' },
+    { value: '5', label: 'Geografia Humana' },
+    { value: '6', label: 'Geografia Econômica' },
+    { value: '7', label: 'Geografia Urbana' },
+    { value: '8', label: 'Geografia Regional' },
+    { value: '9', label: 'Geografia Física' },
+    { value: '10', label: 'Geografia do Brasil' }
+  ],
+  inglesa: [
+    { value: '1', label: 'Gramática' },
+    { value: '2', label: 'Literatura Inglesa' },
+    { value: '3', label: 'Conversação' },
+    { value: '4', label: 'Compreensão Auditiva' },
+    { value: '5', label: 'Vocabulário' },
+    { value: '6', label: 'Escrita Criativa' },
+    { value: '7', label: 'Estruturas Verbais' },
+    { value: '8', label: 'Pronúncia' },
+    { value: '9', label: 'Cultura e Sociedade' },
+    { value: '10', label: 'Tradução' }
+  ],
+  educacao_fisica: [
+    { value: '1', label: 'Atividades Físicas' },
+    { value: '2', label: 'Desenvolvimento Motor' },
+    { value: '3', label: 'Esportes' },
+    { value: '4', label: 'Saúde e Bem-estar' },
+    { value: '5', label: 'Treinamento Físico' },
+    { value: '6', label: 'Nutrição' },
+    { value: '7', label: 'Fisiologia do Exercício' },
+    { value: '8', label: 'Psicologia do Esporte' },
+    { value: '9', label: 'História da Educação Física' },
+    { value: '10', label: 'Educação e Inclusão' }
+  ],
+  artes: [
+    { value: '1', label: 'História da Arte' },
+    { value: '2', label: 'Desenho e Pintura' },
+    { value: '3', label: 'Escultura' },
+    { value: '4', label: 'Música' },
+    { value: '5', label: 'Teatro' },
+    { value: '6', label: 'Dança' },
+    { value: '7', label: 'Artes Visuais' },
+    { value: '8', label: 'Fotografia' },
+    { value: '9', label: 'Cinema' },
+    { value: '10', label: 'Design Gráfico' }
+  ]
+};
+
+const recipientsOptions = [
+  { value: '1ano', label: '1º Ano' },
+  { value: '2ano', label: '2º Ano' },
+  { value: '3ano', label: '3º Ano' },
+  { value: '4ano', label: '4º Ano' },
+  { value: '5ano', label: '5º Ano' },
+  { value: '6ano', label: '6º Ano' },
+  { value: '7ano', label: '7º Ano' },
+  { value: '8ano', label: '8º Ano' },
+  { value: '9ano', label: '9º Ano' },
+  { value: '1medio', label: '1º Médio' },
+  { value: '2medio', label: '2º Médio' },
+  { value: '3medio', label: '3º Médio' }
+
+];
 
 function CadastroTarefas() {
-  const [materia, setMateria] = useState('');
-  const [conteudo, setConteudo] = useState('');
-  const [dataEntrega, setDataEntrega] = useState('');
-  const [classe, setClasse] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [selectedRecipients, setSelectedRecipients] = useState('')
 
-  const handleMateriaChange = (event) => setMateria(event.target.value);
-  const handleConteudoChange = (event) => setConteudo(event.target.value);
-  const handleDataEntregaChange = (event) => setDataEntrega(event.target.value);
-  const handleClasseChange = (event) => setClasse(event.target.value);
+  const fileInputRef = useRef(null);
+
+  const handleSubjectChange = (event) => {
+    setSelectedSubject(event.target.value);
+    setSelectedTopic('');
+  };
+
+  const handleTopicChange = (event) => {
+    setSelectedTopic(event.target.value);
+  };
+
+  const handleRecipientCHange = (event) => {
+    setSelectedRecipients(event.target.value);
+  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+  const handleAttachClick = () => {
+    fileInputRef.current.click();
+  };
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    fileInputRef.current.value = '';
+  };
+
+  const [fileName, setFileName] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
 
   return (
     <>
-    <Header textBar1="Home" textBar2="Item 2" textBar3="Item 3"/>
+      <Header textBar1="Home" textBar2="DashBoard" textBar3="Item 3" />
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
@@ -25,81 +205,94 @@ function CadastroTarefas() {
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        position: 'relative'
       }}>
         <Container maxWidth="xs" style={{
           backgroundColor: 'white',
           padding: '2rem',
           borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          zIndex: 1
         }}>
-          <Typography variant="h5" component="h1" gutterBottom style={{ fontWeight: 'bold', marginBottom: 20 }}>
-            CADASTRE UMA TAREFA
+          <Typography variant="h5" component="h1" gutterBottom style={{
+            fontWeight: 'bold',
+            marginBottom: 20,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            borderBottom: '2px solid #FF6400',
+            paddingBottom: '10px',
+            textAlign: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex'
+          }}>
+            <AssignmentIcon fontSize='large' sx={{ color: '#FF6400' }} />
+            Cadastre uma tarefa
+            <AssignmentIcon fontSize='large' sx={{ color: '#FF6400' }} />
           </Typography>
-          <FormControl fullWidth style={{ marginBottom: '1rem' }}>
-            <InputLabel id="materia-select-label">Selecione a Matéria</InputLabel>
-            <Select
-              labelId="materia-select-label"
-              id="materia-select"
-              value={materia}
-              onChange={handleMateriaChange}
-              label="Selecione a Matéria"
-            >
-              <MenuItem value="matematica">Matemática</MenuItem>
-              <MenuItem value="portugues">Português</MenuItem>
-              <MenuItem value="historia">História</MenuItem>
-              <MenuItem value="geografia">Geografia</MenuItem>
-              <MenuItem value="ciencias">Ciências</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth style={{ marginBottom: '1rem' }}>
-            <InputLabel id="conteudo-select-label">Selecione o Conteúdo</InputLabel>
-            <Select
-              labelId="conteudo-select-label"
-              id="conteudo-select"
-              value={conteudo}
-              onChange={handleConteudoChange}
-              label="Selecione o Conteúdo"
-            >
-              <MenuItem value="conteudo1">Conteúdo 1</MenuItem>
-              <MenuItem value="conteudo2">Conteúdo 2</MenuItem>
-              <MenuItem value="conteudo3">Conteúdo 3</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth style={{ marginBottom: '1rem' }}>
-            <InputLabel id="data-entrega-select-label">Data de Entrega</InputLabel>
-            <Select
-              labelId="data-entrega-select-label"
-              id="data-entrega-select"
-              value={dataEntrega}
-              onChange={handleDataEntregaChange}
-              label="Data de Entrega"
-            >
-              <MenuItem value="2024-09-30">30/09/2024</MenuItem>
-              <MenuItem value="2024-10-15">15/10/2024</MenuItem>
-              <MenuItem value="2024-11-01">01/11/2024</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth style={{ marginBottom: '1rem' }}>
-            <InputLabel id="classe-select-label">Selecione a Classe</InputLabel>
-            <Select
-              labelId="classe-select-label"
-              id="classe-select"
-              value={classe}
-              onChange={handleClasseChange}
-              label="Selecione a Classe"
-            >
-              <MenuItem value="1">1º Ano</MenuItem>
-              <MenuItem value="2">2º Ano</MenuItem>
-              <MenuItem value="3">3º Ano</MenuItem>
-            </Select>
-          </FormControl>
-          <Button variant='contained' style={{ backgroundColor: '#E6A700', fontWeight: 'bold', width: '100%' }}>
-            CADASTRAR TAREFA
-          </Button>
+          <Container maxWidth='xs'>
+            <Box component='form' sx={{display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center'}}>
+              <Select
+                label="Matéria"
+                menuItems={subjectOptions}
+                value={selectedSubject}
+                onChange={handleSubjectChange}
+              />
+              <Select
+                label="Assunto"
+                menuItems={topicOptions[selectedSubject] || []}
+                value={selectedTopic}
+                onChange={handleTopicChange}
+              />
+              <Input type='date'/>
+              <Select
+                label="Destinatário"
+                menuItems={recipientsOptions}
+                value={selectedRecipients}
+                onChange={handleRecipientCHange} 
+                />
+                <Button
+                variant="contained"
+                style={{
+                  marginTop: '20px',
+                  width: '60%',
+                  textTransform: 'capitalize',
+                }}
+                onClick={handleAttachClick}
+              >
+                Anexar Arquivo
+              </Button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+              />
+
+              {selectedFile && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    marginTop: '10px',
+                  }}
+                >
+                  <Typography>{selectedFile.name}</Typography>
+                  <IconButton size="small" onClick={handleRemoveFile}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+              )}
+              <Button variant='contained' sx={{color: 'white', backgroundColor: '#FF6400', fontWeight: 'bold', width: '100%'}} size='large'>
+                CADASTRAR TAREFA
+              </Button>
+            </Box>
+          </Container>
         </Container>
       </section>
     </>
