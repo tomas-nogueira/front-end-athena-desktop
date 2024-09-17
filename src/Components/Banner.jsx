@@ -4,6 +4,9 @@ import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/module
 import banner from '../Photos/banner.png'
 import banner2 from '../Photos/banner2.png'
 import Style from '../Styles/Banner.module.css'
+import banner3 from '../Photos/banner3.png'
+import banner4 from '../Photos/banner4.png'
+import banner5 from '../Photos/Banner5.png'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -50,11 +53,10 @@ function Banner() {
             },
             }}
             >
+            <SwiperSlide><img src={banner3} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
             <SwiperSlide><img src={banner2} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
-            <SwiperSlide><img src={banner2} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
-            <SwiperSlide><img src={banner2} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
-            <SwiperSlide><img src={banner2} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
-            <SwiperSlide><img src={banner2} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
+            <SwiperSlide><img src={banner4} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
+            <SwiperSlide><img src={banner5} alt="Imagem do banner" className={Style.img}/></SwiperSlide>
             </Swiper>
     </div>
     </div>
