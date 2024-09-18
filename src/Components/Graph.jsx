@@ -84,6 +84,36 @@ function Graph({ data, type }) {
                     }
                 ]
             };
+        } else if (type === 'stackedLine') { // Adicionando a linha empilhada
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                },
+                legend: {
+                    data: data.map(item => item.name)
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data[0]?.values.map((_, index) => `Category ${index + 1}`) || [], // Ajuste para os eixos
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: data.map(item => ({
+                    name: item.name,
+                    type: 'line',
+                    stack: 'total', // Aqui está o empilhamento
+                    data: item.values,
+                    itemStyle: {
+                        color: item.color
+                    },
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    areaStyle: {} // Para o efeito de preenchimento abaixo da linha
+                }))
+            };
         }
 
         chart.setOption(option);

@@ -8,9 +8,20 @@ import Header from '../Components/Header';
 import Graph from '../Components/Graph';
 import Footer from '../Components/Footer'
 import HeaderDashboards from '../Components/HeaderDashboards'
+import { List, ListItem, ListItemText } from '@mui/material';
+import FooterNovo from '../Components/Footer'
 
 
 function DashBoardAluno() {
+
+  const activities = [
+        { text: 'Análise Combinatória - Professora Letícia' },
+        { text: 'Exercícios Mecânica - Professor William',},
+        { text: 'Prova de Isomeria - Professor Dexter',},
+        { text: 'Prova de Transgenia - Professora Aline',},
+        { text: 'Exercícios de Orogenia - Professora Marina',}
+  ]
+
   return (
     <>
       <Header/>
@@ -27,7 +38,8 @@ function DashBoardAluno() {
                     width: '35%', 
                     margin: '0 auto',
                     padding: '8px 0',
-                    fontSize: 25 
+                    fontSize: 25,
+                    color: '#394255' 
                     }}
               > SEU DESEMPENHO
               </Typography>
@@ -47,6 +59,41 @@ function DashBoardAluno() {
                   </Box>
               </Grid>
               <Grid item xs={12} sm={5} sx={{backgroundColor: 'white',  borderRadius: 5}}>
+                <Typography
+                  sx={{
+                    textAlign: 'center',
+                    borderBottom: '3px solid #004FFF',
+                    color: 'black',
+                    fontWeight: 'bold',
+                    width: '60%',
+                    margin: '0 auto',
+                    padding: '8px 0',
+                    fontSize: 25,
+                    color: '#394255'
+                  }}
+                >SEMESTRE ATUAL X PASSADO
+                  </Typography>
+                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                    <Graph 
+                        type='stackedLine'
+                        data={[
+                          { 
+                            name: 'Presente', 
+                            values: [120, 132, 101, 134, 90, 230, 210], 
+                            color: '#235BD5' 
+                          },
+                          { 
+                            name: 'Ausente', 
+                            values: [220, 182, 191, 234, 290, 330, 310], 
+                            color: '#405480' 
+                          }
+                        ]}
+                      />
+                    </Box>
+            </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
+        <Grid item xs={12} sm={5} sx={{backgroundColor: 'white',  borderRadius: 5}}>
               <Typography
                 sx={{
                   textAlign: 'center',
@@ -56,7 +103,8 @@ function DashBoardAluno() {
                   width: '30%',
                   margin: '0 auto',
                   padding: '8px 0',
-                  fontSize: 25
+                  fontSize: 25,
+                  color: '#394255'
                 }}
               >SUA FREQUÊNCIA
                 </Typography>
@@ -71,8 +119,57 @@ function DashBoardAluno() {
                   </Box>
                   <Box sx={{display: 'flex', flexDirection: 'row'}}></Box>
               </Grid>
+            <Grid item xs={12} sm={5} sx={{backgroundColor: 'white',  borderRadius: 5}}>
+                <Typography
+                  sx={{
+                    textAlign: 'center',
+                    borderBottom: '3px solid #004FFF',
+                    color: 'black',
+                    fontWeight: 'bold',
+                    width: '70%',
+                    margin: '0 auto',
+                    padding: '8px 0',
+                    fontSize: 25,
+                    color: '#394255'
+                  }}
+                >TAREFAS PARA OS PRÓXIMOS DOIS DIAS
+                  </Typography>
+                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '1rem',}}>
+                      <List sx={{ width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {activities.map((activity, index) => (
+                        <ListItem
+                            key={index}
+                            sx={{
+                                backgroundColor: '#f9f9f9',
+                                borderRadius: 2,
+                                marginBottom: 1,
+                                padding: '10px',
+                                boxShadow: 1,
+                                position: 'relative',
+                                '&:last-child': {
+                                    marginBottom: 0
+                                }
+                            }}
+                        >
+                            <ListItemText primary={activity.text} />
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '3px',
+                                    backgroundColor: activity.status === 'completed' ? '#4caf50' : '#f44336'
+                                }}
+                            />
+                        </ListItem>
+                    ))}
+                  </List>
+                    </Box>
+            </Grid>
         </Grid>
-        </Grid>
+      </Grid>
+      <FooterNovo/>
     </>
   )
 }
