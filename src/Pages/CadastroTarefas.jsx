@@ -223,16 +223,16 @@ function CadastroTarefas() {
             marginBottom: 20,
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            borderBottom: '2px solid #FF6400',
+            borderBottom: '2px solid black',
             paddingBottom: '10px',
             textAlign: 'center',
             justifyContent: 'center',
             alignItems: 'center',
             display: 'flex'
           }}>
-            <AssignmentIcon fontSize='large' sx={{ color: '#FF6400' }} />
+            <AssignmentIcon fontSize='large' />
             Cadastre uma tarefa
-            <AssignmentIcon fontSize='large' sx={{ color: '#FF6400' }} />
+            <AssignmentIcon fontSize='large'/>
           </Typography>
           <Container maxWidth='xs'>
             <Box component='form' sx={{display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center'}}>
@@ -288,7 +288,7 @@ function CadastroTarefas() {
                   </IconButton>
                 </Box>
               )}
-              <Button variant='contained' sx={{color: 'white', backgroundColor: '#FF6400', fontWeight: 'bold', width: '100%'}} size='large'>
+              <Button variant='contained' sx={{color: 'white', backgroundColor: '#004FFF', fontWeight: 'bold', width: '100%'}} size='large'>
                 CADASTRAR TAREFA
               </Button>
             </Box>

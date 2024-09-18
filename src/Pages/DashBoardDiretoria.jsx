@@ -17,19 +17,19 @@ function DashBoardDiretoria() {
         <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
             <Grid item xs={12} sm={5} sx={{backgroundColor: 'white', borderRadius: 5}}>
             <Typography
-  sx={{
-    textAlign: 'center', 
-    borderBottom: '2px solid #004FFF',
-    color: 'black', 
-    fontWeight: 'bold', 
-    width: '50%', 
-    margin: '0 auto',
-    padding: '8px 0',
-    fontSize: 25 
-  }}
->
-  DESEMPENHO ALUNOS
-</Typography>
+              sx={{
+                textAlign: 'center', 
+                borderBottom: '2px solid #004FFF',
+                color: 'black', 
+                fontWeight: 'bold', 
+                width: '50%', 
+                margin: '0 auto',
+                padding: '8px 0',
+                fontSize: 25 
+              }}
+            >
+            DESEMPENHO ALUNOS
+          </Typography>
 
                 <Box sx={{display: 'flex', flexDirection: 'row'}}>
                 <Graph 
