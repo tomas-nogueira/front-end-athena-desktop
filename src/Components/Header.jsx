@@ -15,11 +15,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Logo from '../Photos/logo_athena 3.png'
 import { useNavigate } from 'react-router-dom';
 
-function Header({textBar1, textBar2, textBar3}) {
+function Header({textBar1, textBar2, textBar3, textBar4}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     
-    const pages = [textBar1, textBar2, textBar3];//Itens da Navbar
+    const pages = [textBar1, textBar2, textBar3, textBar4];//Itens da Navbar
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];//Itens que aparece quando clica na foto
   
     const handleOpenNavMenu = (event) => {
@@ -47,7 +47,7 @@ function Header({textBar1, textBar2, textBar3}) {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -94,18 +94,15 @@ function Header({textBar1, textBar2, textBar3}) {
                       onClick={() => {
                           handleCloseNavMenu();
                           if (page === 'Home') {
-                              navigate('/');
+                            navigate('/');
+                        } 
+                        else if (page === 'Cadastrar uma Tarefa') {
+                              navigate('/cadastrotarefas');
                           } 
-                          else if (page === 'Lançamentos') {
-                              navigate('/');
-                          } 
-                          else if (page === 'Cadastre um Produto') {
-                              navigate('/');
-                          }
-                          else if (page === 'Cadastro') {
+                          else if (page === 'Login') {
                             navigate('/login');
                         }
-                        else if (page === 'Login') {
+                        else if (page === 'Cadastro') {
                           navigate('/login');
                       }
                       }}
@@ -140,14 +137,11 @@ function Header({textBar1, textBar2, textBar3}) {
                                 onClick={() => {
                                     handleCloseNavMenu();
                                     if (page === 'Home') {
-                                        navigate('/login');
-                                    } 
-                                    else if (page === 'Lançamentos') {
                                         navigate('/');
                                     } 
-                                    else if (page === 'Cadastre um Produto') {
-                                        navigate('/');
-                                    }
+                                    else if (page === 'Cadastrar uma Tarefa') {
+                                        navigate('/cadastrotarefas');
+                                    } 
                                     else if (page === 'Login') {
                                       navigate('/login');
                                   }
