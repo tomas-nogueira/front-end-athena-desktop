@@ -7,29 +7,13 @@ import Typography from '@mui/material/Typography';
 import Header from '../Components/Header';
 import Graph from '../Components/Graph';
 import Footer from '../Components/Footer'
+import HeaderDashboards from '../Components/HeaderDashboards'
 
 function DashBoardDiretoria() {
   return (
     <>
     <Header/>
-        <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Grid item xs={12} sm={4} display="flex" justifyContent="center" alignItems='center'>
-            <img src={Logo} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100px' }} />
-            </Grid>
-            <Grid item xs={12} sm={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <Typography sx={{ color: '#1754F0', fontWeight: 'bold', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 30 }} variant="h6">
-                SEÇÃO DIDÁTICA
-            <Typography variant="body2" sx={{color: '#676767', fontSize: 25}}>SESI 337</Typography>
-            </Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <Typography variant="body1" sx={{fontSize: 30, display: 'flex', flexDirection: 'row'}}>
-                Olá, <Typography variant="body1" sx={{fontSize: 30, color: '#1754F0', fontWeight: 'bold'}}>Mary</Typography>
-            </Typography>
-            <Typography variant="body2" sx={{color: '#676767', fontSize: 25}}>Diretora</Typography>
-            </Grid>
-        </Grid>
+        <HeaderDashboards role='DIRETORA' institution='SESI 337' name='Mary'/>
         <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
             <Grid item xs={12} sm={5} sx={{backgroundColor: 'white', borderRadius: 5}}>
             <Typography
