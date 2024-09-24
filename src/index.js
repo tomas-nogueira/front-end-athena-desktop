@@ -20,11 +20,11 @@ const router = createBrowserRouter([
     element: <Login/>,
   },
   {
-    path: "/dashboardtarefasaluno",
+    path: "/dashboard/tarefas/aluno",
     element: <DashBoardTarefasAluno/>,
   },
   {
-    path: "/dashboardtarefasprofessor",
+    path: "/dashboard/tarefas/professor",
     element: <DashBoardTarefasProfessor/>,
   },
   {
@@ -32,11 +32,11 @@ const router = createBrowserRouter([
     element: <CadastroTarefas/>,
   },
   {
-    path: "/dashboarddiretoria",
+    path: "/dashboard/diretoria",
     element: <DashBoardDiretoria/>,
   },
   {
-    path: "/dashboardaluno",
+    path: "/dashboard/aluno",
     element: <DashBoardAluno/>,
   },
   {
