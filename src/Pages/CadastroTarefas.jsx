@@ -1,9 +1,9 @@
-import { Container, Typography, Box, Button,IconButton  } from '@mui/material';
+import { Container, Typography, Box, Button,IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, InputLabel, MenuItem, Select  } from '@mui/material';
 import React, { useState, useRef } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
 import Header from '../Components/Header';
-import Select from '../Components/Select';
+import SelectPerson from '../Components/Select';
 import Input from '../Components/Input';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
@@ -195,6 +195,33 @@ function CadastroTarefas() {
   const [fileName, setFileName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const [tipoQuestao, setTipoQuestao] = useState('');
+  const [alternativas, setAlternativas] = useState([]);
+  const [respostaCerta, setRespostaCerta] = useState('');
+
+  const handleTipoQuestaoChange = (event) => {
+    setTipoQuestao(event.target.value);
+    if (event.target.value === 'dissertativa') {
+      setAlternativas(['']); // Limpa as alternativas se mudar para dissertativa
+    }
+  };
+
+  const handleAlternativaChange = (index, value) => {
+    const novasAlternativas = [...alternativas];
+    novasAlternativas[index] = value;
+    setAlternativas(novasAlternativas);
+  };
+
+  const adicionarAlternativa = () => {
+    setAlternativas([...alternativas, '']);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Aqui você pode enviar os dados do formulário para a sua API ou fazer o que precisar
+    console.log({ tipoQuestao, alternativas, respostaCerta });
+  };
+
   return (
     <>
       <Header textBar1="Home" textBar2="DashBoard" textBar3="Item 3" />
@@ -234,22 +261,89 @@ function CadastroTarefas() {
             Cadastre uma tarefa
             <AssignmentIcon fontSize='large'/>
           </Typography>
-          <Container maxWidth='xs'>
-            <Box component='form' sx={{display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center', alignItems: 'center'}}>
-              <Select
+          <Container maxWidth="xs">
+              <Box
+                component='form'
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  maxHeight: '500px', // Defina uma altura máxima
+                  overflowY: 'auto', // Permite rolagem
+                  width: '100%',
+                  padding: '1rem',
+                  gap: '1rem'
+                }}
+              >
+              <SelectPerson
                 label="Matéria"
                 menuItems={subjectOptions}
                 value={selectedSubject}
                 onChange={handleSubjectChange}
               />
-              <Select
+              <SelectPerson
                 label="Assunto"
                 menuItems={topicOptions[selectedSubject] || []}
                 value={selectedTopic}
                 onChange={handleTopicChange}
               />
               <Input type='date'/>
-              <Select
+              <RadioGroup value={tipoQuestao} onChange={handleTipoQuestaoChange} row>
+                <FormControlLabel
+                  value="alternativa"
+                  control={<Radio />}
+                  label="Questão Alternativa"
+                />
+                <FormControlLabel
+                  value="dissertativa"
+                  control={<Radio />}
+                  label="Questão Dissertativa"
+                />
+              </RadioGroup>
+              {tipoQuestao === 'alternativa' && (
+        <>
+          <h3>Alternativas:</h3>
+          {alternativas.map((alternativa, index) => (
+            <TextField
+              key={index}
+              label={`Alternativa ${index + 1}`}
+              value={alternativa}
+              onChange={(e) => handleAlternativaChange(index, e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+          ))}
+          <Button onClick={adicionarAlternativa} variant="contained" color="primary">
+            Adicionar Alternativa
+          </Button>
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Selecione a Alternativa Certa</InputLabel>
+            <Select
+              value={respostaCerta}
+              onChange={(e) => setRespostaCerta(e.target.value)}
+              label="Selecione a Alternativa Certa"
+          >
+              {alternativas.map((alternativa, index) => (
+                <MenuItem key={index} value={alternativa}>
+                  {alternativa}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </>
+      )}
+
+      {tipoQuestao === 'dissertativa' && (
+        <TextField
+          label="Resposta"
+          value={respostaCerta}
+          onChange={(e) => setRespostaCerta(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+      )}
+              <SelectPerson
                 label="Destinatário"
                 menuItems={recipientsOptions}
                 value={selectedRecipients}
