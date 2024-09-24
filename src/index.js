@@ -9,6 +9,7 @@ import CadastroTarefas from './Pages/CadastroTarefas'
 import DashBoardDiretoria from './Pages/DashBoardDiretoria';
 import NotFound from './Pages/NotFound';
 import DashBoardAluno from './Pages/DashBoardAluno';
+import Tarefa from './Pages/Tarefa';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/aluno",
     element: <DashBoardAluno/>,
+  },
+  {
+    path: "/tarefa",
+    element: <Tarefa/>,
   },
   {
     path: "*",
