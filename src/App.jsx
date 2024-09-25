@@ -13,7 +13,7 @@ function App() {
   return (
     <div className={Style.container}>
       <header className="App-header">
-        <Header textBar1="Login" textBar2="Cadastro" textBar3="Nossos produtos"/>
+        <Header textBar1="Novidades" textBar2="Sobre Nós" textBar3="Nossos Planos"/>
       </header>
       <div className={Style.boxmid}>
         <Banner/>
