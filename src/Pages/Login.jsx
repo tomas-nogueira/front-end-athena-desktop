@@ -146,6 +146,9 @@ function Login() {
                             <div>
                                 <a href="#" onClick={handleToggle} className={Style.lowtext}>Ainda não é cadastrado?</a>
                             </div>
+                            <div>
+                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola? Clique aqui</a>
+                            </div>
                             <div className={Style.btndiv}>
                                 <Button size="large" variant="contained" onClick={RealizaLogin} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>ENTRAR</Button>
                             </div>
@@ -291,6 +294,9 @@ function Login() {
                             </div>
                             <div>
                                 <a href="#" onClick={handleToggle} className={Style.lowtext}>Já tem uma conta? Faça login</a>
+                            </div>
+                            <div>
+                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola? Clique aqui</a>
                             </div>
                             <div className={Style.btndiv}>
                                 <Button size="large" variant="contained" onClick={RealizaCadastro} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>CADASTRAR</Button>

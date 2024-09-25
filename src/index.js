@@ -11,6 +11,7 @@ import NotFound from './Pages/NotFound';
 import DashBoardAluno from './Pages/DashBoardAluno';
 import Tarefa from './Pages/Tarefa';
 import AuthProvider from './Context/authProvider';
+import CadastroEscola from './Pages/CadastroEscola';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
     element: <DashBoardTarefasProfessor/>,
   },
   {
-    path: "/cadastrotarefas",
+    path: "/cadastro/tarefas",
     element: <CadastroTarefas/>,
   },
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/tarefa",
     element: <Tarefa/>,
+  },
+  {
+    path: "/cadastro/escola",
+    element: <CadastroEscola/>,
   },
   {
     path: "*",
