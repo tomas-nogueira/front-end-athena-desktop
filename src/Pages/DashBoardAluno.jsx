@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -14,6 +14,8 @@ import FooterNovo from '../Components/Footer'
 
 function DashBoardAluno() {
 
+  const [dadosUser, setDadosUser] = useState({})
+
   const activities = [
         { text: 'Análise Combinatória - Professora Letícia' },
         { text: 'Exercícios Mecânica - Professor William',},
@@ -22,10 +24,29 @@ function DashBoardAluno() {
         { text: 'Exercícios de Orogenia - Professora Marina',}
   ]
 
+  useEffect(() =>{
+    const token = localStorage.getItem('token');
+
+      fetch("http://localhost:8080/user", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+        setDadosUser(json.message)
+        console.log(dadosUser)
+    })
+    .catch((error) => {
+    });
+  }, [])
+
   return (
     <>
       <Header/>
-      <HeaderDashboards role='ALUNO' name='Tomás' institution='SESI 337'/>
+      <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI 337'/>
       <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
         <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
           <Grid item xs={12} sm={5} sx={{backgroundColor: 'white', borderRadius: 5}}>

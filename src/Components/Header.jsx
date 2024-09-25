@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Logo from '../Photos/logo_athena 3.png'
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +21,7 @@ function Header({textBar1, textBar2, textBar3, textBar4}) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     
     const pages = [textBar1, textBar2, textBar3, textBar4];//Itens da Navbar
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];//Itens que aparece quando clica na foto
+    const settings = ['Sua Conta', 'Dashboard', 'Tarefas', 'Logout'];//Itens que aparece quando clica na foto
   
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
@@ -158,11 +159,11 @@ function Header({textBar1, textBar2, textBar3, textBar4}) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings" style={{display: "flex", flexDirection: "row", justifyContent: "center", alignContent: 'center', alignItems: "center", gap: 10}}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0}}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <AccountCircleIcon sx={{ fontSize: 50, color: 'white' }}  />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '50px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -178,8 +179,21 @@ function Header({textBar1, textBar2, textBar3, textBar4}) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <MenuItem key={setting} 
+                /*onClick={() => {
+                  handleCloseUserMenu();
+                  if (setting === 'Sua Conta') {
+                    navigate('/profile');
+                } 
+                else if (setting === 'DashBoard') {
+                      navigate('/cadastrotarefas');
+                  } 
+                  else if (setting === 'Tarefas') {
+                    navigate('/login');
+                }
+              }}*/
+                >
+                  <Typography sx={{ textAlign: 'center' }} >{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>

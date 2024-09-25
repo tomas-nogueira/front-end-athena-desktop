@@ -10,6 +10,7 @@ import DashBoardDiretoria from './Pages/DashBoardDiretoria';
 import NotFound from './Pages/NotFound';
 import DashBoardAluno from './Pages/DashBoardAluno';
 import Tarefa from './Pages/Tarefa';
+import AuthProvider from './Context/authProvider';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </>
+  </AuthProvider>  </>
 );
