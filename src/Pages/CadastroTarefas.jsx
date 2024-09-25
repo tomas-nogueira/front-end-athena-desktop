@@ -222,6 +222,37 @@ function CadastroTarefas() {
     console.log({ tipoQuestao, alternativas, respostaCerta });
   };
 
+  /*function CadastrarTarefa() {
+    fetch("http://localhost:8080/user/login", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            subject: selectedSubject, 
+            content: ,
+            recipients: ,
+            attachement: ,
+            professorId
+            
+        })
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+        if (json.token) {
+            setLogado(true);
+            setRoleContext(json.role);
+            setMessageContext(json.message);
+            localStorage.setItem("token", json.token);
+        }
+    })
+    .catch((error) => {
+        setLogado(false)
+        console.error('Erro ao tentar cadastrar:', error);
+    });
+}
+    */
+
   return (
     <>
       <Header textBar1="Home" textBar2="DashBoard" textBar3="Item 3" />

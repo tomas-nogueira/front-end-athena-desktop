@@ -29,6 +29,9 @@
     border-radius: 8px;
     height: 40px;
     gap: 10px;
+    height: auto;
+    padding: 5px;
+    text-align: center;
 }
 .text {
     color: white;
