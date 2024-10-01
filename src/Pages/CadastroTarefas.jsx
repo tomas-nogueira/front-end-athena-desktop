@@ -87,6 +87,23 @@ function CadastroTarefas() {
     .catch((error) => {
       console.error("Erro ao buscar professor:", error);
     });
+
+    fetch(`http://localhost:8080/class/${schoolProfessor}`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+      setIdProfessor(json.message._id);
+      setSchoolProfessor(json.message.Idschool);
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar professor:", error);
+    });
+
   }, []);
 
   function CadastrarTarefa() {
