@@ -100,7 +100,7 @@ const CadastroEscola = () => {
     .then((json) => {
       if (json.token) {
         localStorage.setItem("token", json.token);
-        navigate('/dashboard/diretoria');
+        navigate('/dashboard/escola');
       }
       setMessage(json.message);
     })
