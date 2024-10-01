@@ -42,7 +42,37 @@ const CadastroEscola = () => {
   const navigate = useNavigate();
 
 
+  function isValidCNPJ(cnpj) {
+    // Validação básica de CNPJ (apenas como exemplo)
+    const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; // Formato: XX.XXX.XXX/XXXX-XX
+    return regex.test(cnpj);
+  }
+  
+  function isValidINEP(inepCode) {
+    // Validação básica do código INEP (apenas como exemplo)
+    const regex = /^\d{7}$/; // Formato: 7 dígitos
+    return regex.test(inepCode);
+  }
+  
   function CadastarEscola() {
+    // Verifica se todos os campos estão preenchidos
+    if (!name || !email || !phone || !inepCode || !cnpj || !street || !cep || !state || !city || !institutionType || !educationLevels.length || !password) {
+      setMessage("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+  
+    // Verifica a validade do CNPJ e do código INEP
+    if (!isValidCNPJ(cnpj)) {
+      setMessage("CNPJ inválido. Certifique-se de que está no formato XX.XXX.XXX/XXXX-XX.");
+      return;
+    }
+  
+    if (!isValidINEP(inepCode)) {
+      setMessage("Código INEP inválido. Deve ter 7 dígitos.");
+      return;
+    }
+  
+    // Se tudo estiver correto, faz a requisição
     fetch("http://localhost:8080/school/create", {
         method: "POST",
         headers: {
@@ -70,14 +100,15 @@ const CadastroEscola = () => {
     .then((json) => {
       if (json.token) {
         localStorage.setItem("token", json.token);
-        navigate('/dashboard/diretoria')
-    }
-        setMessage(json.message)
-      })
+        navigate('/dashboard/diretoria');
+      }
+      setMessage(json.message);
+    })
     .catch((error) => {
         console.error("Error:", error);
     });
   }
+  
 
   const educationOptions = [
     "infantil",
@@ -162,6 +193,7 @@ const CadastroEscola = () => {
                     value={inepCode}
                     onChange={(e) => setInepCode(e.target.value)}
                     sx={{ width: '250px' }}
+                    required
                   />
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -276,7 +308,10 @@ const CadastroEscola = () => {
               </div>
             </div>
             <div>
-              <a href="/login" className={Style.lowtext}>Já tem uma conta? Faça login</a>
+              <a href="/login/escola" className={Style.lowtext}>Já tem uma conta da escola? Faça login</a>
+            </div>
+            <div>
+              <a href="/login" className={Style.lowtext}>Não é um usuário escola? Clique aqui</a>
             </div>
             <div className={Style.btndiv}>
               <Button size="large" variant="contained" type="button" onClick={CadastarEscola} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>
