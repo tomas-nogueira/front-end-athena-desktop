@@ -18,7 +18,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const { Login, Cadastrar, logado, roleContext} = useContext(AuthContext);
+    const { Login, Cadastrar, logado, roleContext, messageContext} = useContext(AuthContext);
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -33,9 +33,9 @@ function Login() {
     const [isLogin, setIsLogin] = useState(true);
     const [school, setSchool] = useState('');
     const [confirmsenha, setConfirmSenha] = useState('')
+    const [schoolOptions, setSchoolOptions] = useState([])
 
-    const [message,setMessage] = useState('')
-
+    const [message, setMessage] = useState('')
     const navigate = useNavigate();
 
 
@@ -51,11 +51,6 @@ function Login() {
         setRole(event.target.value);
     };
 
-    const schoolOptions = [
-        { value: 10, label: 'SESI' },
-        { value: 20, label: 'SENAI' },
-        { value: 30, label: 'COC' },
-    ];
 
     const roleOptions = [
         { value: 'inspetor', label: 'Inspetor' },
@@ -83,7 +78,7 @@ function Login() {
         return;
       }
   
-      Cadastrar(nome, email, senha, telefone, cpf, role, rua, cep, estado, cidade);
+      Cadastrar(nome, email, senha, school, telefone, cpf, role, rua, cep, estado, cidade);
   }
 
   useEffect(() => {
@@ -105,6 +100,25 @@ function Login() {
         }
     }
 }, [logado, navigate, roleContext]);
+
+    //Pegando as escolas já cadastradas
+    useEffect(() =>{
+        fetch("http://localhost:8080/school", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+        const options = json.schools.map(school => ({
+            value: school._id,
+            label: school.name,
+        }));
+        setSchoolOptions(options);    })
+    .catch((error) => {
+    });
+    }, [])
 
     return (
         <div className={Style.bg}>
@@ -160,6 +174,8 @@ function Login() {
                             <p className={Style.text}>CADASTRE-SE</p>
                             <AssignmentIndIcon className={Style.hand} />
                         </div>
+                        {messageContext && 
+                        (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{messageContext}</Alert>)}
                         {message && 
                         (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
                         <div className={Style.lowcontainer}>
@@ -232,7 +248,7 @@ function Login() {
                                         />
                                     </Box>
                                     <CustomSelect
-                                        label="Digite sua escola"
+                                        label="Escolha sua escola"
                                         variant='outlined'
                                         menuItems={schoolOptions}
                                         value={school}
