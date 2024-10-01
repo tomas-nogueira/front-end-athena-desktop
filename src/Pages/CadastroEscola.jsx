@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -36,6 +36,8 @@ const CadastroEscola = () => {
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
 
+  const [message,setMessage] = useState('')
+
   function CadastarEscola() {
     fetch("http://localhost:8080/school/create", {
         method: "POST",
@@ -62,6 +64,7 @@ const CadastroEscola = () => {
     })
     .then((resposta) => resposta.json())
     .then((json) => {
+        setMessage(json.message)
         console.log(json);
     })
     .catch((error) => {
@@ -93,6 +96,8 @@ const CadastroEscola = () => {
             <p className={Style.text}>CADASTRE SUA ESCOLA!</p>
             <AssignmentIndIcon className={Style.hand} />
         </div>
+        {message && 
+        (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
         <Grid elevation={3} style={{ padding: '20px', width: '100%', backgroundColor: 'transparent', border: 'none' }}>
           <form className={Style.lowcontainer}>
             <div className={Style.inputGrid}>
@@ -262,6 +267,9 @@ const CadastroEscola = () => {
                   />
                 </Box>
               </div>
+            </div>
+            <div>
+              <a href="/login" className={Style.lowtext}>Já tem uma conta? Faça login</a>
             </div>
             <div className={Style.btndiv}>
               <Button size="large" variant="contained" type="button" onClick={CadastarEscola} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>

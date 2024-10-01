@@ -34,7 +34,7 @@ function AuthProvider({ children }) {
         });
     }
 
-    function Cadastrar(nome, email, senha, telefone, cpf, role, rua, cep, estado, cidade) {
+    function Cadastrar(nome, email, senha, school, telefone, cpf, role, rua, cep, estado, cidade) {
         fetch("http://localhost:8080/user/create", {
             method: "POST",
             headers: {
@@ -47,6 +47,7 @@ function AuthProvider({ children }) {
                 phone: telefone,
                 cpf: cpf,
                 role: role,
+                IdSchool: school,
                 address: {
                     street: rua,
                     cep: cep,
@@ -61,11 +62,12 @@ function AuthProvider({ children }) {
             if (json.token) {
                 setLogado(true);
                 setRoleContext(json.role);
-                setMessageContext(json.message);
+                console.log(setMessageContext(json.message))
                 localStorage.setItem("token", json.token);
             }
         })
         .catch((error) => {
+            console.log(error)
             setLogado(false)
             console.error('Erro ao tentar cadastrar:', error);
         });

@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Button,IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, InputLabel, MenuItem, Select  } from '@mui/material';
+import { Container, Typography, Box, Button,IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, InputLabel, MenuItem, Select, Autocomplete, Chip  } from '@mui/material';
 import React, { useState, useRef } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,129 +20,6 @@ const subjectOptions = [
   { value: 'artes', label: 'Artes' }
 ];
 
-const topicOptions = {
-  portuguesa: [
-    { value: '1', label: 'Trovadorismo' },
-    { value: '2', label: 'Modernismo' },
-    { value: '3', label: 'Realismo' },
-    { value: '4', label: 'Romantismo' },
-    { value: '5', label: 'Poesia Barroca' },
-    { value: '6', label: 'Parnasianismo' },
-    { value: '7', label: 'Simbolismo' },
-    { value: '8', label: 'Literatura Colonial' },
-    { value: '9', label: 'Conto' },
-    { value: '10', label: 'Crônica' }
-  ],
-  matematica: [
-    { value: '1', label: 'Equação de 1º Grau' },
-    { value: '2', label: 'Geometria' },
-    { value: '3', label: 'Funções' },
-    { value: '4', label: 'Trigonometria' },
-    { value: '5', label: 'Progressões Aritméticas' },
-    { value: '6', label: 'Progressões Geométricas' },
-    { value: '7', label: 'Polígonos' },
-    { value: '8', label: 'Sistemas Lineares' },
-    { value: '9', label: 'Álgebra Linear' },
-    { value: '10', label: 'Probabilidade e Estatística' }
-  ],
-  biologia: [
-    { value: '1', label: 'Genética' },
-    { value: '2', label: 'Ecologia' },
-    { value: '3', label: 'Botânica' },
-    { value: '4', label: 'Zoologia' },
-    { value: '5', label: 'Microbiologia' },
-    { value: '6', label: 'Anatomia' },
-    { value: '7', label: 'Fisiologia' },
-    { value: '8', label: 'Evolução' },
-    { value: '9', label: 'Biotecnologia' },
-    { value: '10', label: 'Biologia Celular' }
-  ],
-  fisica: [
-    { value: '1', label: 'Leis de Newton' },
-    { value: '2', label: 'Termodinâmica' },
-    { value: '3', label: 'Óptica' },
-    { value: '4', label: 'Eletromagnetismo' },
-    { value: '5', label: 'Mecânica Quântica' },
-    { value: '6', label: 'Relatividade' },
-    { value: '7', label: 'Ondulatória' },
-    { value: '8', label: 'Astronomia' },
-    { value: '9', label: 'Física de Partículas' },
-    { value: '10', label: 'Acústica' }
-  ],
-  quimica: [
-    { value: '1', label: 'Química Orgânica' },
-    { value: '2', label: 'Química Inorgânica' },
-    { value: '3', label: 'Físico-Química' },
-    { value: '4', label: 'Bioquímica' },
-    { value: '5', label: 'Química Analítica' },
-    { value: '6', label: 'Química Ambiental' },
-    { value: '7', label: 'Química Industrial' },
-    { value: '8', label: 'Estereoquímica' },
-    { value: '9', label: 'Reações Químicas' },
-    { value: '10', label: 'Equilíbrios Químicos' }
-  ],
-  historia: [
-    { value: '1', label: 'Idade Antiga' },
-    { value: '2', label: 'Idade Média' },
-    { value: '3', label: 'Idade Moderna' },
-    { value: '4', label: 'Idade Contemporânea' },
-    { value: '5', label: 'História da Grécia Antiga' },
-    { value: '6', label: 'História de Roma' },
-    { value: '7', label: 'Renascimento' },
-    { value: '8', label: 'Revolução Francesa' },
-    { value: '9', label: 'Revolução Industrial' },
-    { value: '10', label: 'Guerra Fria' }
-  ],
-  geografia: [
-    { value: '1', label: 'Cartografia' },
-    { value: '2', label: 'Climatologia' },
-    { value: '3', label: 'Geopolítica' },
-    { value: '4', label: 'Geomorfologia' },
-    { value: '5', label: 'Geografia Humana' },
-    { value: '6', label: 'Geografia Econômica' },
-    { value: '7', label: 'Geografia Urbana' },
-    { value: '8', label: 'Geografia Regional' },
-    { value: '9', label: 'Geografia Física' },
-    { value: '10', label: 'Geografia do Brasil' }
-  ],
-  inglesa: [
-    { value: '1', label: 'Gramática' },
-    { value: '2', label: 'Literatura Inglesa' },
-    { value: '3', label: 'Conversação' },
-    { value: '4', label: 'Compreensão Auditiva' },
-    { value: '5', label: 'Vocabulário' },
-    { value: '6', label: 'Escrita Criativa' },
-    { value: '7', label: 'Estruturas Verbais' },
-    { value: '8', label: 'Pronúncia' },
-    { value: '9', label: 'Cultura e Sociedade' },
-    { value: '10', label: 'Tradução' }
-  ],
-  educacao_fisica: [
-    { value: '1', label: 'Atividades Físicas' },
-    { value: '2', label: 'Desenvolvimento Motor' },
-    { value: '3', label: 'Esportes' },
-    { value: '4', label: 'Saúde e Bem-estar' },
-    { value: '5', label: 'Treinamento Físico' },
-    { value: '6', label: 'Nutrição' },
-    { value: '7', label: 'Fisiologia do Exercício' },
-    { value: '8', label: 'Psicologia do Esporte' },
-    { value: '9', label: 'História da Educação Física' },
-    { value: '10', label: 'Educação e Inclusão' }
-  ],
-  artes: [
-    { value: '1', label: 'História da Arte' },
-    { value: '2', label: 'Desenho e Pintura' },
-    { value: '3', label: 'Escultura' },
-    { value: '4', label: 'Música' },
-    { value: '5', label: 'Teatro' },
-    { value: '6', label: 'Dança' },
-    { value: '7', label: 'Artes Visuais' },
-    { value: '8', label: 'Fotografia' },
-    { value: '9', label: 'Cinema' },
-    { value: '10', label: 'Design Gráfico' }
-  ]
-};
-
 const recipientsOptions = [
   { value: '1ano', label: '1º Ano' },
   { value: '2ano', label: '2º Ano' },
@@ -162,7 +39,10 @@ const recipientsOptions = [
 function CadastroTarefas() {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
-  const [selectedRecipients, setSelectedRecipients] = useState('')
+  const [content, setContent] = useState('')
+  const [selectedRecipients, setSelectedRecipients] = useState([])
+  const [selectedDate, setSelectedDate] = useState(''); // Estado para armazenar a data
+
 
   const fileInputRef = useRef(null);
 
@@ -171,8 +51,8 @@ function CadastroTarefas() {
     setSelectedTopic('');
   };
 
-  const handleTopicChange = (event) => {
-    setSelectedTopic(event.target.value);
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value); // Atualiza a data selecionada
   };
 
   const handleRecipientCHange = (event) => {
@@ -216,42 +96,31 @@ function CadastroTarefas() {
     setAlternativas([...alternativas, '']);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Aqui você pode enviar os dados do formulário para a sua API ou fazer o que precisar
-    console.log({ tipoQuestao, alternativas, respostaCerta });
-  };
 
-  /*function CadastrarTarefa() {
-    fetch("http://localhost:8080/user/login", {
+  function CadastrarTarefa(){
+    const token = localStorage.getItem('token');
+      fetch("http://localhost:8080/tasks/create", {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-            subject: selectedSubject, 
-            content: ,
-            recipients: ,
-            attachement: ,
-            professorId
-            
+            subject: selectedSubject,
+            content: content,
+            dueDate: selectedDate,
+            recipients: selectedRecipients,
+            alternatives: tipoQuestao === 'alternativa' ? alternativas.map((alt) => ({ text: alt, isCorrect: alt === respostaCerta })) : [],
         })
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-        if (json.token) {
-            setLogado(true);
-            setRoleContext(json.role);
-            setMessageContext(json.message);
-            localStorage.setItem("token", json.token);
-        }
+      
     })
     .catch((error) => {
-        setLogado(false)
-        console.error('Erro ao tentar cadastrar:', error);
+        
     });
-}
-    */
+  }
 
   return (
     <>
@@ -312,13 +181,20 @@ function CadastroTarefas() {
                 value={selectedSubject}
                 onChange={handleSubjectChange}
               />
-              <SelectPerson
-                label="Assunto"
-                menuItems={topicOptions[selectedSubject] || []}
-                value={selectedTopic}
-                onChange={handleTopicChange}
+              <TextField
+                type="date"
+                value={selectedDate}
+                onChange={handleDateChange} // Captura a data selecionada
+                sx={{ width: '250px' }}
+              />      
+              <TextField
+                  label="Digite a pergunta da tarefa"
+                  variant="standard"
+                  type="text"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  sx={{ width: '250px' }}
               />
-              <Input type='date'/>
               <RadioGroup value={tipoQuestao} onChange={handleTipoQuestaoChange} row>
                 <FormControlLabel
                   value="alternativa"
@@ -364,22 +240,29 @@ function CadastroTarefas() {
           </FormControl>
         </>
       )}
-
-      {tipoQuestao === 'dissertativa' && (
-        <TextField
-          label="Resposta"
-          value={respostaCerta}
-          onChange={(e) => setRespostaCerta(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-      )}
-              <SelectPerson
+        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <Autocomplete
+            multiple
+            options={recipientsOptions}
+            getOptionLabel={(option) => option.label} // Adiciona esta linha para garantir que o label seja usado corretamente
+            value={selectedRecipients}
+            onChange={(event, newValue) => setSelectedRecipients(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
                 label="Destinatário"
-                menuItems={recipientsOptions}
-                value={selectedRecipients}
-                onChange={handleRecipientCHange} 
-                />
+                placeholder="Selecione"
+              />
+            )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option.label} {...getTagProps({ index })} sx={{ fontWeight: 'bold' }} />
+              ))
+            }
+            sx={{ width: '250px', marginLeft: '8px' }}
+          />
+        </Box>
                 <Button
                 variant="contained"
                 style={{
@@ -413,7 +296,7 @@ function CadastroTarefas() {
                   </IconButton>
                 </Box>
               )}
-              <Button variant='contained' sx={{color: 'white', backgroundColor: '#004FFF', fontWeight: 'bold', width: '100%'}} size='large'>
+              <Button variant='contained' sx={{color: 'white', backgroundColor: '#004FFF', fontWeight: 'bold', width: '100%'}} size='large' onClick={CadastrarTarefa}>
                 CADASTRAR TAREFA
               </Button>
             </Box>
