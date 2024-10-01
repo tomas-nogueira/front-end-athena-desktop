@@ -20,6 +20,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import Style from '../Styles/Login.module.css';
 import Logo from '../Photos/logo_athena 1.png';
+import { useNavigate } from 'react-router-dom';
 
 const CadastroEscola = () => {
   const [name, setName] = useState('');
@@ -37,6 +38,9 @@ const CadastroEscola = () => {
   const [confirmpassword, setConfirmPassword] = useState('');
 
   const [message,setMessage] = useState('')
+
+  const navigate = useNavigate();
+
 
   function CadastarEscola() {
     fetch("http://localhost:8080/school/create", {
@@ -64,9 +68,12 @@ const CadastroEscola = () => {
     })
     .then((resposta) => resposta.json())
     .then((json) => {
+      if (json.token) {
+        localStorage.setItem("token", json.token);
+        navigate('/dashboard/diretoria')
+    }
         setMessage(json.message)
-        console.log(json);
-    })
+      })
     .catch((error) => {
         console.error("Error:", error);
     });
@@ -97,7 +104,7 @@ const CadastroEscola = () => {
             <AssignmentIndIcon className={Style.hand} />
         </div>
         {message && 
-        (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
+        (<Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
         <Grid elevation={3} style={{ padding: '20px', width: '100%', backgroundColor: 'transparent', border: 'none' }}>
           <form className={Style.lowcontainer}>
             <div className={Style.inputGrid}>
@@ -150,7 +157,7 @@ const CadastroEscola = () => {
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                   <KeyOutlinedIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                   <TextField
-                    label="Código INEP (opcional)"
+                    label="Código INEP"
                     variant="standard"
                     value={inepCode}
                     onChange={(e) => setInepCode(e.target.value)}

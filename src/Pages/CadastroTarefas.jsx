@@ -1,23 +1,21 @@
-import { Container, Typography, Box, Button,IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, InputLabel, MenuItem, Select, Autocomplete, Chip  } from '@mui/material';
-import React, { useState, useRef } from 'react';
+import { Container, Typography, Box, Button, IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Autocomplete, Chip, Grid } from '@mui/material';
+import React, { useState, useRef, useEffect } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
 import Header from '../Components/Header';
-import SelectPerson from '../Components/Select';
-import Input from '../Components/Input';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const subjectOptions = [
-  { value: 'portuguesa', label: 'Língua Portuguesa' },
-  { value: 'matematica', label: 'Matemática' },
-  { value: 'biologia', label: 'Biologia' },
-  { value: 'fisica', label: 'Física' },
-  { value: 'quimica', label: 'Química' },
-  { value: 'historia', label: 'História' },
-  { value: 'geografia', label: 'Geografia' },
-  { value: 'inglesa', label: 'Língua Inglesa' },
-  { value: 'educacao_fisica', label: 'Educação Física' },
-  { value: 'artes', label: 'Artes' }
+  { value: 'Língua Portuguesa', label: 'Língua Portuguesa' },
+  { value: 'Matemática', label: 'Matemática' },
+  { value: 'Biologia', label: 'Biologia' },
+  { value: 'Física', label: 'Física' },
+  { value: 'Química', label: 'Química' },
+  { value: 'História', label: 'História' },
+  { value: 'Geografia', label: 'Geografia' },
+  { value: 'Inglês', label: 'Língua Inglesa' },
+  { value: 'Educação_Física', label: 'Educação Física' },
+  { value: 'Artes', label: 'Artes' }
 ];
 
 const recipientsOptions = [
@@ -33,92 +31,91 @@ const recipientsOptions = [
   { value: '1medio', label: '1º Médio' },
   { value: '2medio', label: '2º Médio' },
   { value: '3medio', label: '3º Médio' }
-
 ];
 
 function CadastroTarefas() {
-  const [selectedSubject, setSelectedSubject] = useState('');
-  const [selectedTopic, setSelectedTopic] = useState('');
-  const [content, setContent] = useState('')
-  const [selectedRecipients, setSelectedRecipients] = useState([])
-  const [selectedDate, setSelectedDate] = useState(''); // Estado para armazenar a data
-
-
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [content, setContent] = useState('');
+  const [selectedRecipients, setSelectedRecipients] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [IdProfessor, setIdProfessor] = useState('');
+  const [schoolProfessor, setSchoolProfessor] = useState('');
   const fileInputRef = useRef(null);
-
-  const handleSubjectChange = (event) => {
-    setSelectedSubject(event.target.value);
-    setSelectedTopic('');
-  };
-
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value); // Atualiza a data selecionada
-  };
-
-  const handleRecipientCHange = (event) => {
-    setSelectedRecipients(event.target.value);
-  };
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-  };
-  const handleAttachClick = () => {
-    fileInputRef.current.click();
-  };
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-    fileInputRef.current.value = '';
-  };
-
-  const [fileName, setFileName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-
   const [tipoQuestao, setTipoQuestao] = useState('');
-  const [alternativas, setAlternativas] = useState([]);
-  const [respostaCerta, setRespostaCerta] = useState('');
+  const [alternativas, setAlternativas] = useState([{ text: '', isCorrect: false }]);
 
   const handleTipoQuestaoChange = (event) => {
     setTipoQuestao(event.target.value);
     if (event.target.value === 'dissertativa') {
-      setAlternativas(['']); // Limpa as alternativas se mudar para dissertativa
+      setAlternativas([{ text: '', isCorrect: false }]);
     }
   };
 
   const handleAlternativaChange = (index, value) => {
     const novasAlternativas = [...alternativas];
-    novasAlternativas[index] = value;
+    novasAlternativas[index].text = value;
+    setAlternativas(novasAlternativas);
+  };
+
+  const handleCorrectChange = (index) => {
+    const novasAlternativas = alternativas.map((alt, i) => ({
+      ...alt,
+      isCorrect: i === index
+    }));
     setAlternativas(novasAlternativas);
   };
 
   const adicionarAlternativa = () => {
-    setAlternativas([...alternativas, '']);
+    setAlternativas([...alternativas, { text: '', isCorrect: false }]);
   };
 
-
-  function CadastrarTarefa(){
+  useEffect(() => {
     const token = localStorage.getItem('token');
-      fetch("http://localhost:8080/tasks/create", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            subject: selectedSubject,
-            content: content,
-            dueDate: selectedDate,
-            recipients: selectedRecipients,
-            alternatives: tipoQuestao === 'alternativa' ? alternativas.map((alt) => ({ text: alt, isCorrect: alt === respostaCerta })) : [],
-        })
+    fetch("http://localhost:8080/user", {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-      
+      setIdProfessor(json.message._id);
+      setSchoolProfessor(json.message.Idschool);
     })
     .catch((error) => {
-        
+      console.error("Erro ao buscar professor:", error);
+    });
+  }, []);
+
+  function CadastrarTarefa() {
+    const token = localStorage.getItem('token');
+    fetch("http://localhost:8080/tasks/create", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        subject: selectedSubject?.value,
+        content: content,
+        dueDate: selectedDate,
+        recipients: selectedRecipients,
+        attachment: 20,
+        professorId: IdProfessor,
+        status: "em andamento",
+        class: 2222,
+        school: schoolProfessor,
+        alternatives: tipoQuestao === 'alternativa' ? alternativas : [],
+      })
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+      console.log("Tarefa cadastrada com sucesso:", json);
+    })
+    .catch((error) => {
+      console.error("Erro ao cadastrar tarefa:", error);
     });
   }
 
@@ -135,7 +132,7 @@ function CadastroTarefas() {
         justifyContent: 'flex-end',
         position: 'relative'
       }}>
-        <Container maxWidth="xs" style={{
+        <Container maxWidth="md" style={{
           backgroundColor: 'white',
           padding: '2rem',
           borderRadius: '8px',
@@ -159,147 +156,110 @@ function CadastroTarefas() {
           }}>
             <AssignmentIcon fontSize='large' />
             Cadastre uma tarefa
-            <AssignmentIcon fontSize='large'/>
+            <AssignmentIcon fontSize='large' />
           </Typography>
-          <Container maxWidth="xs">
-              <Box
-                component='form'
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  maxHeight: '500px', // Defina uma altura máxima
-                  overflowY: 'auto', // Permite rolagem
-                  width: '100%',
-                  padding: '1rem',
-                  gap: '1rem'
-                }}
-              >
-              <SelectPerson
-                label="Matéria"
-                menuItems={subjectOptions}
-                value={selectedSubject}
-                onChange={handleSubjectChange}
-              />
-              <TextField
-                type="date"
-                value={selectedDate}
-                onChange={handleDateChange} // Captura a data selecionada
-                sx={{ width: '250px' }}
-              />      
-              <TextField
+          <Container maxWidth="xl">
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={subjectOptions}
+                  getOptionLabel={(option) => option.label}
+                  value={selectedSubject}
+                  onChange={(event, newValue) => setSelectedSubject(newValue)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Matéria"
+                      variant="standard"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
                   label="Digite a pergunta da tarefa"
                   variant="standard"
                   type="text"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  sx={{ width: '250px' }}
-              />
-              <RadioGroup value={tipoQuestao} onChange={handleTipoQuestaoChange} row>
-                <FormControlLabel
-                  value="alternativa"
-                  control={<Radio />}
-                  label="Questão Alternativa"
+                  fullWidth
                 />
-                <FormControlLabel
-                  value="dissertativa"
-                  control={<Radio />}
-                  label="Questão Dissertativa"
-                />
-              </RadioGroup>
+              </Grid>
+              <Grid item xs={12}>
+                <RadioGroup value={tipoQuestao} onChange={handleTipoQuestaoChange} row>
+                  <FormControlLabel
+                    value="alternativa"
+                    control={<Radio />}
+                    label="Questão Alternativa"
+                  />
+                  <FormControlLabel
+                    value="dissertativa"
+                    control={<Radio />}
+                    label="Questão Dissertativa"
+                  />
+                </RadioGroup>
+              </Grid>
               {tipoQuestao === 'alternativa' && (
-        <>
-          <h3>Alternativas:</h3>
-          {alternativas.map((alternativa, index) => (
-            <TextField
-              key={index}
-              label={`Alternativa ${index + 1}`}
-              value={alternativa}
-              onChange={(e) => handleAlternativaChange(index, e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-          ))}
-          <Button onClick={adicionarAlternativa} variant="contained" color="primary">
-            Adicionar Alternativa
-          </Button>
-
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Selecione a Alternativa Certa</InputLabel>
-            <Select
-              value={respostaCerta}
-              onChange={(e) => setRespostaCerta(e.target.value)}
-              label="Selecione a Alternativa Certa"
-          >
-              {alternativas.map((alternativa, index) => (
-                <MenuItem key={index} value={alternativa}>
-                  {alternativa}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      )}
-        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          <Autocomplete
-            multiple
-            options={recipientsOptions}
-            getOptionLabel={(option) => option.label} // Adiciona esta linha para garantir que o label seja usado corretamente
-            value={selectedRecipients}
-            onChange={(event, newValue) => setSelectedRecipients(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label="Destinatário"
-                placeholder="Selecione"
-              />
-            )}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip variant="outlined" label={option.label} {...getTagProps({ index })} sx={{ fontWeight: 'bold' }} />
-              ))
-            }
-            sx={{ width: '250px', marginLeft: '8px' }}
-          />
-        </Box>
-                <Button
-                variant="contained"
-                style={{
-                  marginTop: '20px',
-                  width: '60%',
-                  textTransform: 'capitalize',
-                }}
-                onClick={handleAttachClick}
-              >
-                Anexar Arquivo
-              </Button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
-
-              {selectedFile && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    marginTop: '10px',
-                  }}
-                >
-                  <Typography>{selectedFile.name}</Typography>
-                  <IconButton size="small" onClick={handleRemoveFile}>
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
+                <Grid item xs={12}>
+                  <h3>Alternativas:</h3>
+                  {alternativas.map((alternativa, index) => (
+                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <TextField
+                        label={`Alternativa ${index + 1}`}
+                        value={alternativa.text}
+                        onChange={(e) => handleAlternativaChange(index, e.target.value)}
+                        fullWidth
+                        margin="normal"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Radio
+                            checked={alternativa.isCorrect}
+                            onChange={() => handleCorrectChange(index)}
+                          />
+                        }
+                        label="Certa"
+                      />
+                    </Box>
+                  ))}
+                  <Button onClick={adicionarAlternativa} variant="contained" color="primary">
+                    Adicionar Alternativa
+                  </Button>
+                </Grid>
               )}
-              <Button variant='contained' sx={{color: 'white', backgroundColor: '#004FFF', fontWeight: 'bold', width: '100%'}} size='large' onClick={CadastrarTarefa}>
-                CADASTRAR TAREFA
-              </Button>
-            </Box>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  options={recipientsOptions}
+                  getOptionLabel={(option) => option.label}
+                  value={selectedRecipients}
+                  onChange={(event, newValue) => setSelectedRecipients(newValue)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label="Destinatários"
+                      placeholder="Selecione os destinatários"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" color="primary" onClick={CadastrarTarefa}>
+                  Cadastrar Tarefa
+                </Button>
+              </Grid>
+            </Grid>
           </Container>
         </Container>
       </section>
