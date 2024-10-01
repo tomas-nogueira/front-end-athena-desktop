@@ -61,7 +61,7 @@ function CadastroClasse() {
       students,
       year,
       subject,
-      IdSchool: '66fc0406eae7bf4a2421a67d', // ID fixo da escola
+      IdSchool: '66fc0406eae7bf4a2421a67d', 
     };
 
     // Log dos dados que serão enviados para a API
