@@ -30,7 +30,7 @@ const recipientsOptions = [
   { value: '9ano', label: '9º Ano' },
   { value: '1medio', label: '1º Médio' },
   { value: '2medio', label: '2º Médio' },
-  { value: '3medio', label: '3º Médio' }
+  { value: '3medio', label: '3º Médio' },
 ];
 
 function CadastroTarefas() {
@@ -88,21 +88,6 @@ function CadastroTarefas() {
       console.error("Erro ao buscar professor:", error);
     });
 
-    fetch(`http://localhost:8080/class/${schoolProfessor}`, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-      setIdProfessor(json.message._id);
-      setSchoolProfessor(json.message.Idschool);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar professor:", error);
-    });
 
   }, []);
 
@@ -118,12 +103,12 @@ function CadastroTarefas() {
         subject: selectedSubject?.value,
         content: content,
         dueDate: selectedDate,
-        recipients: selectedRecipients,
+        recipients: selectedRecipients,//FUNCIONANDO PASSANDO ESTÁTICO
         attachment: 20,
         professorId: IdProfessor,
         status: "em andamento",
-        class: 2222,
-        school: schoolProfessor,
+        class: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
+        school: '66fbfd0f80c681d1d2970824',//FUNCIONANDO PASSANDO ESTÁTICO
         alternatives: tipoQuestao === 'alternativa' ? alternativas : [],
       })
     })

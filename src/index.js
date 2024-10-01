@@ -14,6 +14,7 @@ import AuthProvider from './Context/authProvider';
 import CadastroEscola from './Pages/CadastroEscola';
 import CadastroClasse from './Pages/CadastroClasse';
 import DashBoardEscola from './Pages/DashBoardEscola';
+import LoginEscola from './Pages/LoginEscola'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastro/escola",
     element: <CadastroEscola/>,
+  },
+  {
+    path: "/login/escola",
+    element: <LoginEscola/>,
   },
   {
     path: "/cadastro/classe",
