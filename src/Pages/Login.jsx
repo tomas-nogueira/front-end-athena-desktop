@@ -33,7 +33,12 @@ function Login() {
     const [isLogin, setIsLogin] = useState(true);
     const [school, setSchool] = useState('');
     const [confirmsenha, setConfirmSenha] = useState('')
+
     const [schoolOptions, setSchoolOptions] = useState([])
+
+    const [classOptions, setClassOptions] = useState([])
+
+    const [classes, setClasses] = useState('')
 
     const [message, setMessage] = useState('')
     const navigate = useNavigate();
@@ -45,6 +50,10 @@ function Login() {
 
     const handleSchoolChange = (event) => {
         setSchool(event.target.value);
+    };
+
+    const handleClassesChange = (event) => {
+        setClasses(event.target.value);
     };
 
     const handleRoleChange = (event) => {
@@ -78,7 +87,7 @@ function Login() {
         return;
       }
   
-      Cadastrar(nome, email, senha, school, telefone, cpf, role, rua, cep, estado, cidade);
+      Cadastrar(nome, email, senha, school, classes, telefone, cpf, role, rua, cep, estado, cidade);
   }
 
   useEffect(() => {
@@ -119,6 +128,35 @@ function Login() {
     .catch((error) => {
     });
     }, [])
+
+    useEffect(() =>{
+        fetch(`http://localhost:8080/class/${school}`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+        console.log(json);
+    
+        // Verifica se a resposta contém uma array de classes
+        if (Array.isArray(json.message) && json.message.length > 0) {
+            const optionsClass = json.message.map(classes => ({
+                value: classes._id,
+                label: classes.name,
+            }));
+            setClassOptions(optionsClass);
+        } else {
+            // Se a array estiver vazia, define um texto padrão
+            setClassOptions([{ value: '', label: 'Nenhuma sala encontrada' }]);
+        }
+    })
+    .catch((error) => {
+        console.error('Erro ao buscar as classes:', error);
+    });
+    
+    }, [school])
 
     return (
         <div className={Style.bg}>
@@ -253,6 +291,13 @@ function Login() {
                                         menuItems={schoolOptions}
                                         value={school}
                                         onChange={handleSchoolChange}
+                                    />
+                                    <CustomSelect
+                                        label="Escolha sua sala"
+                                        variant='outlined'
+                                        menuItems={classOptions}
+                                        value={classes}
+                                        onChange={handleClassesChange}
                                     />
                                 </div>
                                 <div className={Style.inputColumn}>

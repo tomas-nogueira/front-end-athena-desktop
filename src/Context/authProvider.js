@@ -34,7 +34,7 @@ function AuthProvider({ children }) {
         });
     }
 
-    function Cadastrar(nome, email, senha, school, telefone, cpf, role, rua, cep, estado, cidade) {
+    function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
         fetch("http://localhost:8080/user/create", {
             method: "POST",
             headers: {
@@ -48,6 +48,7 @@ function AuthProvider({ children }) {
                 cpf: cpf,
                 role: role,
                 IdSchool: school,
+                IdClass: classe,
                 address: {
                     street: rua,
                     cep: cep,
