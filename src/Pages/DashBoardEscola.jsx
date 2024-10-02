@@ -44,7 +44,7 @@ function DashBoardEscola() {
       <HeaderDashboards role='INSTITUIÇÃO' name={schoolData.message.name} institution='CONTA ADMINISTRATIVA' />
       <Grid item xs={12} sm={6} display='flex' alignItems='center' justifyContent='center' gap='3rem'>
         <Card title='Adicionar classes' description='Adicione as classes de sua escola' button1Text='ADICIONAR' button1Route='/cadastro/classe' />
-        <Card title='Solicitações pendentes' description='Visualize suas solicitações pendentes' button1Text='Visualizar' />
+        <Card title='Solicitações pendentes' description='Visualize suas solicitações pendentes' button1Text='Visualizar' button1Route='/reqpendentes/escola'/>
       </Grid>
     </>
   );
