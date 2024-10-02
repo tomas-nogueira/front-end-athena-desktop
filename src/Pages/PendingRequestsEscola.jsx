@@ -18,12 +18,11 @@ function PendingRequestsEscola() {
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-        console.log(json.message)
       setSchoolId(json.message._id);
     });
   }, []);
 
-  useEffect(() => {
+  const loadPendingRequests = () => {
     if (schoolId) {
       fetch(`http://localhost:8080/schools/${schoolId}/pending-requests`, {
         method: "GET",
@@ -33,14 +32,21 @@ function PendingRequestsEscola() {
       })
       .then((resposta) => resposta.json())
       .then((json) => {
-        console.log(json);
         if (json.pendingUsers) {
           setPendingUsers(json.pendingUsers);
-          console.log(schoolId)
         }
       });
     }
+  };
+
+  useEffect(() => {
+    loadPendingRequests();
   }, [schoolId]);
+
+  // Função para remover usuário da lista local
+  const removeUserFromList = (userId) => {
+    setPendingUsers(prevUsers => prevUsers.filter(user => user._id !== userId));
+  };
 
   return (
     <>
@@ -54,8 +60,9 @@ function PendingRequestsEscola() {
                 <UserRequestBox 
                   name={user.name} 
                   rm={user.cpf} 
-                  userId={user._id} // Passa o ID do usuário
-                  IdSchool={schoolId} // Passa o ID da escola
+                  userId={user._id} 
+                  IdSchool={schoolId}
+                  removeUserFromList={removeUserFromList} // Passa a função de remoção
                 />
               </Grid>
             ))}
