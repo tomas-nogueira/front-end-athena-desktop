@@ -16,6 +16,7 @@ import CadastroClasse from './Pages/CadastroClasse';
 import DashBoardEscola from './Pages/DashBoardEscola';
 import LoginEscola from './Pages/LoginEscola'
 import PendingRequestsEscola from './Pages/PendingRequestsEscola';
+import TarefasAlunoAll from './Pages/TarefasAlunoAll'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
   {
     path: "/reqpendentes/escola",
     element: <PendingRequestsEscola/>,
+  },
+  {
+    path: "/dashboard/tarefas/aluno/all",
+    element: <TarefasAlunoAll/>,
   },
   {
     path: "*",
