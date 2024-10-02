@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Alert } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField, Button, Typography, Alert,   Chip, Autocomplete } from '@mui/material';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import Header from '../Components/Header';
 
@@ -12,90 +12,52 @@ function CadastroClasse() {
   const [year, setYear] = useState('');
   const [subject, setSubject] = useState('');
 
+  const [subjectSelected, setSubjectSelected] = useState([]);
+
   // Estados para mensagens de sucesso/erro
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
+  const [dataSchool, setDataSchool] = useState('')
 
-  // Atualiza o valor correto de cada campo
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'grade':
-        setGrade(value);
-        break;
-      case 'teacher':
-        setTeacher(value);
-        break;
-      case 'students':
-        setStudents(value);
-        break;
-      case 'year':
-        setYear(value);
-        break;
-      case 'subject':
-        setSubject(value);
-        break;
-      default:
-        break;
-    }
-  };
+  useEffect(() =>{
+    const token = localStorage.getItem('token');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSuccessMessage('');
-    setErrorMessage('');
-
-    // Verifica se todos os campos foram preenchidos
-    if (!name || !grade || !teacher || !students || !year || !subject) {
-      setErrorMessage('Todos os campos são obrigatórios!');
-      return;
-    }
-
-    const dataToSend = {
-      name,
-      grade,
-      teacher,
-      students,
-      year,
-      subject,
-      IdSchool: '66fc0406eae7bf4a2421a67d', 
-    };
-
-    // Log dos dados que serão enviados para a API
-    console.log('Dados enviados para a API:', dataToSend);
-
-    // Envio da requisição para a API
-    fetch('http://localhost:8080/class', {
-      method: 'POST',
+    fetch('http://localhost:8080/school/data', {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(dataToSend),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Erro ao enviar os dados');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSuccessMessage('Classe cadastrada com sucesso!');
-        // Limpa os campos após o sucesso
-        setName('');
-        setGrade('');
-        setTeacher('');
-        setStudents('');
-        setYear('');
-        setSubject('');
-      })
-      .catch((error) => {
-        setErrorMessage('Erro ao cadastrar a classe, tente novamente.');
-        console.error('Error:', error);
-      });
-  };
+    .then((resposta) => resposta.json())
+    .then((json) => {
+      setDataSchool(json)
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar professor:", error);
+    });
+  }, [])
+
+  
+
+  function CadastrarClasse(){
+    
+   
+}
+
+  const subjectOptions = [
+    'Língua Portuguesa', 
+    'Matemática',
+    'Biologia', 
+    'Física', 
+    'Química', 
+    'História', 
+    'Geografia', 
+    'Inglês',   
+    'Educação_Física',    
+    'Artes',
+  ];
 
   return (
     <>
@@ -114,7 +76,7 @@ function CadastroClasse() {
       >
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={CadastrarClasse}
           sx={{
             bgcolor: 'white',
             p: 4,
@@ -131,34 +93,26 @@ function CadastroClasse() {
           {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
           <TextField
-            label="Nome"
+            label="Nome da sala"
             name="name"
             value={name}
-            onChange={handleChange}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Série"
+            label="Série da saa"
             name="grade"
             value={grade}
-            onChange={handleChange}
+            onChange={(e) => setGrade(e.target.value)}
             fullWidth
             margin="normal"
           />
           <TextField
-            label="Professores"
+            label="Professores da sala"
             name="teacher"
             value={teacher}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Estudantes"
-            name="students"
-            value={students}
-            onChange={handleChange}
+            onChange={(e) => setTeacher(e.target.value)}
             fullWidth
             margin="normal"
           />
@@ -166,18 +120,35 @@ function CadastroClasse() {
             label="Ano Letivo"
             name="year"
             value={year}
-            onChange={handleChange}
+            onChange={(e) => setYear(e.target.value)}
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Matérias"
-            name="subject"
-            value={subject}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
+          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <Autocomplete
+              multiple
+              sx={{marginBottom: 10}}
+              fullWidth
+              options={subjectOptions}
+              value={subjectSelected}
+              onChange={(event, newValue) => setSubjectSelected(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Escolha as matérias disponíveis dessa sala"
+                  placeholder="Selecione"
+                  fullWidth
+
+                />
+              )}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip variant="outlined" label={option} {...getTagProps({ index })} sx={{fontWeight: 'bold'}} fullWidth
+                  />
+                ))
+              }
+            />
+          </Box>
           <Button type="submit" variant="contained" color="primary" fullWidth>
             Cadastrar
           </Button>

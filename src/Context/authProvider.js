@@ -48,7 +48,7 @@ function AuthProvider({ children }) {
                 cpf: cpf,
                 role: role,
                 IdSchool: school,
-                IdClass: classe,
+                IdClass: classe || null,
                 address: {
                     street: rua,
                     cep: cep,
