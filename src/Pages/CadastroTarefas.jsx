@@ -103,11 +103,11 @@ function CadastroTarefas() {
         subject: selectedSubject?.value,
         content: content,
         dueDate: selectedDate,
-        recipients: selectedRecipients,//FUNCIONANDO PASSANDO ESTÁTICO
+        recipients: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
         attachment: 20,
-        professorId: IdProfessor,
+        IdTeacher: IdProfessor,
         status: "em andamento",
-        class: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
+        IdClass: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
         school: '66fbfd0f80c681d1d2970824',//FUNCIONANDO PASSANDO ESTÁTICO
         alternatives: tipoQuestao === 'alternativa' ? alternativas : [],//Passando as alternativas somente se o tipoQuestao for alternativa, se não será passado um array vazio
       })

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar } from "antd";
-import { EditOutlined, EllipsisOutlined, SettingOutlined, CheckOutlined } from '@ant-design/icons';
+import { Card, Button } from "antd";
+import { useNavigate } from 'react-router-dom';
 
-function CardTarefaGeral({ title, quantidade, colorBorder, descricao}) {
+function CardTarefaGeral({ title, quantidade, colorBorder }) {
   const [icon, setIcon] = useState();
+  const navigate = useNavigate(); // Hook para navegação
 
   const { Meta } = Card;
 
@@ -21,6 +22,10 @@ function CardTarefaGeral({ title, quantidade, colorBorder, descricao}) {
       setIcon(require('../Photos/IconTarefaTotal.png'));
     }
   }, [title]);
+
+  const handleViewMoreClick = () => {
+    navigate('/dashboard/tarefas/aluno/all'); // Navegar para a rota desejada
+  };
 
   return (
     <Card
@@ -43,15 +48,34 @@ function CardTarefaGeral({ title, quantidade, colorBorder, descricao}) {
           }}
         />
       }
-      actions={[
-        <SettingOutlined key="setting" />,
-        <EditOutlined key="edit" />,
-        <CheckOutlined key="check" />,
-      ]}
     >
-
       <div style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: colorBorder }}>
         {quantidade}
+      </div>
+      <div style={{ textAlign: 'center', marginTop: 10 }}>
+        <Button 
+          type="primary" 
+          onClick={handleViewMoreClick} 
+          style={{
+            backgroundColor: colorBorder,
+            borderColor: colorBorder,
+            borderRadius: 5,
+            fontWeight: 'bold',
+            padding: '5px 20px',
+            transition: 'background-color 0.3s, border-color 0.3s',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = '#ffffff'; // Cor ao passar o mouse
+            e.currentTarget.style.color = colorBorder; // Cor do texto ao passar o mouse
+            e.currentTarget.style.borderColor = colorBorder; // Cor da borda ao passar o mouse
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = colorBorder; // Cor original
+            e.currentTarget.style.color = '#ffffff'; // Cor do texto original
+          }}
+        >
+          VER MAIS
+        </Button>
       </div>
     </Card>
   );
