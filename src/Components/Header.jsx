@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,7 +14,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from '../Photos/logo_athena 3.png';
 import { useNavigate } from 'react-router-dom';
 
-function Header({ textBar1, textBar2, textBar3, textBar4 }) {
+function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -91,10 +90,12 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                         >
                             {pages.map((page, index) => (
                                 <MenuItem
-                                    key={index} // Usando índice como chave
+                                    key={index} 
                                     onClick={() => {
                                         handleCloseNavMenu();
-                                        if (page === 'Home') {
+                                        if (page === 'Instruções') { 
+                                            onTextBar2Click(); // Abre o pop-up de instruções
+                                        } else if (page === 'Home') {
                                             navigate('/');
                                         } else if (page === 'Cadastrar uma Tarefa') {
                                             navigate('/cadastrotarefas');
@@ -102,6 +103,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                                             navigate('/login');
                                         } else if (page === 'Cadastro') {
                                             navigate('/login');
+                                        } else if (page === 'Tarefas') {
+                                            navigate('/dashboard/tarefas/aluno');
                                         }
                                     }}
                                 >
@@ -110,31 +113,16 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                             ))}
                         </Menu>
                     </Box>
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        <img src={Logo} style={{ width: 200 }} alt="Logo" />
-                    </Typography>
+
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
                             <Button
-                                key={index} // Usando índice como chave
+                                key={index} 
                                 onClick={() => {
                                     handleCloseNavMenu();
-                                    if (page === 'Home') {
+                                    if (page === 'Instruções') {
+                                        onTextBar2Click(); // Abre o pop-up de instruções
+                                    } else if (page === 'Home') {
                                         navigate('/');
                                     } else if (page === 'Cadastrar uma Tarefa') {
                                         navigate('/cadastrotarefas');
@@ -142,6 +130,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                                         navigate('/login');
                                     } else if (page === 'Cadastro') {
                                         navigate('/login');
+                                    } else if (page === 'Tarefas') {
+                                        navigate('/dashboard/tarefas/aluno');
                                     }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -150,6 +140,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                             </Button>
                         ))}
                     </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings" style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignContent: 'center', alignItems: "center", gap: 10 }}>
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -173,19 +164,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4 }) {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting, index) => (
-                                <MenuItem key={index} // Usando índice como chave
-                                    /*onClick={() => {
-                                        handleCloseUserMenu();
-                                        if (setting === 'Sua Conta') {
-                                            navigate('/profile');
-                                        } else if (setting === 'Dashboard') {
-                                            navigate('/cadastrotarefas');
-                                        } else if (setting === 'Tarefas') {
-                                            navigate('/login');
-                                        }
-                                    }}
-                                        */
-                                >
+                                <MenuItem key={index}>
                                     <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                                 </MenuItem>
                             ))}

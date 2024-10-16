@@ -45,7 +45,7 @@ function DashBoardAluno() {
 
   return (
     <>
-      <Header/>
+      <Header textBar1='Tarefas'/>
       <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI 337'/>
       <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
         <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
