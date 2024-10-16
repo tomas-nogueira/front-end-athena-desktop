@@ -9,7 +9,7 @@ function PendingRequestsEscola() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/school/data", {
+    fetch("http://localhost:3030/school/data", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ function PendingRequestsEscola() {
 
   const loadPendingRequests = () => {
     if (schoolId) {
-      fetch(`http://localhost:8080/schools/${schoolId}/pending-requests`, {
+      fetch(`http://localhost:3030/schools/${schoolId}/pending-requests`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',

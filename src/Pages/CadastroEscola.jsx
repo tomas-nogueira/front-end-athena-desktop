@@ -73,7 +73,7 @@ const CadastroEscola = () => {
     }
   
     // Se tudo estiver correto, faz a requisição
-    fetch("http://localhost:8080/school/create", {
+    fetch("http://localhost:3030/school/create", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -284,26 +284,37 @@ const CadastroEscola = () => {
                   </FormControl>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                  <Autocomplete
-                    multiple
-                    options={educationOptions}
-                    value={educationLevels}
-                    onChange={(event, newValue) => setEducationLevels(newValue)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="standard"
-                        label="Níveis de Educação"
-                        placeholder="Selecione"
-                      />
-                    )}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} sx={{fontWeight: 'bold'}} />
-                      ))
-                    }
-                    sx={{ width: '250px', marginLeft: '8px' }}
-                  />
+                <Autocomplete
+  multiple
+  options={educationOptions}
+  value={educationLevels}
+  onChange={(event, newValue) => setEducationLevels(newValue)}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      variant="standard"
+      label="Níveis de Educação"
+      placeholder="Selecione"
+    />
+  )}
+  renderTags={(value, getTagProps) =>
+    value.map((option, index) => {
+      // Pega as props sem incluir a key
+      const { key, ...tagProps } = getTagProps({ index });
+      return (
+        <Chip
+          key={option} // Passa a key diretamente aqui
+          variant="outlined"
+          label={option}
+          {...tagProps} // Resto das propriedades é espalhado sem o key
+          sx={{ fontWeight: 'bold' }}
+        />
+      );
+    })
+  }
+  sx={{ width: '250px', marginLeft: '8px' }}
+/>
+
                 </Box>
               </div>
             </div>
