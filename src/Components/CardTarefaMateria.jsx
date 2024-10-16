@@ -1,15 +1,10 @@
 import React from 'react';
 import { Card, Avatar, Button, Typography, Tag } from "antd";
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const { Title, Text } = Typography;
 
-function CardTarefaMateria({ 
-  title, 
-  professorName, 
-  professorImage, 
-  subject, 
-  status 
-}) {
+function CardTarefaMateria({title, professorName, professorImage, subject, status, id, button}) {
   // Lógica para determinar o ícone com base no assunto
   const getImageSrc = (subject) => {
     switch (subject) {
@@ -39,6 +34,16 @@ function CardTarefaMateria({
   };
 
   const imageSrc = getImageSrc(subject); // Chama a função para obter a imagem
+  const navigate = useNavigate();
+
+  function RedirecionarTarefa() {
+    if(button == "Realizar tarefa"){
+      navigate(`/tarefa/${id}`); // Altere `/tarefa` para o caminho da sua rota de tarefa
+    }
+    if(button == "Ver respostas"){
+      navigate(`/respostastarefa/${id}`); // Altere `/tarefa` para o caminho da sua rota de tarefa
+    }
+  }
 
   return (
     <Card
@@ -83,8 +88,8 @@ function CardTarefaMateria({
             <Text>Carregando...</Text>
           )}
         </div>
-        <Button type="primary" style={{ width: '100%' }}>
-          VOLTAR
+        <Button type="primary" style={{ width: '100%' }} onClick={RedirecionarTarefa}>
+          {button}
         </Button>
       </div>
     </Card>
