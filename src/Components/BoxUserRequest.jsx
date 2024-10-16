@@ -7,7 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const UserRequestBox = ({ name, rm, userId, IdSchool, removeUserFromList }) => {
   const handleApprove = () => {
-    fetch(`http://localhost:8080/user/approve`, {
+    fetch(`http://localhost:3030/user/approve`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

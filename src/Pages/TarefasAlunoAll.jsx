@@ -10,7 +10,7 @@ function TarefasAlunoAll() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

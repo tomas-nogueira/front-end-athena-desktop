@@ -17,6 +17,7 @@ function DashBoardTarefas() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     fetch("http://localhost:8080/user", {
       method: "GET",
       headers: {
@@ -36,7 +37,7 @@ function DashBoardTarefas() {
   useEffect(() => {
     if (dataUser) {
       // Requisição para ver as tarefas completadas
-      fetch(`http://localhost:8080/tasks/completed/userbyclass/${dataUser._id}`, {
+      fetch(`http://localhost:8080/tasks/completed/${dataUser._id}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
@@ -51,7 +52,7 @@ function DashBoardTarefas() {
         });
 
       // Requisição para ver as tarefas em 48 horas
-      fetch(`http://localhost:8080/tasks/dueSoon/userbyclass/${dataUser._id}`, {
+      fetch(`http://localhost:8080/tasks/dueSoon/${dataUser._id}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
@@ -66,7 +67,7 @@ function DashBoardTarefas() {
         });
 
       // Requisição para ver as tarefas atrasadas
-      fetch(`http://localhost:8080/tasks/overdue/userbyclass/${dataUser._id}`, {
+      fetch(`http://localhost:8080/tasks/overdue/${dataUser._id}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
@@ -80,7 +81,7 @@ function DashBoardTarefas() {
           console.log(error);
         });
       // Requisição para ver todas as tarefas
-      fetch(`http://localhost:8080/task/getall/userbyclass/${dataUser._id}`, {
+      fetch(`http://localhost:8080/tasks/getalluser/${dataUser._id}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'

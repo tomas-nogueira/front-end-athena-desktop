@@ -61,7 +61,7 @@ function CadastroTarefas() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function CadastroTarefas() {
 
   useEffect(() => {
     if(schoolProfessor){
-      fetch(`http://localhost:8080/class/${schoolProfessor}`, {
+      fetch(`http://localhost:3030/class/${schoolProfessor}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function CadastroTarefas() {
 
   function CadastrarTarefa() {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/tasks/create", {
+    fetch("http://localhost:3030/tasks/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
