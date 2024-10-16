@@ -11,7 +11,7 @@ function Tarefa() {
   const [dissertativeResponse, setDissertativeResponse] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:8080/tasks/getId/66fd5b20435ebb537a61ada8`, {
+    fetch(`http://localhost:3030/tasks/getId/66fd5b20435ebb537a61ada8`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ function Tarefa() {
   function EnviarResposta() {
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8080/tasks/response`, {
+    fetch(`http://localhost:3030/tasks/response`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

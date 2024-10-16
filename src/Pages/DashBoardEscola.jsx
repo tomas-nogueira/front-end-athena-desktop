@@ -13,7 +13,7 @@ function DashBoardEscola() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/school/data", {
+    fetch("http://localhost:3030/school/data", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

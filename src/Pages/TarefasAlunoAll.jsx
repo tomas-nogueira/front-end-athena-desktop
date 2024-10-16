@@ -8,7 +8,7 @@ function TarefasAlunoAll() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ function TarefasAlunoAll() {
 
   useEffect(() => {
     if (dataUser) {
-      fetch(`http://localhost:8080/tasks/getalluser/${dataUser}`, { // Ajustado para usar dataUser
+      fetch(`http://localhost:3030/tasks/getalluser/${dataUser}`, { // Ajustado para usar dataUser
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
