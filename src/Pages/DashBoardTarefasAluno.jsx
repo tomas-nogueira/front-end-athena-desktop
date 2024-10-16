@@ -35,7 +35,7 @@ function DashBoardTarefas() {
   }, []);
 
   useEffect(() => {
-    if (dataUser._id) {
+    if (dataUser) {
       // Requisição para ver as tarefas completadas
       fetch(`http://localhost:8080/tasks/completed/${dataUser._id}`, {
         method: "GET",

@@ -18,21 +18,6 @@ const subjectOptions = [
   { value: 'Artes', label: 'Artes' }
 ];
 
-const recipientsOptions = [
-  { value: '1ano', label: '1º Ano' },
-  { value: '2ano', label: '2º Ano' },
-  { value: '3ano', label: '3º Ano' },
-  { value: '4ano', label: '4º Ano' },
-  { value: '5ano', label: '5º Ano' },
-  { value: '6ano', label: '6º Ano' },
-  { value: '7ano', label: '7º Ano' },
-  { value: '8ano', label: '8º Ano' },
-  { value: '9ano', label: '9º Ano' },
-  { value: '1medio', label: '1º Médio' },
-  { value: '2medio', label: '2º Médio' },
-  { value: '3medio', label: '3º Médio' },
-];
-
 function CadastroTarefas() {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [content, setContent] = useState('');
@@ -44,6 +29,8 @@ function CadastroTarefas() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [tipoQuestao, setTipoQuestao] = useState('');
   const [alternativas, setAlternativas] = useState([{ text: '', isCorrect: false }]);
+  const [classes, setClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]); // Estado para classes selecionadas
 
   const handleTipoQuestaoChange = (event) => {
     setTipoQuestao(event.target.value);
@@ -82,14 +69,30 @@ function CadastroTarefas() {
     .then((resposta) => resposta.json())
     .then((json) => {
       setIdProfessor(json.message._id);
-      setSchoolProfessor(json.message.Idschool);
+      setSchoolProfessor(json.message.IdSchool);
     })
     .catch((error) => {
       console.error("Erro ao buscar professor:", error);
     });
-
-
   }, []);
+
+  useEffect(() => {
+    if(schoolProfessor){
+      fetch(`http://localhost:8080/class/${schoolProfessor}`, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((resposta) => resposta.json())
+      .then((json) => {
+        setClasses(json.message); // Ajuste para usar o caminho correto
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar classes:", error);
+      });
+    }
+  }, [schoolProfessor]);
 
   function CadastrarTarefa() {
     const token = localStorage.getItem('token');
@@ -103,13 +106,13 @@ function CadastroTarefas() {
         subject: selectedSubject?.value,
         content: content,
         dueDate: selectedDate,
-        recipients: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
+        recipients: selectedClasses.map(cls => cls._id), // FUNCIONANDO PASSANDO ESTÁTICO
         attachment: 20,
         IdTeacher: IdProfessor,
         status: "em andamento",
-        IdClass: '66fc22f1c3fbe6f5be1b366f',//FUNCIONANDO PASSANDO ESTÁTICO
-        school: '66fbfd0f80c681d1d2970824',//FUNCIONANDO PASSANDO ESTÁTICO
-        alternatives: tipoQuestao === 'alternativa' ? alternativas : [],//Passando as alternativas somente se o tipoQuestao for alternativa, se não será passado um array vazio
+        IdClass: selectedClasses.map(cls => cls._id), // Múltiplas classes
+        school: schoolProfessor, // FUNCIONANDO PASSANDO ESTÁTICO
+        alternatives: tipoQuestao === 'alternativa' ? alternativas : [], // Passando as alternativas somente se o tipoQuestao for alternativa, se não será passado um array vazio
       })
     })
     .then((resposta) => resposta.json())
@@ -162,6 +165,24 @@ function CadastroTarefas() {
           </Typography>
           <Container maxWidth="xl">
             <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  options={classes} // Usando as classes obtidas
+                  getOptionLabel={(option) => option.name} // Exibindo o nome da classe
+                  value={selectedClasses}
+                  onChange={(event, newValue) => setSelectedClasses(newValue)} // Atualizando as classes selecionadas
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label="Para quem?"
+                      placeholder="Selecione as classes"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <Autocomplete
                   options={subjectOptions}
@@ -238,24 +259,6 @@ function CadastroTarefas() {
                   </Button>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <Autocomplete
-                  multiple
-                  options={recipientsOptions}
-                  getOptionLabel={(option) => option.label}
-                  value={selectedRecipients}
-                  onChange={(event, newValue) => setSelectedRecipients(newValue)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      label="Destinatários"
-                      placeholder="Selecione os destinatários"
-                      fullWidth
-                    />
-                  )}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" onClick={CadastrarTarefa}>
                   Cadastrar Tarefa

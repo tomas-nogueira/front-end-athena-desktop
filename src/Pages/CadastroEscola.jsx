@@ -61,6 +61,7 @@ const CadastroEscola = () => {
       return;
     }
   
+    // Verifica a validade do CNPJ e do código INEP
     if (!isValidCNPJ(cnpj)) {
       setMessage("CNPJ inválido. Certifique-se de que está no formato XX.XXX.XXX/XXXX-XX.");
       return;
@@ -71,6 +72,7 @@ const CadastroEscola = () => {
       return;
     }
   
+    // Se tudo estiver correto, faz a requisição
     fetch("http://localhost:8080/school/create", {
         method: "POST",
         headers: {
