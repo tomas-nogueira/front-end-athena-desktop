@@ -132,7 +132,10 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/login');
                                     } else if (page === 'Tarefas') {
                                         navigate('/dashboard/tarefas/aluno');
+                                    } else if (page === 'Recados') {
+                                        navigate('/dashboard/diretoria/recados');
                                     }
+                                    
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
