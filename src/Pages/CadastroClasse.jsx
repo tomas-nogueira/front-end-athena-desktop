@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField, Button, Typography, Alert,   Chip, Autocomplete } from '@mui/material';
+import { Box, TextField, Button, Typography, Alert, Chip, Autocomplete } from '@mui/material';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import Header from '../Components/Header';
 
@@ -7,20 +7,20 @@ function CadastroClasse() {
   // Estados para os campos
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
-  const [teacher, setTeacher] = useState('');
+  const [teacher, setTeacher] = useState([]);
   const [students, setStudents] = useState('');
   const [year, setYear] = useState('');
   const [subject, setSubject] = useState('');
-
   const [subjectSelected, setSubjectSelected] = useState([]);
-
+  
   // Estados para mensagens de sucesso/erro
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   
-  const [dataSchool, setDataSchool] = useState('')
+  const [schoolId, setSchoolId] = useState('');
+  const [teachers, setTeachers] = useState([]);
 
-  useEffect(() =>{
+  useEffect(() => {
     const token = localStorage.getItem('token');
 
     fetch('http://localhost:8080/school/data', {
@@ -32,19 +32,63 @@ function CadastroClasse() {
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-      setDataSchool(json)
+      setSchoolId(json.message._id);
     })
     .catch((error) => {
-      console.error("Erro ao buscar professor:", error);
+      console.error("Erro ao buscar escola:", error);
     });
-  }, [])
+  }, []);
 
-  
+  useEffect(() => {
+    if (schoolId) {
+      fetch(`http://localhost:8080/user/allteachers/${schoolId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((resposta) => resposta.json())
+      .then((json) => {
+        setTeachers(json); // Armazena os professores recebidos da API
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar professores:", error);
+      });
+    }
+  }, [schoolId]);
 
-  function CadastrarClasse(){
-    
-   
-}
+  function CadastrarClasse() {
+    if (schoolId) {
+      fetch('http://localhost:8080/class', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          grade: grade,
+          teacher: teacher.map(t => t._id), // Usa os IDs dos professores selecionados
+          IdSchool: schoolId,
+          year: year,
+          subject: subjectSelected,
+        })
+      })
+      .then((resposta) => resposta.json())
+      .then((json) => {
+        setSuccessMessage("Classe cadastrada com sucesso!");
+        // Limpar campos após o sucesso
+        setName('');
+        setGrade('');
+        setTeacher([]);
+        setYear('');
+        setSubjectSelected([]);
+      })
+      .catch((error) => {
+        setErrorMessage("Erro ao cadastrar a classe.");
+        console.error("Erro ao cadastrar a classe:", error);
+      });
+    }
+  }
 
   const subjectOptions = [
     'Língua Portuguesa', 
@@ -101,20 +145,31 @@ function CadastroClasse() {
             margin="normal"
           />
           <TextField
-            label="Série da saa"
+            label="Série da sala"
             name="grade"
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Professores da sala"
-            name="teacher"
-            value={teacher}
-            onChange={(e) => setTeacher(e.target.value)}
-            fullWidth
-            margin="normal"
+          <Autocomplete
+            multiple
+            options={teachers}
+            getOptionLabel={(option) => option.name} // Usa o nome do professor para exibir
+            onChange={(event, newValue) => setTeacher(newValue)} // Armazena o objeto do professor
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Professores da sala"
+                placeholder="Selecione"
+                fullWidth
+              />
+            )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip key={index} label={option.name} {...getTagProps({ index })} sx={{ fontWeight: 'bold' }} />
+              ))
+            }
           />
           <TextField
             label="Ano Letivo"
@@ -127,7 +182,7 @@ function CadastroClasse() {
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
             <Autocomplete
               multiple
-              sx={{marginBottom: 10}}
+              sx={{ marginBottom: 10 }}
               fullWidth
               options={subjectOptions}
               value={subjectSelected}
@@ -138,13 +193,11 @@ function CadastroClasse() {
                   label="Escolha as matérias disponíveis dessa sala"
                   placeholder="Selecione"
                   fullWidth
-
                 />
               )}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                  <Chip variant="outlined" label={option} {...getTagProps({ index })} sx={{fontWeight: 'bold'}} fullWidth
-                  />
+                  <Chip variant="outlined" label={option} {...getTagProps({ index })} sx={{ fontWeight: 'bold' }} />
                 ))
               }
             />
