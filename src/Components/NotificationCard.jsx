@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Modal, Box } from '@mui/material';
-import styles from '../Styles/NotificationCard.module.css'; 
+import styles from '../Styles/NotificationCard.module.css';
 
 const NotificationCard = ({ message, userId, userType }) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,6 @@ const NotificationCard = ({ message, userId, userType }) => {
       .then(response => response.json())
       .then(json => {
         if (json.response) {
-          // Exibir a resposta formatada no chat
           const formattedResponse = formatResponse(json.response);
           setChatLog(prevMessages => [...prevMessages, { text: formattedResponse, sender: 'assisthena' }]);
         }
@@ -37,7 +36,7 @@ const NotificationCard = ({ message, userId, userType }) => {
       })
       .finally(() => {
         setLoading(false);
-        handleOpen(); // Abrir o modal após a requisição
+        handleOpen();
       });
   };
 
@@ -56,21 +55,25 @@ const NotificationCard = ({ message, userId, userType }) => {
           <Typography variant="h6" component="div">
             Entenda melhor os dados com Assisthena IA!
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {message}
-          </Typography>
+
           <Button variant="contained" color="primary" onClick={handleClick} disabled={loading}>
             {loading ? 'Enviando...' : 'Saiba Mais'}
           </Button>
         </CardContent>
       </Card>
 
-      {/* Modal maior para o chat com 3 botões */}
       <Modal open={open} onClose={handleClose} aria-labelledby="chat-modal" aria-describedby="chat-modal-description">
         <Box className={styles.modalBox}>
-          <Typography id="chat-modal" variant="h6" component="h2">
-            Chat com Assisthena
+          <Box sx={{ display: "flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around" }}>          
+            <Typography id="chat-modal" variant="h6" component="h2">
+            Assisthena
           </Typography>
+            <Button variant="outlined" onClick={handleClose}>
+              Fechar
+            </Button>
+
+          </Box>
+
           <Box className={styles.chatLog}>
             {chatLog.map((log, index) => (
               <Typography key={index} variant="body1" dangerouslySetInnerHTML={{ __html: log.text }} />
@@ -87,9 +90,7 @@ const NotificationCard = ({ message, userId, userType }) => {
               Aplicar Athena
             </Button>
           </Box>
-          <Button variant="outlined" onClick={handleClose}>
-            Fechar
-          </Button>
+
         </Box>
       </Modal>
     </>
