@@ -125,8 +125,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     } else if (page === 'Home') {
                                         navigate('/');
                                     } else if (page === 'Cadastrar uma Tarefa') {
-                                        navigate('/cadastrotarefas');
-                                    } else if (page === 'Login') {
+                                        navigate('/cadastro/tarefas');
+                                    } else if (page === 'Login') { 
                                         navigate('/login');
                                     } else if (page === 'Cadastro') {
                                         navigate('/login');

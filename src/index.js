@@ -23,6 +23,7 @@ import NotificationCard from './Components/NotificationCard';
 
 import ProtectedRoute from './Components/ProtectedRoute'; 
 import AccessDenied from './Pages/AccessDenied';
+import HomeProfessor from './Pages/HomeProfessor';
 import AviseClass from './Pages/AviseClass'
 
 const router = createBrowserRouter([
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
   {
     path: "/notas/professor",
     element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
+  },
+  {
+    path: '/home/professor',
+    element: <HomeProfessor/>
   },
   {
     path: "/aviso/diretor",
