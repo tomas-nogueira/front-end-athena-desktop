@@ -62,7 +62,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/cadastro/escola",
-    element: <ProtectedRoute element={<CadastroEscola />} requiredRole="admin" />,
+    element: <CadastroEscola />,
   },
   {
     path: "/login/escola",

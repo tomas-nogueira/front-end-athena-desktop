@@ -33,8 +33,8 @@ const ChatForm = ({ onSendMessage, userId, userType }) => {
                 },
                 body: JSON.stringify({
                     message: message,
-                    userId: userId,
-                    userType: userType
+                    userId: "userId",
+                    userType: "professor"
                 })
             })
                 .then(response => response.json())
