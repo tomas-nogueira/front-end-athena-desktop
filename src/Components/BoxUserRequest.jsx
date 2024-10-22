@@ -26,7 +26,7 @@ const UserRequestBox = ({ name, rm, userId, IdSchool, removeUserFromList }) => {
   };
 
   const handleReject = () => {
-    fetch(`http://localhost:8080/user/reject`, {
+    fetch(`http://localhost:3030/user/reject`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
