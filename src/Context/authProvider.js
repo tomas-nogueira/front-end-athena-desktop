@@ -9,7 +9,7 @@ function AuthProvider({ children }) {
     const [roleContext, setRoleContext] = useState('')
 
     function Login(email, senha) {
-        fetch("http://localhost:8080/user/login", {
+        fetch("http://localhost:3030/user/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ function AuthProvider({ children }) {
     }
 
     function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
-        fetch("http://localhost:8080/user/create", {
+        fetch("http://localhost:3030/user/create", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

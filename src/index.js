@@ -9,7 +9,7 @@ import CadastroTarefas from './Pages/CadastroTarefas'
 import DashBoardDiretoria from './Pages/DashBoardDiretoria';
 import NotFound from './Pages/NotFound';
 import DashBoardAluno from './Pages/DashBoardAluno';
-import Tarefa from './Pages/Tarefa';
+import Tarefa from './Components/Tarefa';
 import AuthProvider from './Context/authProvider';
 import CadastroEscola from './Pages/CadastroEscola';
 import CadastroClasse from './Pages/CadastroClasse';
@@ -17,7 +17,6 @@ import DashBoardEscola from './Pages/DashBoardEscola';
 import LoginEscola from './Pages/LoginEscola'
 import PendingRequestsEscola from './Pages/PendingRequestsEscola';
 import TarefasAlunoAll from './Pages/TarefasAlunoAll'
-import Recados from './Pages/Recados';
 
 const router = createBrowserRouter([
   {
@@ -26,55 +25,67 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login/>,
+    element: <Login />,
   },
   {
     path: "/dashboard/tarefas/aluno",
-    element: <DashBoardTarefasAluno/>,
+    element: <ProtectedRoute element={<DashBoardTarefasAluno />} requiredRole="aluno" />,
   },
   {
     path: "/dashboard/tarefas/professor",
-    element: <DashBoardTarefasProfessor/>,
+    element: <ProtectedRoute element={<DashBoardTarefasProfessor />} requiredRole="professor" />,
   },
   {
     path: "/cadastro/tarefas",
-    element: <CadastroTarefas/>,
+    element: <ProtectedRoute element={<CadastroTarefas />} requiredRole="professor" />, 
   },
   {
     path: "/dashboard/diretoria",
-    element: <DashBoardDiretoria/>,
+    element: <DashBoardDiretoria />, 
   },
   {
     path: "/dashboard/aluno",
-    element: <DashBoardAluno/>,
+    element: <ProtectedRoute element={<DashBoardAluno />} requiredRole="aluno" />,
   },
   {
-    path: "/tarefa",
-    element: <Tarefa/>,
+    path: "/tarefa/:id",
+    element: <ProtectedRoute element={<Tarefa />} requiredRole="aluno" />, 
+  },
+  {
+    path: "/access-denied",
+    element: <AccessDenied />,
   },
   {
     path: "/cadastro/escola",
-    element: <CadastroEscola/>,
+    element: <ProtectedRoute element={<CadastroEscola />} requiredRole="admin" />,
   },
   {
     path: "/login/escola",
-    element: <LoginEscola/>,
+    element: <LoginEscola />,
   },
   {
     path: "/cadastro/classe",
-    element: <CadastroClasse/>,
+    element: <ProtectedRoute element={<CadastroClasse />} requiredRole="admin" />,
   },
   {
     path: "/dashboard/escola",
-    element: <DashBoardEscola/>,
+    element: <ProtectedRoute element={<DashBoardEscola />} requiredRole="admin" />,
   },
   {
     path: "/reqpendentes/escola",
-    element: <PendingRequestsEscola/>,
+    element: <ProtectedRoute element={<PendingRequestsEscola />} requiredRole="admin" />,
   },
   {
     path: "/dashboard/tarefas/aluno/all",
-    element: <TarefasAlunoAll/>,
+    element: <ProtectedRoute element={<TarefasAlunoAll />} requiredRole="aluno" />,
+  },
+  {
+    path: "/respostastarefa/:id",
+    element: <ProtectedRoute element={<RespostasTarefa />} requiredRole="aluno" />,
+  },
+  {
+    path: "/notas/professor",
+    element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
   },
   {
     path: "/dashboard/diretoria/recados",

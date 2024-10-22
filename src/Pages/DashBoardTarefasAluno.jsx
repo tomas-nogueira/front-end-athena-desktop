@@ -45,7 +45,7 @@ function DashBoardTarefas() {
       })
         .then((resposta) => resposta.json())
         .then((json) => {
-          setCompletedTasks(json.count); // Atualiza o estado com a quantidade de tarefas concluídas
+          setCompletedTasks(json.count);
         })
         .catch((error) => {
           console.log(error);

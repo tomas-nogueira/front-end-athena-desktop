@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Button, IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Autocomplete, Chip, Grid } from '@mui/material';
+import { Container, Typography, Box, Button, IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Autocomplete, Chip, Grid, Alert } from '@mui/material';
 import React, { useState, useRef, useEffect } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,6 +32,8 @@ function CadastroTarefas() {
   const [classes, setClasses] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]); // Estado para classes selecionadas
 
+  const [message, setMessage] = useState('')
+
   const handleTipoQuestaoChange = (event) => {
     setTipoQuestao(event.target.value);
     if (event.target.value === 'dissertativa') {
@@ -59,7 +61,7 @@ function CadastroTarefas() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +80,7 @@ function CadastroTarefas() {
 
   useEffect(() => {
     if(schoolProfessor){
-      fetch(`http://localhost:8080/class/${schoolProfessor}`, {
+      fetch(`http://localhost:3030/class/${schoolProfessor}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +98,7 @@ function CadastroTarefas() {
 
   function CadastrarTarefa() {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/tasks/create", {
+    fetch("http://localhost:3030/tasks/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -106,18 +108,19 @@ function CadastroTarefas() {
         subject: selectedSubject?.value,
         content: content,
         dueDate: selectedDate,
-        recipients: selectedClasses.map(cls => cls._id), // FUNCIONANDO PASSANDO ESTÁTICO
+        recipients: selectedClasses.map(cls => cls._id),
         attachment: 20,
         IdTeacher: IdProfessor,
         status: "em andamento",
-        IdClass: selectedClasses.map(cls => cls._id), // Múltiplas classes
-        school: schoolProfessor, // FUNCIONANDO PASSANDO ESTÁTICO
+        IdClass: selectedClasses.map(cls => cls._id),
+        school: schoolProfessor,
         alternatives: tipoQuestao === 'alternativa' ? alternativas : [], // Passando as alternativas somente se o tipoQuestao for alternativa, se não será passado um array vazio
       })
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-      console.log("Tarefa cadastrada com sucesso:", json);
+      console.log(json.message)
+      setMessage(json)
     })
     .catch((error) => {
       console.error("Erro ao cadastrar tarefa:", error);
@@ -163,6 +166,7 @@ function CadastroTarefas() {
             Cadastre uma tarefa
             <AssignmentIcon fontSize='large' />
           </Typography>
+          {message && (<Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px'}}>{message.message}</Alert>)}
           <Container maxWidth="xl">
             <Grid container spacing={2}>
             <Grid item xs={12}>

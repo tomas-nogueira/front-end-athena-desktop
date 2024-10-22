@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
+import Header from '../Components/Header';
+import { Grid, Container, Typography } from '@mui/material';
 
 function TarefasAlunoAll() {
   const [dataUser, setDataUser] = useState('');
@@ -8,7 +10,7 @@ function TarefasAlunoAll() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ function TarefasAlunoAll() {
 
   useEffect(() => {
     if (dataUser) {
-      fetch(`http://localhost:8080/tasks/getalluser/${dataUser}`, { // Ajustado para usar dataUser
+      fetch(`http://localhost:8080/task/getall/userbyclass/${dataUser}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -34,8 +36,7 @@ function TarefasAlunoAll() {
       })
         .then((resposta) => resposta.json())
         .then((json) => {
-          console.log(json);
-          setTasks(json.tasks); // Armazena as tarefas no estado
+          setTasks(json.tasks || []); // Armazena as tarefas no estado, garantindo que é um array
         })
         .catch((error) => {
           console.log(error);
@@ -45,17 +46,34 @@ function TarefasAlunoAll() {
 
   return (
     <>
-      {tasks.map(task => (
-        <CardTarefaMateria
-          key={task._id} // Chave única para cada tarefa
-          title={task.subject}
-          imageSrc="path/to/your/image.jpg" // Substitua pelo caminho correto
-          professorName="Nome do Professor" // Altere conforme necessário
-          professorImage="path/to/professor/image.jpg" // Substitua pelo caminho correto
-          subject={task.subject}
-          status={task.status}
-        />
-      ))}
+      <Header />
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          SUAS TAREFAS
+        </Typography>
+        <Grid container spacing={2} justifyContent="center">
+          {Array.isArray(tasks) && tasks.length > 0 ? ( // Verificação se tasks é um array e não está vazio
+            tasks.map(task => (
+              <Grid item xs={12} sm={6} md={4} key={task._id}> {/* Responsividade dos cards */}
+                <CardTarefaMateria
+                  id={task._id}
+                  title={task.subject}
+                  imageSrc="path/to/your/image.jpg" // Substitua pelo caminho correto
+                  professorName={task.teacherName} // Altere conforme necessário
+                  professorImage="path/to/professor/image.jpg" // Substitua pelo caminho correto
+                  subject={task.subject}
+                  status={task.status}
+                  button="Realizar tarefa"
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Typography variant="h6" align="center">Nenhuma tarefa encontrada.</Typography> {/* Mensagem caso não haja tarefas */}
+            </Grid>
+          )}
+        </Grid>
+      </Container>
     </>
   );
 }

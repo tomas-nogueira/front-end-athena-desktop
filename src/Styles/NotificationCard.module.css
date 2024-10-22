@@ -1,0 +1,38 @@
+.notificationCard {
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; /* Aumentado para um modal maior */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chatLog {
+    max-height: 400px; /* Aumentado para comportar mais texto */
+    overflow-y: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+  }
+  
+  .buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button {
+    margin-right: 10px;
+  }
+  

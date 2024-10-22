@@ -23,7 +23,7 @@ function CadastroClasse() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch('http://localhost:8080/school/data', {
+    fetch('http://localhost:3030/school/data', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ function CadastroClasse() {
 
   useEffect(() => {
     if (schoolId) {
-      fetch(`http://localhost:8080/user/allteachers/${schoolId}`, {
+      fetch(`http://localhost:3030/user/allteachers/${schoolId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function CadastroClasse() {
 
   function CadastrarClasse() {
     if (schoolId) {
-      fetch('http://localhost:8080/class', {
+      fetch('http://localhost:3030/class', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

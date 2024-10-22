@@ -4,27 +4,34 @@ import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
 import { TextField } from '@mui/material';
 import { Button, Typography, Radio } from "antd";
+import { useParams } from 'react-router-dom'; // Importar useParams
 
 function Tarefa() {
   const [selectedValue, setSelectedValue] = useState(null);
   const [dataTask, setDataTask] = useState(null);
   const [dissertativeResponse, setDissertativeResponse] = useState('');
+  const { id } = useParams(); // Pegar o id da URL
 
   useEffect(() => {
-    fetch(`http://localhost:8080/tasks/getId/66fd5b20435ebb537a61ada8`, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resposta) => resposta.json())
-      .then((json) => {
-        setDataTask(json);
+    if (id) { // Certifique-se de que o ID existe antes de fazer a chamada
+      const token = localStorage.getItem('token');
+      fetch(`http://localhost:8080/tasks/getId/${id}`, { // Use o id capturado
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        .then((resposta) => resposta.json())
+        .then((json) => {
+          console.log(json)
+          setDataTask(json);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [id]); // O useEffect será chamado sempre que o id mudar
 
   function EnviarResposta() {
     const token = localStorage.getItem('token');
@@ -36,7 +43,7 @@ function Tarefa() {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        idTask: '66fc35bc62dd997ca0eb86bc',
+        idTask: id, // Envie o id capturado
         responseContent: dissertativeResponse || null,
         selectedAlternative: selectedValue || null,
       })
@@ -75,7 +82,6 @@ function Tarefa() {
               <Box sx={{ backgroundColor: 'transparent', borderRadius: 2, padding: 3, boxSizing: 'border-box', alignItems: 'center', justifyContent: 'center' }}>
                 {dataTask && dataTask.alternatives && dataTask.alternatives.length === 0 ? (
                   <>
-                    <Typography variant="h6">Resposta Dissertativa:</Typography>
                     <TextField
                       label="Responder..."
                       variant="standard"
