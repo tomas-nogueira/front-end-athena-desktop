@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, Box, CircularProgress, Divider, IconButton } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography, Box, CircularProgress, Divider, Button } from '@mui/material';
 import moment from 'moment';
 import Header from './Header';
-import AttachFileIcon from '@mui/icons-material/AttachFile'; // Ícone para anexos
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 function RespostasTarefa() {
   const { id } = useParams();
@@ -74,6 +74,7 @@ function RespostasTarefa() {
                 }}
               >
                 <CardContent>
+                  {/* Nome do aluno */}
                   <Typography
                     variant="h6"
                     color="primary"
@@ -87,23 +88,14 @@ function RespostasTarefa() {
                   >
                     Aluno: {response.studentName || 'Nome não disponível'}
                   </Typography>
+
+                  {/* Data de envio */}
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     Data de Envio: {moment(response.submissionDate).format('DD/MM/YYYY HH:mm')}
                   </Typography>
-                  <Typography variant="body1" mt={2} sx={{ textAlign: 'justify' }}>
-                    Resposta: {response.responseContent || 'Nenhuma resposta fornecida.'}
-                  </Typography>
 
-                  {response.attachment.length > 0 && (
-                    <Box mt={2} display="flex" alignItems="center">
-                      <AttachFileIcon color="action" />
-                      <Typography variant="body2" color="textSecondary" ml={1}>
-                        Anexos: {response.attachment.length}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  <Box mt={2} textAlign="right">
+                  {/* Status de avaliação */}
+                  <Box mt={2}>
                     <Typography
                       variant="body2"
                       sx={{
@@ -113,6 +105,23 @@ function RespostasTarefa() {
                     >
                       {response.graded ? 'Avaliado' : 'Não Avaliado'}
                     </Typography>
+                  </Box>
+
+                  {/* Exibição do botão ou texto com base na avaliação */}
+                  <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+                    {response.graded ? (
+                      <Typography variant="body2" color="primary" fontWeight="bold">
+                        Ver Avaliação
+                      </Typography>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => console.log('Avaliar tarefa', response._id)}
+                      >
+                        Avaliar
+                      </Button>
+                    )}
                   </Box>
                 </CardContent>
               </Card>
