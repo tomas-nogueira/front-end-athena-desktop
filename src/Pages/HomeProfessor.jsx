@@ -10,6 +10,8 @@ import Down from '../Photos/doubledown.png'
 import WavingHandIcon from '@mui/icons-material/WavingHand';
 import CardsAcesso from '../Components/CardsAcesso';
 import Macbook from '../Photos/macbook.png'
+import Linha from '../Photos/linha.png'
+import Ipad from '../Photos/ipad.png'
 
 function HomeProfessor() {
   return (
@@ -70,12 +72,20 @@ function HomeProfessor() {
             </Grid>
           </Container>
 
-          <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem'}}>
+          <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem'}}>
           <CardsAcesso 
             texto1="Minha dashboard"
             texto2="Acesse sua dashboard e veja seus dados"
             rotaBotao="/dashboard/tarefas/professor"
             imagemSrc={Macbook}
+            imagemAlt="Imagem de exemplo"
+            />
+            <img src={Linha}/>
+            <CardsAcesso 
+            texto1="Cadastrar tarefas"
+            texto2="Envie e dê notas às tarefas dos alunos"
+            rotaBotao="/cadastro/tarefas"
+            imagemSrc={Ipad}
             imagemAlt="Imagem de exemplo"
             />
           </Container>
