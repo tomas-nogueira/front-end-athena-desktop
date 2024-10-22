@@ -12,16 +12,28 @@ function AviseClass() {
   const [aviso, setAviso] = useState('');
   const [data, setData] = useState('');
   const [dadosUser, setDadosUser] = useState({});
-
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
-  // Função para alternar o reconhecimento de voz
+  // Função para abrir o pop-up que mostra a transcrição ao vivo
+  const openTranscriptPopup = () => {
+    Swal.fire({
+      title: 'Gravando áudio...',
+      html: `<div id="transcript-content">${transcript}</div>`, // Conteúdo inicial
+      showConfirmButton: false,
+      width: '600px',
+      showCloseButton: true // Adiciona um botão de fechar
+    });
+  };
+
+  // Função para alternar o reconhecimento de voz e abrir o pop-up
   const toggleListening = () => {
     if (listening) {
       SpeechRecognition.stopListening(); // Interrompe a gravação
+      Swal.close(); // Fecha o pop-up
     } else {
       resetTranscript(); // Reseta o conteúdo anterior
       SpeechRecognition.startListening({ continuous: true, language: 'pt-BR' }); // Inicia a gravação
+      openTranscriptPopup(); // Abre o pop-up
     }
   };
 
@@ -47,6 +59,17 @@ function AviseClass() {
     { value: '2medio', label: '2º Médio' },
     { value: '3medio', label: '3º Médio' }
   ];
+
+  // Atualiza o texto no pop-up em tempo real, verificando se o elemento existe
+  useEffect(() => {
+    if (listening) {
+      const transcriptElement = document.getElementById('transcript-content');
+      if (transcriptElement) {
+        transcriptElement.innerText = transcript; // Atualiza o conteúdo do pop-up se o elemento existe
+      }
+    }
+    setAviso(transcript); // Atualiza o input também
+  }, [transcript, listening]);
 
   function EnviarMensagem() {
     if (!aviso || !selectedClass || !data) {
@@ -89,10 +112,6 @@ function AviseClass() {
       });
     }
   };
-
-  useEffect(() => {
-    setAviso(transcript); // Atualiza o aviso com a fala convertida em texto
-  }, [transcript]);
 
   return (
     <div>
