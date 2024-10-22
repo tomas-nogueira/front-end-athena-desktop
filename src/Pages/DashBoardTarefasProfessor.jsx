@@ -7,7 +7,7 @@ import Graph from '../Components/Graph'
 import Select from '../Components/Select'
 import HeaderDashboards from '../Components/HeaderDashboards'
 import NotificationCard from '../Components/NotificationCard'
-
+import ChatForm from "../Components/ChatForm"
 function DashBoardTarefas() {
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedClass2, setSelectedClass2] = useState('');
@@ -71,7 +71,6 @@ function DashBoardTarefas() {
             height: '600px'
           }}
         >
-
           <Typography
             sx={{
               textAlign: 'center',

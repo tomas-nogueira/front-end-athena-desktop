@@ -21,11 +21,12 @@ function AuthProvider({ children }) {
         })
         .then((resposta) => resposta.json())
         .then((json) => {
-            if (json.token) {
+            if (json.token && json.role) {
                 setLogado(true);
                 setRoleContext(json.role);
                 setMessageContext(json.message);
                 localStorage.setItem("token", json.token);
+                localStorage.setItem("role", json.role)
             }
         })
         .catch((error) => {
@@ -60,11 +61,12 @@ function AuthProvider({ children }) {
         })
         .then((resposta) => resposta.json())
         .then((json) => {
-            if (json.token) {
+            if (json.token && json.role) {
                 setLogado(true);
                 setRoleContext(json.role);
                 console.log(setMessageContext(json.message))
                 localStorage.setItem("token", json.token);
+                localStorage.setItem("role", json.role)
             }
         })
         .catch((error) => {
