@@ -1,15 +1,16 @@
 import { createContext, useState } from "react";
+import { message as antdMessage } from 'antd';
 
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
 
-    const [messageContext, setMessageContext] = useState('')
-    const [logado, setLogado] = useState(false)
-    const [roleContext, setRoleContext] = useState('')
+    const [messageContext, setMessageContext] = useState('');
+    const [logado, setLogado] = useState(false);
+    const [roleContext, setRoleContext] = useState('');
 
     function Login(email, senha) {
-        fetch("http://localhost:3030/user/login", {
+        fetch("http://localhost:8080/user/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -26,17 +27,18 @@ function AuthProvider({ children }) {
                 setRoleContext(json.role);
                 setMessageContext(json.message);
                 localStorage.setItem("token", json.token);
+                antdMessage.success('Login realizado com sucesso!');
+            } else {
+                setLogado(false);
+                setMessageContext('Erro ao fazer login, verifique suas credenciais.');
+                antdMessage.error('Erro ao fazer login, verifique suas credenciais.'); 
                 localStorage.setItem("role", json.role)
             }
-        })
-        .catch((error) => {
-            setLogado(false)
-            console.error('Erro ao tentar cadastrar:', error);
-        });
-    }
+        }
+        )}
 
     function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
-        fetch("http://localhost:3030/user/create", {
+        fetch("http://localhost:8080/user/create", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +58,6 @@ function AuthProvider({ children }) {
                     state: estado,
                     city: cidade
                 },
-
             })
         })
         .then((resposta) => resposta.json())
@@ -64,26 +65,28 @@ function AuthProvider({ children }) {
             if (json.token && json.role) {
                 setLogado(true);
                 setRoleContext(json.role);
-                console.log(setMessageContext(json.message))
+                setMessageContext(json.message);
                 localStorage.setItem("token", json.token);
+                antdMessage.success('Cadastro realizado com sucesso!');
                 localStorage.setItem("role", json.role)
             }
         })
         .catch((error) => {
-            console.log(error)
-            setLogado(false)
+            setLogado(false);
+            setMessageContext('Erro ao tentar realizar o cadastro.');
+            antdMessage.error('Erro ao tentar realizar o cadastro.');
             console.error('Erro ao tentar cadastrar:', error);
         });
     }
     
-    
-    function Logout(){
+    function Logout() {
         setLogado(false);
         localStorage.clear();
+        antdMessage.info('Você foi deslogado.'); 
     }
 
     return (
-        <AuthContext.Provider value={{ Login, Cadastrar, messageContext: messageContext, logado: logado, roleContext: roleContext, Logout }}>
+        <AuthContext.Provider value={{ Login, Cadastrar, messageContext, logado, roleContext, Logout }}>
             {children}
         </AuthContext.Provider>
     );

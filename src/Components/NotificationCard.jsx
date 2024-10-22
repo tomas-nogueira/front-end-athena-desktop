@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Modal, Box } from '@mui/material';
 import styles from '../Styles/NotificationCard.module.css';
 
-const NotificationCard = ({ message, userId, userType }) => {
+const NotificationCard = ({ year, userId, userType }) => {
   const [open, setOpen] = useState(false);
   const [chatLog, setChatLog] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isInsights, setIsInsights] = useState(false); 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleClick = async () => {
     setLoading(true);
+    setChatLog([]); 
+
+    const dynamicMessage = `O professor está pedindo mais detalhes e feedbacks e insights sobre o ${year}`;
 
     fetch("http://localhost:3030/teste/assisthena/message", {
       method: "POST",
@@ -19,7 +23,7 @@ const NotificationCard = ({ message, userId, userType }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: message,
+        message: dynamicMessage,
         userId: "67102922db9e7ba8075983e9",
         userType: "default",
       }),
@@ -40,12 +44,42 @@ const NotificationCard = ({ message, userId, userType }) => {
       });
   };
 
-  // Função para formatar o texto da resposta do backend
+  const getInsights = async () => {
+    setLoading(true);
+    setChatLog([]); 
+    setIsInsights(true);
+
+    fetch("http://localhost:3030/teste/assisthena/insights", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        context: "7B",
+        userType: "default",
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json.insight) {
+          const formattedResponse = formatResponse(json.insight);
+          setChatLog(prevMessages => [...prevMessages, { text: formattedResponse, sender: 'assisthena' }]);
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao enviar mensagem:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+        handleOpen();
+      });
+  };
+
   const formatResponse = (responseText) => {
     return responseText
-      .replace(/\n\n/g, "\n\n") // Duas quebras de linha para parágrafos
-      .replace(/### (.+)\n/g, "<strong>$1</strong>\n") // Títulos em negrito
-      .replace(/- \*\*(.+?)\*\*/g, "<li><strong>$1</strong></li>"); // Bullet points com negrito
+      .replace(/\n\n/g, "\n\n")
+      .replace(/### (.+)\n/g, "<strong>$1</strong>\n")
+      .replace(/- \*\*(.+?)\*\*/g, "<li><strong>$1</strong></li>");
   };
 
   return (
@@ -66,12 +100,11 @@ const NotificationCard = ({ message, userId, userType }) => {
         <Box className={styles.modalBox}>
           <Box sx={{ display: "flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around" }}>          
             <Typography id="chat-modal" variant="h6" component="h2">
-            Assisthena
-          </Typography>
+              {isInsights ? "Insight Especial Athena" : "Assisthena"}
+            </Typography>
             <Button variant="outlined" onClick={handleClose}>
               Fechar
             </Button>
-
           </Box>
 
           <Box className={styles.chatLog}>
@@ -80,17 +113,24 @@ const NotificationCard = ({ message, userId, userType }) => {
             ))}
           </Box>
           <Box className={styles.buttonsContainer}>
-            <Button variant="outlined" color="primary" onClick={() => handleClick('Entenda Melhor')}>
-              Entenda Melhor
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={() => handleClick('Insights')}>
-              Insights
-            </Button>
+            {isInsights ? (
+              <Button variant="outlined" onClick={() => { setIsInsights(false); setChatLog([]); handleClick(); }}>
+                Voltar ao Feedback Detalhado
+              </Button>
+            ) : (
+              <>
+                <Button variant="outlined" color="primary" onClick={() => { handleClick(); setIsInsights(false); }}>
+                  Entenda Melhor
+                </Button>
+                <Button variant="outlined" color="secondary" onClick={() => { getInsights(); }}>
+                  Insights
+                </Button>
+              </>
+            )}
             <Button variant="outlined" color="success" onClick={() => handleClick('Aplicar Athena')}>
               Aplicar Athena
             </Button>
           </Box>
-
         </Box>
       </Modal>
     </>
