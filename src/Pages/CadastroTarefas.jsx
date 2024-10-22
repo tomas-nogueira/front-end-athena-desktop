@@ -4,6 +4,10 @@ import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
 import Header from '../Components/Header';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const subjectOptions = [
   { value: 'Língua Portuguesa', label: 'Língua Portuguesa' },
@@ -96,6 +100,17 @@ function CadastroTarefas() {
     }
   }, [schoolProfessor]);
 
+  function resetFields() {
+    setSelectedSubject(null);
+    setContent('');
+    setSelectedRecipients([]);
+    setSelectedDate('');
+    setSelectedClasses([]);
+    setTipoQuestao('');
+    setAlternativas([{ text: '', isCorrect: false }]);
+    setSelectedFile(null);
+  }
+  
   function CadastrarTarefa() {
     const token = localStorage.getItem('token');
     fetch("http://localhost:3030/tasks/create", {
@@ -114,18 +129,23 @@ function CadastroTarefas() {
         status: "em andamento",
         IdClass: selectedClasses.map(cls => cls._id),
         school: schoolProfessor,
-        alternatives: tipoQuestao === 'alternativa' ? alternativas : [], // Passando as alternativas somente se o tipoQuestao for alternativa, se não será passado um array vazio
+        alternatives: tipoQuestao === 'alternativa' ? alternativas : [],
       })
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-      console.log(json.message)
-      setMessage(json)
+      setMessage(json);
+      resetFields(); // Limpa os campos após o sucesso do cadastro
     })
     .catch((error) => {
       console.error("Erro ao cadastrar tarefa:", error);
     });
   }
+  function excluirAlternativa(index){
+    const novasAlternativas = alternativas.filter((_, i) => i !== index);
+    setAlternativas(novasAlternativas);
+  };
+  
 
   return (
     <>
@@ -162,9 +182,7 @@ function CadastroTarefas() {
             alignItems: 'center',
             display: 'flex'
           }}>
-            <AssignmentIcon fontSize='large' />
-            Cadastre uma tarefa
-            <AssignmentIcon fontSize='large' />
+            Cadastrar uma tarefa
           </Typography>
           {message && (<Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px'}}>{message.message}</Alert>)}
           <Container maxWidth="xl">
@@ -236,38 +254,44 @@ function CadastroTarefas() {
                 </RadioGroup>
               </Grid>
               {tipoQuestao === 'alternativa' && (
-                <Grid item xs={12}>
-                  <h3>Alternativas:</h3>
-                  {alternativas.map((alternativa, index) => (
-                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <TextField
-                        label={`Alternativa ${index + 1}`}
-                        value={alternativa.text}
-                        onChange={(e) => handleAlternativaChange(index, e.target.value)}
-                        fullWidth
-                        margin="normal"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Radio
-                            checked={alternativa.isCorrect}
-                            onChange={() => handleCorrectChange(index)}
-                          />
-                        }
-                        label="Certa"
-                      />
-                    </Box>
-                  ))}
-                  <Button onClick={adicionarAlternativa} variant="contained" color="primary">
-                    Adicionar Alternativa
-                  </Button>
-                </Grid>
-              )}
               <Grid item xs={12}>
+                <Typography sx={{ textAlign: 'center', fontWeight: 'bold', fontSize: 20 }}>ALTERNATIVAS:</Typography>
+                {alternativas.map((alternativa, index) => (
+                <Box key={index} sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: '1rem' }}>
+                  <TextField
+                    label={`Alternativa ${index + 1}`}
+                    value={alternativa.text}
+                    onChange={(e) => handleAlternativaChange(index, e.target.value)}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton onClick={() => handleCorrectChange(index)} color={alternativa.isCorrect ? 'success' : 'default'}>
+                      <CheckCircleIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleCorrectChange(index)} color={!alternativa.isCorrect ? 'error' : 'default'}>
+                      <CancelIcon />
+                    </IconButton>
+                  </Box>
+                  <Button 
+                    variant="outlined" 
+                    color="error" 
+                    onClick={() => excluirAlternativa(index)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </Box>
+              ))}
+                <Button onClick={adicionarAlternativa} variant='outlined' color="primary" startIcon={<AddIcon />} />
+              </Grid>
+            )}
+              <Grid item xs={12}>
+              <Grid container justifyContent="center">
                 <Button variant="contained" color="primary" onClick={CadastrarTarefa}>
                   Cadastrar Tarefa
                 </Button>
               </Grid>
+            </Grid>
             </Grid>
           </Container>
         </Container>
