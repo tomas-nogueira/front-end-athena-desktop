@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { message as antdMessage } from 'antd'; // Importe a mensagem do Ant Design
+import { message as antdMessage } from 'antd';
 
 export const AuthContext = createContext();
 
@@ -33,6 +33,9 @@ function AuthProvider({ children }) {
                 setMessageContext('Erro ao fazer login, verifique suas credenciais.');
                 antdMessage.error('Erro ao fazer login, verifique suas credenciais.'); 
                 localStorage.setItem("role", json.role)
+            }
+        }
+        )}
 
     function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
         fetch("http://localhost:8080/user/create", {

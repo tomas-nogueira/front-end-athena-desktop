@@ -9,11 +9,11 @@ import { Typography } from 'antd';
 
 function DashBoardEscola() {
   const [schoolData, setSchoolData] = useState(null);
-  const [loading, setLoading] = useState(true); // Estado para controlar o carregamento
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:3030/school/data", {
+    fetch("http://localhost:8080/school/data", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -23,22 +23,21 @@ function DashBoardEscola() {
       .then((resposta) => resposta.json())
       .then((json) => {
         setSchoolData(json);
-        setLoading(false); // Define o carregamento como false após a conclusão
+        setLoading(false); 
       })
       .catch((error) => {
         console.error("Erro ao buscar dados da escola:", error);
-        setLoading(false); // Garante que o carregamento seja definido como false em caso de erro
+        setLoading(false);
       });
 
   }, []);
 
   if (loading) {
-    return <div>Carregando...</div>; // Renderiza o texto de carregamento
+    return <div>Carregando...</div>; 
   }
 
-  // Verifica se schoolData está disponível
   if (!schoolData) {
-    return <div>Erro ao carregar dados da escola.</div>; // Mensagem de erro se os dados não forem carregados
+    return <div>Erro ao carregar dados da escola.</div>;
   }
 
   const { Title } = Typography;

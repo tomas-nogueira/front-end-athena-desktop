@@ -110,9 +110,8 @@ function Login() {
     }
 }, [logado, navigate, roleContext]);
 
-    //Pegando as escolas já cadastradas
     useEffect(() =>{
-        fetch("http://localhost:3030/school", {
+        fetch("http://localhost:8080/school", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -130,7 +129,7 @@ function Login() {
     }, [])
 
     useEffect(() =>{
-        fetch(`http://localhost:3030/class/${school}`, {
+        fetch(`http://localhost:8080/class/${school}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
