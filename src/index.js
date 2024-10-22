@@ -17,6 +17,11 @@ import DashBoardEscola from './Pages/DashBoardEscola';
 import LoginEscola from './Pages/LoginEscola'
 import PendingRequestsEscola from './Pages/PendingRequestsEscola';
 import TarefasAlunoAll from './Pages/TarefasAlunoAll'
+import NotasProfessor from './Components/NotasProfessor';
+import RespostasTarefa from './Components/RespostasTarefa';
+
+import ProtectedRoute from './Components/ProtectedRoute'; 
+import AccessDenied from './Pages/AccessDenied';
 
 const router = createBrowserRouter([
   {
@@ -86,10 +91,6 @@ const router = createBrowserRouter([
   {
     path: "/notas/professor",
     element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
-  },
-  {
-    path: "/dashboard/diretoria/recados",
-    element: <Recados/>,
   },
   {
     path: "*",
