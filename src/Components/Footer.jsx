@@ -13,11 +13,11 @@ function Footer(){
                 <p className={Style.sublogo}>Educação Inovadora</p>
 
                 <div className={Style.footersocialmedia}>
-                    <a href="" target='_blank' className={`${Style.footerlink} ${Style.instagram}`}>
+                    <a href="" className={`${Style.footerlink} ${Style.instagram}`}>
                         <i class="fa-brands fa-instagram"></i>
                     </a>
 
-                    <a href="" target='_blank' className={`${Style.footerlink} ${Style.facebook}`}>
+                    <a href="" className={`${Style.footerlink} ${Style.facebook}`}>
                         <i class="fa-brands fa-facebook-f"></i>
                     </a>
 
