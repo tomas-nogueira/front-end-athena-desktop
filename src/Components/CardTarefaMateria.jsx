@@ -38,10 +38,13 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
 
   function RedirecionarTarefa() {
     if(button == "Realizar tarefa"){
-      navigate(`/tarefa/${id}`); // Altere `/tarefa` para o caminho da sua rota de tarefa
+      navigate(`/tarefa/${id}`);
     }
     if(button == "Ver respostas"){
-      navigate(`/respostastarefa/${id}`); // Altere `/tarefa` para o caminho da sua rota de tarefa
+      navigate(`/respostastarefa/${id}`);
+    }
+    if(button == "Voltar"){
+      navigate(`/dashboard/tarefas/aluno/all`);
     }
   }
 
@@ -69,14 +72,14 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
     >
       <div style={{ marginBottom: 15 }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
-          <Avatar src={professorImage} style={{ marginRight: 10 }} />
+          <Avatar src={professorImage} style={{ marginRight: 10, backgroundColor: 'transparent' }} size={50}/>
           <div>
             <Title level={4} style={{ margin: 0 }}>{professorName}</Title>
           </div>
         </div>
         <div style={{ marginBottom: 10, textAlign: 'center' }}>
-          <Text strong style={{ fontSize: '16px' }}>Assunto:</Text>
-          <Title level={5} style={{ margin: '5px 0', fontWeight: 'bold' }}>{subject}</Title>
+          <Text strong style={{ fontSize: 20 }}>Assunto:</Text>
+          <Title level={5} style={{ margin: '5px 0', fontWeight: 'bold', fontSize: 22 }}>{subject}</Title>
         </div>
         <div style={{ marginBottom: 10, textAlign: 'center' }}>
           <Text strong style={{ display: 'block', fontSize: '16px' }}>Status:</Text>

@@ -73,7 +73,7 @@ const CadastroEscola = () => {
     }
   
     // Se tudo estiver correto, faz a requisição
-    fetch("http://localhost:3030/school/create", {
+    fetch("http://localhost:8080/school/create", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

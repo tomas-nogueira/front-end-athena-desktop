@@ -10,6 +10,7 @@ import Graph from '../Components/Graph';
 
 function DashBoardTarefas() {
   const [dataUser, setDataUser] = useState('');
+
   const [totalTasks, setTotalTasks] = useState(0);
   const [completedTasks, setCompletedTasks] = useState(0);
   const [ongoingTasks, setOngoingTasks] = useState(0);
@@ -18,7 +19,7 @@ function DashBoardTarefas() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://localhost:8080/user", {
+    fetch("http://localhost:3030/user", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +28,7 @@ function DashBoardTarefas() {
     })
       .then((resposta) => resposta.json())
       .then((json) => {
-        setDataUser(json.message);
+        setDataUser(json.message._id);
       })
       .catch((error) => {
         console.log(error);
@@ -36,8 +37,7 @@ function DashBoardTarefas() {
 
   useEffect(() => {
     if (dataUser) {
-      // Requisição para ver as tarefas completadas
-      fetch(`http://localhost:8080/tasks/completed/${dataUser._id}`, {
+      fetch(`http://localhost:3030/task/getall/userbyclass/${dataUser}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json'
@@ -45,55 +45,53 @@ function DashBoardTarefas() {
       })
         .then((resposta) => resposta.json())
         .then((json) => {
-          setCompletedTasks(json.count);
+          setTotalTasks(json.count);
         })
         .catch((error) => {
           console.log(error);
         });
+        fetch(`http://localhost:3030/overdue/${dataUser}`, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+          .then((resposta) => resposta.json())
+          .then((json) => {
+            setOverdueTasks(json.count);
+            })
+          .catch((error) => {
+            console.log(error);
+          });
 
-      // Requisição para ver as tarefas em 48 horas
-      fetch(`http://localhost:8080/tasks/dueSoon/${dataUser._id}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-          setOngoingTasks(json.count); // Atualiza o estado com a quantidade de tarefas em andamento
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          fetch(`http://localhost:3030/dueSoon/${dataUser}`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+            .then((resposta) => resposta.json())
+            .then((json) => {
+              setOngoingTasks(json.count);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
 
-      // Requisição para ver as tarefas atrasadas
-      fetch(`http://localhost:8080/tasks/overdue/${dataUser._id}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-          setOverdueTasks(json.count); // Atualiza o estado com a quantidade de tarefas atrasadas
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      // Requisição para ver todas as tarefas
-      fetch(`http://localhost:8080/tasks/getalluser/${dataUser._id}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-          setTotalTasks(json.count); // Atualiza o estado com a quantidade total de tarefas
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            fetch(`http://localhost:3030/completed/${dataUser}`, {
+              method: "GET",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+              .then((resposta) => resposta.json())
+              .then((json) => {
+                console.log(json)
+                setCompletedTasks(json.count);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
     }
   }, [dataUser]);
 
@@ -107,14 +105,14 @@ function DashBoardTarefas() {
         <Grid item xs={12} sm={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Typography sx={{ color: '#1754F0', fontWeight: 'bold', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', fontSize: 30 }} variant="h6">
             SEÇÃO DE TAREFAS
-            <Typography variant="body2" sx={{ color: '#676767', fontSize: 25 }}>SESI 337</Typography>
+            <Typography component="span" variant="body2" sx={{ color: '#676767', fontSize: 25 }}>SESI 337</Typography>
           </Typography>
         </Grid>
         <Grid item xs={12} sm={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Typography variant="body1" sx={{ fontSize: 30, display: 'flex', flexDirection: 'row' }}>
-            Olá, <Typography variant="body1" sx={{ fontSize: 30, color: '#1754F0', fontWeight: 'bold' }}>Aluno</Typography>
+            Olá, <Typography component="span" variant="body1" sx={{ fontSize: 30, color: '#1754F0', fontWeight: 'bold' }}>Aluno</Typography>
           </Typography>
-          <Typography variant="body2" sx={{ color: '#676767', fontSize: 25 }}>Aluno</Typography>
+          <Typography component="span" variant="body2" sx={{ color: '#676767', fontSize: 25 }}>Aluno</Typography>
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ marginTop: 5, justifyContent: 'center', marginBottom: 10, display: 'flex', flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
