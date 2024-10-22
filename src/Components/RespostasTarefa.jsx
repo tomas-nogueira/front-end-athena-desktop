@@ -11,7 +11,7 @@ function RespostasTarefa() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/tasks/responsesbytask/${id}`, {
+    fetch(`http://localhost:3030/tasks/responsesbytask/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ function Tarefa() {
   useEffect(() => {
     if (id) { // Certifique-se de que o ID existe antes de fazer a chamada
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/tasks/getId/${id}`, { // Use o id capturado
+      fetch(`http://localhost:3030/tasks/getId/${id}`, { // Use o id capturado
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ function Tarefa() {
   function EnviarResposta() {
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8080/tasks/response`, {
+    fetch(`http://localhost:3030/tasks/response`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
