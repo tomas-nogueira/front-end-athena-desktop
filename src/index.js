@@ -34,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/tarefas/aluno",
-    element: <ProtectedRoute element={<DashBoardTarefasAluno />} requiredRole="aluno" />,
+    element: <ProtectedRoute element={<DashBoardTarefasAluno />} requiredRole="estudante" />,
   },
   {
     path: "/dashboard/tarefas/professor",
@@ -50,11 +50,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/aluno",
-    element: <ProtectedRoute element={<DashBoardAluno />} requiredRole="aluno" />,
+    element: <ProtectedRoute element={<DashBoardAluno />} requiredRole="estudante" />,
   },
   {
     path: "/tarefa/:id",
-    element: <ProtectedRoute element={<Tarefa />} requiredRole="aluno" />, 
+    element: <ProtectedRoute element={<Tarefa />} requiredRole="estudante" />, 
   },
   {
     path: "/access-denied",
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/cadastro/escola",
-    element: <ProtectedRoute element={<CadastroEscola />} requiredRole="admin" />,
+    element: <CadastroEscola />,
   },
   {
     path: "/login/escola",
@@ -70,23 +70,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/cadastro/classe",
-    element: <ProtectedRoute element={<CadastroClasse />} requiredRole="admin" />,
+    element: <CadastroClasse />,
   },
   {
     path: "/dashboard/escola",
-    element: <ProtectedRoute element={<DashBoardEscola />} requiredRole="admin" />,
+    element: <DashBoardEscola /> ,
   },
   {
     path: "/reqpendentes/escola",
-    element: <ProtectedRoute element={<PendingRequestsEscola />} requiredRole="admin" />,
+    element: <PendingRequestsEscola />,
   },
   {
     path: "/dashboard/tarefas/aluno/all",
-    element: <ProtectedRoute element={<TarefasAlunoAll />} requiredRole="aluno" />,
+    element: <ProtectedRoute element={<TarefasAlunoAll />} requiredRole="estudante" />,
   },
   {
     path: "/respostastarefa/:id",
-    element: <ProtectedRoute element={<RespostasTarefa />} requiredRole="aluno" />,
+    element: <ProtectedRoute element={<RespostasTarefa />} requiredRole="estudante" />,
   },
   {
     path: "/notas/professor",

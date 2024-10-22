@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
         })
         .then((resposta) => resposta.json())
         .then((json) => {
-            if (json.token) {
+            if (json.token && json.role) {
                 setLogado(true);
                 setRoleContext(json.role);
                 setMessageContext(json.message);
@@ -32,15 +32,7 @@ function AuthProvider({ children }) {
                 setLogado(false);
                 setMessageContext('Erro ao fazer login, verifique suas credenciais.');
                 antdMessage.error('Erro ao fazer login, verifique suas credenciais.'); 
-            }
-        })
-        .catch((error) => {
-            setLogado(false);
-            setMessageContext('Erro ao tentar fazer login. Tente novamente mais tarde.');
-            antdMessage.error('Erro ao tentar fazer login. Tente novamente mais tarde.'); 
-            console.error('Erro ao tentar logar:', error);
-        });
-    }
+                localStorage.setItem("role", json.role)
 
     function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
         fetch("http://localhost:8080/user/create", {
@@ -67,18 +59,19 @@ function AuthProvider({ children }) {
         })
         .then((resposta) => resposta.json())
         .then((json) => {
-            if (json.token) {
+            if (json.token && json.role) {
                 setLogado(true);
                 setRoleContext(json.role);
                 setMessageContext(json.message);
                 localStorage.setItem("token", json.token);
-                antdMessage.success('Cadastro realizado com sucesso!'); // Mensagem de sucesso
+                antdMessage.success('Cadastro realizado com sucesso!');
+                localStorage.setItem("role", json.role)
             }
         })
         .catch((error) => {
             setLogado(false);
             setMessageContext('Erro ao tentar realizar o cadastro.');
-            antdMessage.error('Erro ao tentar realizar o cadastro.'); // Mensagem de erro
+            antdMessage.error('Erro ao tentar realizar o cadastro.');
             console.error('Erro ao tentar cadastrar:', error);
         });
     }
@@ -86,7 +79,7 @@ function AuthProvider({ children }) {
     function Logout() {
         setLogado(false);
         localStorage.clear();
-        antdMessage.info('Você foi deslogado.'); // Mensagem de logout
+        antdMessage.info('Você foi deslogado.'); 
     }
 
     return (
