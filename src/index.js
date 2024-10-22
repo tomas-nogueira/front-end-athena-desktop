@@ -19,10 +19,12 @@ import PendingRequestsEscola from './Pages/PendingRequestsEscola';
 import TarefasAlunoAll from './Pages/TarefasAlunoAll'
 import NotasProfessor from './Components/NotasProfessor';
 import RespostasTarefa from './Components/RespostasTarefa';
+import NotificationCard from './Components/NotificationCard';
 
 import ProtectedRoute from './Components/ProtectedRoute'; 
 import AccessDenied from './Pages/AccessDenied';
 import HomeProfessor from './Pages/HomeProfessor';
+import AviseClass from './Pages/AviseClass'
 
 const router = createBrowserRouter([
   {
@@ -96,6 +98,10 @@ const router = createBrowserRouter([
   {
     path: '/home/professor',
     element: <HomeProfessor/>
+  },
+  {
+    path: "/aviso/diretor",
+    element: <AviseClass/>
   },
   {
     path: "*",

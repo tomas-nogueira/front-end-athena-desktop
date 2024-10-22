@@ -1,0 +1,71 @@
+.recado{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin-top: 70px;
+}
+
+.recado .but{
+    padding: 120px;
+    border-radius: 360px;
+    width: 15%;
+    margin: 50px auto;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.recado .but:hover{
+    padding: 120px;
+    border-radius: 360px;
+    width: 16%;
+    background: #315cfd;
+    color: white;
+}
+
+.recado h3{
+    font-size: 35px;
+    text-transform: uppercase;
+}
+
+.icone{
+    font-size: 80px;
+    margin: 0 auto;
+}
+
+.dataInput{
+    padding: 20px;
+    width: 28%;
+    border-radius: 5px;
+    margin: 0px auto;
+    background-color: transparent;
+}
+
+.enviar{
+    width: 25%;
+    padding: 30px;
+    border-radius: 1px black;
+    align-items: center;
+    justify-content: center;
+    margin: 40px auto;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 20px;
+}
+
+.enviar:hover{
+    width: 28%;
+    padding: 30px;
+    border-radius: 1px black;
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+    margin: 40px auto;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    translate: translateY(0);
+    color: white;
+}
+  

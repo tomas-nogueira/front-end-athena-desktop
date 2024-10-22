@@ -1,21 +1,24 @@
-import { Container, Box, Grid } from '@mui/material';
+import { Container, Box, Grid, Snackbar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
 import { TextField } from '@mui/material';
 import { Button, Typography, Radio } from "antd";
-import { useParams } from 'react-router-dom'; // Importar useParams
+import { useParams, useNavigate } from 'react-router-dom'; // Importar useParams e useNavigate
 
 function Tarefa() {
   const [selectedValue, setSelectedValue] = useState(null);
   const [dataTask, setDataTask] = useState(null);
   const [dissertativeResponse, setDissertativeResponse] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Estado para o Snackbar
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const { id } = useParams(); // Pegar o id da URL
+  const navigate = useNavigate(); // Hook para navegação
 
   useEffect(() => {
-    if (id) { // Certifique-se de que o ID existe antes de fazer a chamada
+    if (id) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:8080/tasks/getId/${id}`, { // Use o id capturado
+      fetch(`http://localhost:3030/tasks/getId/${id}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -24,8 +27,8 @@ function Tarefa() {
       })
         .then((resposta) => resposta.json())
         .then((json) => {
-          console.log(json)
           setDataTask(json);
+          console.log(json);
         })
         .catch((error) => {
           console.log(error);
@@ -36,7 +39,7 @@ function Tarefa() {
   function EnviarResposta() {
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8080/tasks/response`, {
+    fetch(`http://localhost:3030/tasks/response`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -51,11 +54,19 @@ function Tarefa() {
       .then((resposta) => resposta.json())
       .then((data) => {
         console.log(data);
+        setSnackbarMessage(data.message); 
+        setSnackbarOpen(true);
+        setTimeout(() => {
+          navigate('/dashboard/tarefas/aluno');
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
       });
   }
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <>
@@ -65,10 +76,9 @@ function Tarefa() {
           <Grid item xl={3} sm={6}>
             <CardTarefaMateria 
               title={dataTask ? `Tarefa de ${dataTask.subject}` : 'Carregando...'}
-              professorName="Professora Rebeca"
-              professorImage="https://static.vecteezy.com/ti/fotos-gratis/t2/28678649-femea-professor-treinamento-gerar-ai-foto.jpg"
               subject={dataTask ? dataTask.subject : 'Carregando...'}
               status={dataTask ? dataTask.status : 'Carregando...'}
+              button='Voltar'
             />
           </Grid>
           <Grid item xl={8} sm={6} sx={{ backgroundColor: '#FFFFFF', borderRadius: '10px', padding: 2, boxShadow: 2, minHeight: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -76,32 +86,33 @@ function Tarefa() {
               <Typography style={{ color: 'rgba(103, 98, 98, 1)', fontSize: 30, marginBottom: 1 }}>
                 Banca: ATHENA
               </Typography>
-              <Typography style={{ fontSize: 20, fontWeight: 'bold', lineHeight: 1.5, color: 'black' }}>
+              <Typography style={{ fontSize: 25, fontWeight: 'bold', lineHeight: 1.5, color: 'black', textAlign: 'center' }}>
                 {dataTask ? dataTask.content : 'Carregando...'}
               </Typography>
-              <Box sx={{ backgroundColor: 'transparent', borderRadius: 2, padding: 3, boxSizing: 'border-box', alignItems: 'center', justifyContent: 'center' }}>
+              <Box sx={{ backgroundColor: 'transparent', borderRadius: 2, padding: 3, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', height: '100%' }}>
                 {dataTask && dataTask.alternatives && dataTask.alternatives.length === 0 ? (
-                  <>
-                    <TextField
-                      label="Responder..."
-                      variant="standard"
-                      sx={{ width: '100%' }}
-                      required
-                      value={dissertativeResponse}
-                      onChange={(e) => setDissertativeResponse(e.target.value)}
-                    />
-                  </>
+                  <TextField
+                    label="Responder..."
+                    variant="standard"
+                    sx={{ width: '100%' }}
+                    required
+                    value={dissertativeResponse}
+                    onChange={(e) => setDissertativeResponse(e.target.value)}
+                  />
                 ) : (
                   <>
-                    <Typography variant="h6">Selecione uma alternativa:</Typography>
+                    <Typography variant="h5" style={{ fontWeight: 'bold' }}>Selecione uma alternativa:</Typography>
                     {dataTask && dataTask.alternatives ? (
-                      <Radio.Group onChange={(e) => setSelectedValue(e.target.value)} value={selectedValue} style={{ display: 'flex', marginTop: 1, alignContent: 'center' }}>
-                        {dataTask.alternatives.map((alternative, index) => (
-                          <Radio key={index} value={alternative.text} style={{ display: 'block', marginBottom: 10, fontSize: 16 }}>
-                            {alternative.text}
-                          </Radio>
-                        ))}
-                      </Radio.Group>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 1 }}>
+                        <Radio.Group onChange={(e) => setSelectedValue(e.target.value)} value={selectedValue} 
+                        style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                          {dataTask.alternatives.map((alternative, index) => (
+                            <Radio key={index} value={alternative.text} style={{ marginBottom: 15, fontSize: 16, border: '1px solid black', padding: 20, borderRadius: 10 }}>
+                              {alternative.text}
+                            </Radio>
+                          ))}
+                        </Radio.Group>
+                      </Box>
                     ) : (
                       <Typography>Carregando alternativas...</Typography>
                     )}
@@ -113,6 +124,18 @@ function Tarefa() {
           </Grid>
         </Grid>
       </Container>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000} // Duração do Snackbar
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Posição centralizada no topo
+        action={
+          <Button color="inherit" onClick={handleCloseSnackbar}>
+            Fechar
+          </Button>
+        }
+      />
     </>
   );
 }
