@@ -22,6 +22,7 @@ import RespostasTarefa from './Components/RespostasTarefa';
 
 import ProtectedRoute from './Components/ProtectedRoute'; 
 import AccessDenied from './Pages/AccessDenied';
+import HomeProfessor from './Pages/HomeProfessor';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
   {
     path: "/notas/professor",
     element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
+  },
+  {
+    path: '/home/professor',
+    element: <HomeProfessor/>
   },
   {
     path: "*",
