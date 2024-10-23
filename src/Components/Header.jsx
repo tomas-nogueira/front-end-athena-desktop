@@ -13,13 +13,18 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from '../Photos/logo_athena 3.png';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react'; // Import useContext
+import { AuthContext } from '../Context/authProvider'; // Importe o contexto
 
 function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const pages = [textBar1, textBar2, textBar3, textBar4]; // Itens da Navbar
-    const settings = ['Sua Conta', 'Dashboard', 'Tarefas', 'Logout']; // Itens que aparecem quando clica na foto
+    const pages = [textBar1, textBar2, textBar3, textBar4]; 
+    const settings = ['Sua Conta', 'Sair'];
+
+    const { Logout } = useContext(AuthContext); // Obtenha a função Logout do contexto
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -36,8 +41,6 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    const navigate = useNavigate();
 
     return (
         <AppBar position="static" style={{ borderBottom: "2px solid black", paddingTop: 5, paddingBottom: 5, backgroundColor: "#394255" }}>
@@ -166,7 +169,6 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     else if (page === 'dashboard') {
                                         navigate('/dashboard/aluno');
                                     }
-                                    
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
@@ -198,7 +200,18 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting, index) => (
-                                <MenuItem key={index}>
+                                <MenuItem
+                                    key={index}
+                                    onClick={() => {
+                                        if (setting === 'Sair') {
+                                            Logout();
+                                            setTimeout(() => {
+                                                navigate('/');
+                                            }, 1000);
+                                        }
+                                        handleCloseUserMenu();
+                                    }}
+                                >
                                     <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                                 </MenuItem>
                             ))}

@@ -1,0 +1,61 @@
+.bg {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.highbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.hand {
+    font-size: 30px;
+    color: #235BD5; /* Cor do ícone */
+}
+
+.lowcontainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px; /* Largura máxima */
+}
+
+.btndiv {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Estilo para as caixas de entrada (TextField) */
+.MuiTextField-root {
+    margin-bottom: 20px; /* Espaçamento entre os campos */
+}
+
+/* Estilo para o Alert */
+.MuiAlert-root {
+    margin-top: 20px; /* Espaçamento entre o alerta e outros componentes */
+}
