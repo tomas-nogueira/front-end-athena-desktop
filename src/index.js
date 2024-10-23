@@ -24,6 +24,7 @@ import AccessDenied from './Pages/AccessDenied';
 import HomeProfessor from './Pages/HomeProfessor';
 import AviseClass from './Pages/AviseClass';
 import HomeAluno from './Components/HomeAluno';
+import TaskProvider from './Context/taskProvider';
 
 const router = createBrowserRouter([
   {
@@ -116,8 +117,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
     <AuthProvider>
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <TaskProvider>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </TaskProvider>
     </AuthProvider>
   </>
 );
