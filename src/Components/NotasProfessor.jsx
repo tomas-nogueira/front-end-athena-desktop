@@ -9,7 +9,7 @@ function NotasProfessor() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:8080/user`, {
+    fetch(`http://localhost:3030/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ function NotasProfessor() {
 
   useEffect(() => {
     if (data) {
-      fetch(`http://localhost:8080/tasks/getalluser/null/${data._id}`, {
+      fetch(`http://localhost:3030/tasks/getalluser/null/${data._id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

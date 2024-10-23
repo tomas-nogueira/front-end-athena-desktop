@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    fetch("http://localhost:3030/school/login", {
+    fetch("http://localhost:8080/school/login", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -22,17 +22,22 @@ const Login = () => {
       body: JSON.stringify({ 
         cnpj, 
         password 
-    })
+      })
     })
     .then(res => res.json())
     .then(json => {
       if (json.token) {
         localStorage.setItem("token", json.token);
-        navigate('/dashboard/escola');
+        setMessage(json.message || "Login realizado com sucesso!"); // Mensagem de sucesso ou do backend
+        setTimeout(() => {
+          navigate('/dashboard/escola');
+        }, 1000); // Aguarda 1 segundo antes de redirecionar
+      } else {
+        setMessage(json.message || "Erro ao fazer login, tente novamente.");
       }
-      setMessage(json.message);
     })
     .catch(error => {
+      setMessage("Erro ao tentar realizar o login.");
       console.error("Error:", error);
     });
   };
