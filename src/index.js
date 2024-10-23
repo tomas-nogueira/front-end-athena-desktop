@@ -24,6 +24,7 @@ import AccessDenied from './Pages/AccessDenied';
 import HomeProfessor from './Pages/HomeProfessor';
 import AviseClass from './Pages/AviseClass';
 import HomeAluno from './Components/HomeAluno';
+import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
 
 const router = createBrowserRouter([
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
   {
     path: "/home/aluno",
     element: <HomeAluno/>
+  },
+  {
+    path:"/user/perfil",
+    element: <EditPerfil />
   },
   {
     path: "*",
