@@ -74,6 +74,10 @@ function Login() {
     ];
 
     function RealizaLogin() {
+        if (!email || !senha) {
+            antdMessage.error("Por favor, preencha todos os campos"); 
+              return;
+          }
         Login(email, senha);
     }
 

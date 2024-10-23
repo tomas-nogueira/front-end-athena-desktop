@@ -11,18 +11,36 @@ import { message as antdMessage } from 'antd';
 const Login = () => {
   const [cnpj, setCpnj] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
 
   const { LoginEscola, logado, cnpjContext } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  function isValidCNPJ(cnpj) {
+    // Validação básica de CNPJ formatado (XX.XXX.XXX/XXXX-XX)
+    const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; 
+    return regex.test(cnpj);
+  }
+  function formatCNPJ(cnpj) {
+    // Formatar o CNPJ no padrão XX.XXX.XXX/XXXX-XX
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+  }
 
   function RealizaLoginEscolar(){
     if (!cnpj || !password) {
         antdMessage.error("Por favor, preencha todos os campos"); 
         return;
     }
-    LoginEscola(cnpj, password)
+    // Formata o CNPJ antes de validar
+    const formattedCNPJ = formatCNPJ(cnpj);
+  
+    // Verifica a validade do CNPJ formatado e do código INEP
+    if (!isValidCNPJ(formattedCNPJ)) {
+      antdMessage.error("CNPJ inválido. Deve ter 14 dígitos.");
+      return;
+    }
+
+    LoginEscola(formattedCNPJ, password)
   }
   useEffect(() => {
     if (logado) {
@@ -42,9 +60,6 @@ const Login = () => {
           <p className={Style.text}>FAÇA LOGIN!</p>
           <AccountCircle className={Style.hand} />
         </div>
-        {message && 
-          (<Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)
-        }
         <Grid elevation={3} style={{ padding: '20px', width: '100%', backgroundColor: 'transparent', border: 'none' }}>
           <form className={Style.lowcontainer}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
