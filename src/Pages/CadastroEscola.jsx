@@ -75,12 +75,12 @@ const CadastroEscola = () => {
   
     // Verifica a validade do CNPJ formatado e do código INEP
     if (!isValidCNPJ(formattedCNPJ)) {
-      setMessage("CNPJ inválido. Certifique-se de que está no formato XX.XXX.XXX/XXXX-XX.");
+      antdMessage.error("CNPJ inválido. Deve ter 14 dígitos.");
       return;
     }
   
     if (!isValidINEP(inepCode)) {
-      setMessage("Código INEP inválido. Deve ter 7 dígitos.");
+      antdMessage.error("Código INEP inválido. Deve ter 7 dígitos.");
       return;
     }
   

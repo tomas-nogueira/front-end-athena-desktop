@@ -144,16 +144,18 @@ function AuthProvider({ children }) {
           })
           .then(res => res.json())
           .then(json => {
-            if(json.token && json.role){
+            if(json.token && json.cnpj){
                 setLogado(true);
                 setCnpjContext(json.cnpj)
                 localStorage.setItem("token", json.token);
                 antdMessage.success('Login realizado com sucesso!');
                 localStorage.setItem("role", json.role)
+                console.log(json)
             }
             else{
                 setLogado(false);
                 antdMessage.error("Erro ao realizar login, verifique suas credenciais"); 
+                console.log(json)
             }
           })
           .catch(error => {
@@ -198,7 +200,7 @@ function AuthProvider({ children }) {
             }
             else{
                 setLogado(false);
-                antdMessage.error("Erro ao realizar o cadastro, verifique suas credenciais"); 
+                antdMessage.error(json.message); 
             }
         })
         .catch((error) => {
