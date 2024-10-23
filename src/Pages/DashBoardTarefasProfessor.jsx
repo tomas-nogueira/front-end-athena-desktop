@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Style from "../Styles/Style.css";
 import Header from "../Components/Header";
 import {
@@ -12,6 +12,8 @@ import {
   CardActions,
   CardContent,
   Button,
+  Snackbar, // Adicionado para a notificação
+  Alert,   // Adicionado para estilizar a notificação
 } from "@mui/material";
 import Footer from "../Components/Footer";
 import Graph from "../Components/Graph";
@@ -23,6 +25,28 @@ import PerformanceDashboard from "../Components/PerformanceDashboard";
 function DashBoardTarefas() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedClass2, setSelectedClass2] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const [dadosUser, setDadosUser] = useState({})
+
+
+  useEffect(() =>{
+    const token = localStorage.getItem('token');
+
+      fetch("http://localhost:3030/user", {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    })
+    .then((resposta) => resposta.json())
+    .then((json) => {
+        setDadosUser(json.message)
+        console.log(dadosUser)
+    })
+    .catch((error) => {
+    });
+  }, [])
 
   const handleClassChange = (event) => {
     setSelectedClass(event.target.value);
@@ -31,6 +55,16 @@ function DashBoardTarefas() {
   const handleClassChange2 = (event) => {
     setSelectedClass2(event.target.value);
   };
+
+  // Notificação para avisar que os dados estão sendo atualizados
+  useEffect(() => {
+    setOpenNotification(true); // Abre a notificação quando a página for carregada
+  }, []);
+
+  const handleCloseNotification = () => {
+    setOpenNotification(false); // Fecha a notificação
+  };
+
   const classOptions = [
     { value: "1ano", label: "1º Ano" },
     { value: "2ano", label: "2º Ano" },
@@ -45,6 +79,7 @@ function DashBoardTarefas() {
     { value: "2medio", label: "2º Médio" },
     { value: "3medio", label: "3º Médio" },
   ];
+
   const classOptions2 = [
     { value: "1ano", label: "1º Ano" },
     { value: "2ano", label: "2º Ano" },
@@ -59,6 +94,7 @@ function DashBoardTarefas() {
     { value: "2medio", label: "2º Médio" },
     { value: "3medio", label: "3º Médio" },
   ];
+
   return (
     <>
       <Header
@@ -68,10 +104,22 @@ function DashBoardTarefas() {
         textBar4="Presença dos Alunos"
       />
       <HeaderDashboards
-        name="Rafael Vírgilio"
+        name={dadosUser.name}
         institution="SESI 337"
         role="Professor"
       />
+
+      {/* Notificação */}
+      <Snackbar
+        open={openNotification}
+        autoHideDuration={4000} // Tempo que a notificação ficará visível
+        onClose={handleCloseNotification}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Posição da notificação
+      >
+        <Alert onClose={handleCloseNotification} severity="info">
+          Atualizando os dados com base nas informações coletadas pela IA...
+        </Alert>
+      </Snackbar>
 
       <Grid
         container
@@ -172,6 +220,7 @@ function DashBoardTarefas() {
             </CardActions>
           </Card>
         </Grid>
+
         <Grid
           item
           xs={12}
