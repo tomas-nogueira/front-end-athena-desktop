@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './Pages/Login';
 import DashBoardTarefasAluno from './Pages/DashBoardTarefasAluno';
 import DashBoardTarefasProfessor from './Pages/DashBoardTarefasProfessor';
-import CadastroTarefas from './Pages/CadastroTarefas'
+import CadastroTarefas from './Pages/CadastroTarefas';
 import DashBoardDiretoria from './Pages/DashBoardDiretoria';
 import NotFound from './Pages/NotFound';
 import DashBoardAluno from './Pages/DashBoardAluno';
@@ -14,15 +14,16 @@ import AuthProvider from './Context/authProvider';
 import CadastroEscola from './Pages/CadastroEscola';
 import CadastroClasse from './Pages/CadastroClasse';
 import DashBoardEscola from './Pages/DashBoardEscola';
-import LoginEscola from './Pages/LoginEscola'
+import LoginEscola from './Pages/LoginEscola';
 import PendingRequestsEscola from './Pages/PendingRequestsEscola';
-import TarefasAlunoAll from './Pages/TarefasAlunoAll'
+import TarefasAlunoAll from './Pages/TarefasAlunoAll';
 import NotasProfessor from './Components/NotasProfessor';
 import RespostasTarefa from './Components/RespostasTarefa';
-import ProtectedRoute from './Components/ProtectedRoute'; 
+import ProtectedRoute from './Components/ProtectedRoute';
 import AccessDenied from './Pages/AccessDenied';
 import HomeProfessor from './Pages/HomeProfessor';
-import AviseClass from './Pages/AviseClass'
+import AviseClass from './Pages/AviseClass';
+import HomeAluno from './Components/HomeAluno';
 
 const router = createBrowserRouter([
   {
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/escola",
-    element: <DashBoardEscola /> ,
+    element: <DashBoardEscola />,
   },
   {
     path: "/reqpendentes/escola",
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
     element: <AviseClass/>
   },
   {
+    path: "/home/aluno",
+    element: <HomeAluno/>
+  },
+  {
     path: "*",
     element: <NotFound />,
   },
@@ -110,7 +115,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>  </>
+    <AuthProvider>
+      <RouterProvider router={router}>
+      </RouterProvider>
+    </AuthProvider>
+  </>
 );

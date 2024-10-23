@@ -48,6 +48,10 @@ function DashBoardTarefas() {
     });
   }, [])
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleClassChange = (event) => {
     setSelectedClass(event.target.value);
   };
@@ -112,9 +116,9 @@ function DashBoardTarefas() {
       {/* Notificação */}
       <Snackbar
         open={openNotification}
-        autoHideDuration={4000} // Tempo que a notificação ficará visível
+        autoHideDuration={4000}
         onClose={handleCloseNotification}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Posição da notificação
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
       >
         <Alert onClose={handleCloseNotification} severity="info">
           Atualizando os dados com base nas informações coletadas pela IA...

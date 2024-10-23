@@ -16,9 +16,10 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import { message as antdMessage } from 'antd';
 
 function Login() {
-    const { Login, Cadastrar, logado, roleContext, messageContext} = useContext(AuthContext);
+    const { Login, Cadastrar, logado, roleContext} = useContext(AuthContext);
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -73,17 +74,21 @@ function Login() {
     ];
 
     function RealizaLogin() {
+        if (!email || !senha) {
+            antdMessage.error("Por favor, preencha todos os campos"); 
+              return;
+          }
         Login(email, senha);
     }
 
     function RealizaCadastro() {
       if (!nome || !email || !senha || !confirmsenha || !telefone || !cpf || !role || !rua || !cep || !estado || !cidade || !school) {
-          setMessage( "Por favor, preencha todos os campos");
+        antdMessage.error("Por favor, preencha todos os campos"); 
           return;
       }
   
       if (senha !== confirmsenha) {
-        setMessage( "As senhas não coincidem");
+        antdMessage.error("As senhas não coincidem"); 
         return;
       }
   
@@ -93,10 +98,10 @@ function Login() {
   useEffect(() => {
     if (logado) {
         if (roleContext === 'estudante') {
-            navigate('/dashboard/aluno');
+            navigate('/home/aluno');
         } 
         else if (roleContext === 'professor') {
-            navigate('/dashboard/professor');
+            navigate('/home/professor');
         } 
         else if (roleContext === 'diretor' || roleContext === 'coordenador') {
             navigate('/dashboard/diretoria');
@@ -111,7 +116,7 @@ function Login() {
 }, [logado, navigate, roleContext]);
 
     useEffect(() =>{
-        fetch("http://localhost:8080/school", {
+        fetch("http://localhost:3030/school", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -129,7 +134,7 @@ function Login() {
     }, [])
 
     useEffect(() =>{
-        fetch(`http://localhost:8080/class/${school}`, {
+        fetch(`http://localhost:3030/class/${school}`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -137,8 +142,6 @@ function Login() {
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-        console.log(json);
-    
         // Verifica se a resposta contém uma array de classes
         if (Array.isArray(json.message) && json.message.length > 0) {
             const optionsClass = json.message.map(classes => ({
@@ -152,7 +155,7 @@ function Login() {
         }
     })
     .catch((error) => {
-        console.error('Erro ao buscar as classes:', error);
+        console.log(error)
     });
     
     }, [school])
@@ -211,8 +214,6 @@ function Login() {
                             <p className={Style.text}>CADASTRE-SE</p>
                             <AssignmentIndIcon className={Style.hand} />
                         </div>
-                        {messageContext && 
-                        (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{messageContext}</Alert>)}
                         {message && 
                         (<Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
                         <div className={Style.lowcontainer}>
@@ -292,12 +293,20 @@ function Login() {
                                         onChange={handleSchoolChange}
                                     />
                                     <CustomSelect
+                                        label="Função"
+                                        menuItems={roleOptions}
+                                        value={role}
+                                        onChange={handleRoleChange}
+                                    />
+                                    {role === "estudante" &&(
+                                        <CustomSelect
                                         label="Escolha sua sala"
                                         variant='outlined'
                                         menuItems={classOptions}
                                         value={classes}
                                         onChange={handleClassesChange}
                                     />
+                                    )}
                                 </div>
                                 <div className={Style.inputColumn}>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -344,12 +353,6 @@ function Login() {
                                             sx={{ width: '250px' }}
                                         />
                                     </Box>
-                                    <CustomSelect
-                                        label="Função"
-                                        menuItems={roleOptions}
-                                        value={role}
-                                        onChange={handleRoleChange}
-                                    />
                                 </div>
                             </div>
                             <div>

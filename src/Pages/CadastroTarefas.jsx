@@ -100,6 +100,10 @@ function CadastroTarefas() {
     }
   }, [schoolProfessor]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   function resetFields() {
     setSelectedSubject(null);
     setContent('');
@@ -149,7 +153,7 @@ function CadastroTarefas() {
 
   return (
     <>
-      <Header textBar1="Minha DashBoard" textBar2="Registrar notas" textBar3="Presença de alunos"/>
+      <Header textBar1="Home" textBar2="DASHBOARD" textBar3="Presença de alunos"/>
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
