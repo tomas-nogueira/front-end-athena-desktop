@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import HeaderDashboards from '../Components/HeaderDashboards';
 import Card from '../Components/Card';
@@ -6,38 +6,19 @@ import { Grid } from '@mui/material';
 import Imagem from '../Photos/back-class.jpg'
 import Imagem2 from '../Photos/back-solicit.jpg'
 import { Typography } from 'antd';
+import { AuthContext } from '../Context/authProvider';
 
 function DashBoardEscola() {
-  const [schoolData, setSchoolData] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const { dadosSchool } = useContext(AuthContext);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch("http://localhost:8080/school/data", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-      .then((resposta) => resposta.json())
-      .then((json) => {
-        setSchoolData(json);
-        setLoading(false); 
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados da escola:", error);
-        setLoading(false);
-      });
-
-  }, []);
-
-  if (loading) {
-    return <div>Carregando...</div>; 
+  //Verificando se existe os dados do usuário
+  if (!dadosSchool || !dadosSchool.message) {
+    return <Typography variant="h5" align="center">Carregando...</Typography>;
   }
 
-  if (!schoolData) {
-    return <div>Erro ao carregar dados da escola.</div>;
+  // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
+  if (!dadosSchool.message.cnpj || !dadosSchool.message.name) {
+    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
   }
 
   const { Title } = Typography;
@@ -46,7 +27,7 @@ function DashBoardEscola() {
   return (
     <>
       <Header />
-      <HeaderDashboards role='INSTITUIÇÃO' name={schoolData.message.name} institution='CONTA ADMINISTRATIVA' />
+      <HeaderDashboards role={dadosSchool.message.role} name={dadosSchool.message.name} institution='CONTA ADMINISTRATIVA' />
       <Grid item xs={12} sm={6} display='flex' alignItems='center' justifyContent='center' gap='2rem' flexDirection='column' sx={{marginTop: '2rem'}}>
         <Grid>
           <Title>PRINCIPAIS ATIVIDADES</Title>

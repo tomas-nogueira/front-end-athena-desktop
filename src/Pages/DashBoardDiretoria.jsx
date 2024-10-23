@@ -11,25 +11,6 @@ import HeaderDashboards from '../Components/HeaderDashboards'
 
 function DashBoardDiretoria() {
   const [dadosUser, setDadosUser] = useState({})
-
-  useEffect(() =>{
-    const token = localStorage.getItem('token');
-
-      fetch("http://localhost:3030/user", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-        setDadosUser(json.message)
-        console.log(dadosUser)
-    })
-    .catch((error) => {
-    });
-  }, [])
   
   return (
     <>

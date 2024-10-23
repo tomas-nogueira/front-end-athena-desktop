@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   TextField,
   Button,
@@ -12,6 +12,7 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
+import { message as antdMessage } from 'antd';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import CallIcon from '@mui/icons-material/Call';
@@ -21,6 +22,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import Style from '../Styles/Login.module.css';
 import Logo from '../Photos/logo_athena 1.png';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/authProvider';
 
 const CadastroEscola = () => {
   const [name, setName] = useState('');
@@ -41,28 +43,38 @@ const CadastroEscola = () => {
 
   const navigate = useNavigate();
 
+  const { CadastrarEscola, logado, cnpjContext } = useContext(AuthContext);
+
 
   function isValidCNPJ(cnpj) {
-    // Validação básica de CNPJ (apenas como exemplo)
-    const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; // Formato: XX.XXX.XXX/XXXX-XX
+    // Validação básica de CNPJ formatado (XX.XXX.XXX/XXXX-XX)
+    const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; 
     return regex.test(cnpj);
   }
   
   function isValidINEP(inepCode) {
-    // Validação básica do código INEP (apenas como exemplo)
-    const regex = /^\d{7}$/; // Formato: 7 dígitos
+    // Validação básica do código INEP (7 dígitos)
+    const regex = /^\d{7}$/; 
     return regex.test(inepCode);
   }
   
-  function CadastarEscola() {
+  function formatCNPJ(cnpj) {
+    // Formatar o CNPJ no padrão XX.XXX.XXX/XXXX-XX
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+  }
+  
+  function RealizaCadastroEscola() {
     // Verifica se todos os campos estão preenchidos
     if (!name || !email || !phone || !inepCode || !cnpj || !street || !cep || !state || !city || !institutionType || !educationLevels.length || !password) {
-      setMessage("Por favor, preencha todos os campos obrigatórios.");
+      antdMessage.error("Por favor, preencha todos os campos"); 
       return;
     }
   
-    // Verifica a validade do CNPJ e do código INEP
-    if (!isValidCNPJ(cnpj)) {
+    // Formata o CNPJ antes de validar
+    const formattedCNPJ = formatCNPJ(cnpj);
+  
+    // Verifica a validade do CNPJ formatado e do código INEP
+    if (!isValidCNPJ(formattedCNPJ)) {
       setMessage("CNPJ inválido. Certifique-se de que está no formato XX.XXX.XXX/XXXX-XX.");
       return;
     }
@@ -72,43 +84,23 @@ const CadastroEscola = () => {
       return;
     }
   
-    // Se tudo estiver correto, faz a requisição
-    fetch("http://localhost:8080/school/create", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            email: email,
-            phone: phone,
-            inepCode: inepCode,
-            cnpj: cnpj,
-            address: {
-              street: street,
-              cep: cep, 
-              state: state,
-              city: city, 
-            },
-            institutionType: institutionType, 
-            educationLevels: educationLevels, 
-            password: password,
-            status: true, 
-        })
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-      if (json.token) {
-        localStorage.setItem("token", json.token);
-        navigate('/dashboard/escola');
-      }
-      setMessage(json.message);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+    if (password !== confirmpassword) {
+      antdMessage.error("As senhas não coincidem");
+      return;
+    }
+  
+    // Realiza o cadastro enviando o CNPJ formatado para a API
+    CadastrarEscola(name, email, phone, inepCode, formattedCNPJ, street, cep, state, city, institutionType, educationLevels, password);
   }
   
+  
+  useEffect(() => {
+    if (logado) {
+        if (cnpjContext) {
+            navigate('/dashboard/escola');
+        }
+    }
+}, [logado, navigate, cnpjContext]);
 
   const educationOptions = [
     "infantil",
@@ -134,8 +126,6 @@ const CadastroEscola = () => {
             <p className={Style.text}>CADASTRE SUA ESCOLA!</p>
             <AssignmentIndIcon className={Style.hand} />
         </div>
-        {message && 
-        (<Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px'}}>{message}</Alert>)}
         <Grid elevation={3} style={{ padding: '20px', width: '100%', backgroundColor: 'transparent', border: 'none' }}>
           <form className={Style.lowcontainer}>
             <div className={Style.inputGrid}>
@@ -325,7 +315,7 @@ const CadastroEscola = () => {
               <a href="/login" className={Style.lowtext}>Não é um usuário escola? Clique aqui</a>
             </div>
             <div className={Style.btndiv}>
-              <Button size="large" variant="contained" type="button" onClick={CadastarEscola} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>
+              <Button size="large" variant="contained" type="button" onClick={RealizaCadastroEscola} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>
                 CADASTRAR
               </Button>
             </div>
