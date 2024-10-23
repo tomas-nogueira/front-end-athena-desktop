@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -8,6 +8,8 @@ import FooterNovo from '../Components/Footer';
 import HeaderDashboards from '../Components/HeaderDashboards';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { AuthContext } from '../Context/authProvider';
+
+
 
 function DashBoardAluno() {
   const { dadosUser } = useContext(AuthContext);
@@ -20,6 +22,10 @@ function DashBoardAluno() {
     { text: 'Exercícios de Orogenia - Professora Marina' }
   ];
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   //Verificando se existe os dados do usuário
   if (!dadosUser || !dadosUser.message) {
     return <Typography variant="h5" align="center">Carregando...</Typography>;
@@ -30,10 +36,11 @@ function DashBoardAluno() {
     return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
   }
 
+
   return (
     <>
-      <Header textBar1='Tarefas' />
-      <HeaderDashboards role={dadosUser.message.role} name={dadosUser.message.name} institution={dadosUser.message.IdSchool} />
+      <Header textBar2='Tarefas' textBar1="HOME"/>
+      <HeaderDashboards role={dadosUser.message.role} name={dadosUser.message.name} institution="SESI 337" />
 
       <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10 }}>
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', gap: '3rem' }}>
