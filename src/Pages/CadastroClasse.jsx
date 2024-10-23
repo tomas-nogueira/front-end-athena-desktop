@@ -57,6 +57,10 @@ function CadastroClasse() {
     }
   }, [schoolId]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   function CadastrarClasse() {
     if (schoolId) {
       fetch('http://localhost:3030/class', {

@@ -94,10 +94,14 @@ function DashBoardTarefas() {
               });
     }
   }, [dataUser]);
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
-      <Header textBar1="Home" textBar2="Minhas Notas" textBar3="Presença" textBar4="Minhas Tarefas" />
+      <Header textBar1="HOME" textBar2="Minhas Notas" textBar3="Presença" />
       <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Grid item xs={12} sm={4} display="flex" justifyContent="center" alignItems='center'>
           <img src={Logo} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100px' }} />
