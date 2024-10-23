@@ -95,7 +95,6 @@ function DashBoardAluno() {
               />
             </Box>
           </Grid>
-        </Grid>
 
         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'center', gap: '3rem' }}>
           <Grid item xs={12} sm={5} sx={{ backgroundColor: 'white', borderRadius: 5 }}>

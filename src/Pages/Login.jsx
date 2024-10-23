@@ -94,10 +94,10 @@ function Login() {
   useEffect(() => {
     if (logado) {
         if (roleContext === 'estudante') {
-            navigate('/dashboard/aluno');
+            navigate('/home/aluno');
         } 
         else if (roleContext === 'professor') {
-            navigate('/dashboard/professor');
+            navigate('/home/professor');
         } 
         else if (roleContext === 'diretor' || roleContext === 'coordenador') {
             navigate('/dashboard/diretoria');
