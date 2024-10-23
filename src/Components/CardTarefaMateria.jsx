@@ -74,7 +74,7 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
           <Avatar src={professorImage} style={{ marginRight: 10, backgroundColor: 'transparent' }} size={50}/>
           <div>
-            <Title level={4} style={{ margin: 0 }}>{professorName}</Title>
+            <Title level={4} style={{ margin: 0, fontSize: 15 }}>{professorName}</Title>
           </div>
         </div>
         <div style={{ marginBottom: 10, textAlign: 'center' }}>
@@ -84,14 +84,20 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
         <div style={{ marginBottom: 10, textAlign: 'center' }}>
           <Text strong style={{ display: 'block', fontSize: '16px' }}>Status:</Text>
           {status === "em andamento" ? (
-            <Tag color="#FFA500">Em andamento</Tag>
-          ) : status === "atrasado" ? (
-            <Tag color="#FF4C4C">Em atraso</Tag>
+            <Tag color="#1E90FF" style={{fontWeight: 'bolder', fontSize: 18}}>Em andamento</Tag>
+          ) : status === "atrasada" ? (
+            <Tag color="#DC3545" style={{fontWeight: 'bolder', fontSize: 18}}>Atrasada</Tag>
+          ) : status === "pronto" ? (
+            <Tag color="#28A745" style={{fontWeight: 'bolder', fontSize: 18}}>Pronto</Tag>
+          ) : status === "cancelada" ? (
+            <Tag color="#6C757D" style={{fontWeight: 'bolder', fontSize: 18}}>Cancelada</Tag>
+          ) : status === "pendente" ? (
+            <Tag color="#FFC107" style={{fontWeight: 'bolder', fontSize: 18}}>Pendente</Tag>
           ) : (
             <Text>Carregando...</Text>
           )}
         </div>
-        <Button type="primary" style={{ width: '100%' }} onClick={RedirecionarTarefa}>
+        <Button type="primary" style={{ width: '100%', backgroundColor: 'transparent', color: 'black', fontWeight: 'bold', border: '1px solid black' }} onClick={RedirecionarTarefa}>
           {button}
         </Button>
       </div>

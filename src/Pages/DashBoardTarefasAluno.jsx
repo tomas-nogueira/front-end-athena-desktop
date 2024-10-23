@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '../Components/CardTarefaGeral';
 import Style from '../Styles/Style.css';
 import Header from '../Components/Header';
@@ -7,93 +7,13 @@ import Footer from '../Components/Footer';
 import HeaderDashBoards from '../Components/HeaderDashboards';
 import Logo from '../Photos/logo_athena 5.png';
 import Graph from '../Components/Graph';
+import { TaskContext } from '../Context/taskProvider';
+import { AuthContext } from '../Context/authProvider';
 
-function DashBoardTarefas() {
-  const [dataUser, setDataUser] = useState('');
+function DashBoardTarefas() {  
+  const { dadosUser } = useContext(AuthContext);
 
-  const [totalTasks, setTotalTasks] = useState(0);
-  const [completedTasks, setCompletedTasks] = useState(0);
-  const [ongoingTasks, setOngoingTasks] = useState(0);
-  const [overdueTasks, setOverdueTasks] = useState(0);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    fetch("http://localhost:3030/user", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-      .then((resposta) => resposta.json())
-      .then((json) => {
-        setDataUser(json.message._id);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (dataUser) {
-      fetch(`http://localhost:3030/task/getall/userbyclass/${dataUser}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-          setTotalTasks(json.count);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        fetch(`http://localhost:3030/overdue/${dataUser}`, {
-          method: "GET",
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        })
-          .then((resposta) => resposta.json())
-          .then((json) => {
-            setOverdueTasks(json.count);
-            })
-          .catch((error) => {
-            console.log(error);
-          });
-
-          fetch(`http://localhost:3030/dueSoon/${dataUser}`, {
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-            .then((resposta) => resposta.json())
-            .then((json) => {
-              setOngoingTasks(json.count);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-
-            fetch(`http://localhost:3030/completed/${dataUser}`, {
-              method: "GET",
-              headers: {
-                'Content-Type': 'application/json'
-              },
-            })
-              .then((resposta) => resposta.json())
-              .then((json) => {
-                console.log(json)
-                setCompletedTasks(json.count);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-    }
-  }, [dataUser]);
+  const { totalTasks, completedTasks, delayTasks, dueSoon, inProgress } = useContext(TaskContext);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -129,10 +49,10 @@ function DashBoardTarefas() {
               <Card title="TAREFAS CONCLUIDAS" quantidade={completedTasks} descricao="Tarefas concluídas" colorBorder="#83E509" />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Card title="TAREFAS EM ANDAMENTO" quantidade={ongoingTasks} descricao="Tarefas em andamento" colorBorder="#FFA500" />
+              <Card title="TAREFAS EM ANDAMENTO" quantidade={inProgress} descricao="Tarefas em andamento" colorBorder="#FFA500" />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Card title="TAREFAS ATRASADAS" quantidade={overdueTasks} descricao="Tarefas atrasadas" colorBorder="#FF4C4C" />
+              <Card title="TAREFAS ATRASADAS" quantidade={delayTasks} descricao="Tarefas atrasadas" colorBorder="#FF4C4C" />
             </Grid>
           </Grid>
         </Grid>
@@ -164,8 +84,8 @@ function DashBoardTarefas() {
               type="pie"
               data={[
                 { name: 'Concluídas', value: completedTasks, color: '#83E509' },
-                { name: 'Em Andamento', value: ongoingTasks, color: '#FFA500' },
-                { name: 'Atrasadas', value: overdueTasks, color: '#FF4C4C' },
+                { name: 'Em Andamento', value: inProgress, color: '#FFA500' },
+                { name: 'Atrasadas', value: delayTasks, color: '#FF4C4C' },
               ]}
             />
           </Box>
