@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Banner from '../Components/Banner';
 import Header from '../Components/Header';
 import Texto from '../Components/Texto';
@@ -13,21 +13,22 @@ import Macbook from '../Photos/macbook.png'
 import Linha from '../Photos/linha.png'
 import Ipad from '../Photos/ipad.png'
 
-function HomeProfessor() {
+function HomeAluno() {
   return (
-    <Grid>
-      <Header textBar1="DASHBOARD" textBar2="Cadastrar tarefas"/> 
-      <Grid sx={{ marginTop: '5rem' }}>
-        <Banner />
-        <Grid sx={{
-          marginTop: '3rem', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          gap: '2rem', 
-        }}>
-          <Texto />
+    <div>
+        <Grid>
+            <Header textBar1="dashboard" textBar2="Minhas tarefas"/> 
+            <Grid sx={{ marginTop: '5rem' }}>
+                <Banner />
+                    <Grid sx={{
+                        marginTop: '3rem', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        gap: '2rem', 
+                        }}>
+                        <Texto />
           
           <Container sx={{display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
             <Grid sx={{backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem'}}>
@@ -76,15 +77,15 @@ function HomeProfessor() {
           <CardsAcesso 
             texto1="Minha dashboard"
             texto2="Acesse sua dashboard e veja seus dados"
-            rotaBotao="/dashboard/tarefas/professor"
+            rotaBotao="/dashboard/aluno"
             imagemSrc={Macbook}
             imagemAlt="Imagem de exemplo"
             />
             <img src={Linha}/>
             <CardsAcesso 
-            texto1="Cadastrar tarefas"
-            texto2="Envie e dê notas às tarefas dos alunos"
-            rotaBotao="/cadastro/tarefas"
+            texto1="Minhas tarefas"
+            texto2="Visualize suas tarefas e realize-as!"
+            rotaBotao="/dashboard/tarefas/aluno"
             imagemSrc={Ipad}
             imagemAlt="Imagem de exemplo"
             />
@@ -93,7 +94,8 @@ function HomeProfessor() {
       </Grid>
       <Footer />
     </Grid>
-  );
+    </div>
+  )
 }
 
-export default HomeProfessor;
+export default HomeAluno

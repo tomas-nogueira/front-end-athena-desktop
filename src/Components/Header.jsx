@@ -94,9 +94,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     onClick={() => {
                                         handleCloseNavMenu();
                                         if (page === 'Instruções') { 
-                                            onTextBar2Click(); // Abre o pop-up de instruções
+                                            onTextBar2Click(); 
                                         } else if (page === 'Home') {
-                                            navigate('/');
+                                            navigate('/home/professor');
                                         } else if (page === 'Cadastrar uma Tarefa') {
                                             navigate('/cadastrotarefas');
                                         } else if (page === 'Login') {
@@ -105,6 +105,18 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                             navigate('/login');
                                         } else if (page === 'Tarefas') {
                                             navigate('/dashboard/tarefas/aluno');
+                                        }
+                                        else if (page === 'DASHBOARD') {
+                                            navigate('/dashboard/tarefas/professor');
+                                        }
+                                        else if (page === 'HOME') {
+                                            navigate('/home/aluno');
+                                        }
+                                        else if (page === 'Minhas tarefas') {
+                                            navigate('/dashboard/tarefas/aluno');
+                                        }
+                                        else if (page === 'dashboard') {
+                                            navigate('/dashboard/aluno');
                                         }
                                     }}
                                 >
@@ -123,8 +135,12 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     if (page === 'Instruções') {
                                         onTextBar2Click(); // Abre o pop-up de instruções
                                     } else if (page === 'Home') {
+                                        navigate('/home/professor');
+                                    }
+                                    else if (page === 'home') {
                                         navigate('/');
-                                    } else if (page === 'Cadastrar uma Tarefa') {
+                                    }
+                                    else if (page === 'Cadastrar uma Tarefa') {
                                         navigate('/cadastro/tarefas');
                                     } else if (page === 'Login') { 
                                         navigate('/login');
@@ -134,6 +150,21 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/dashboard/tarefas/aluno');
                                     } else if (page === 'Recados') {
                                         navigate('/dashboard/diretoria/recados');
+                                    }
+                                    else if (page === 'DASHBOARD') {
+                                        navigate('/dashboard/tarefas/professor');
+                                    }
+                                    else if (page === 'Cadastrar tarefas') {
+                                        navigate('/cadastro/tarefas');
+                                    }
+                                    else if (page === 'HOME') {
+                                        navigate('/home/aluno');
+                                    }
+                                    else if (page === 'Minhas tarefas') {
+                                        navigate('/dashboard/tarefas/aluno');
+                                    }
+                                    else if (page === 'dashboard') {
+                                        navigate('/dashboard/aluno');
                                     }
                                     
                                 }}

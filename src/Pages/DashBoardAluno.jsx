@@ -41,11 +41,15 @@ function DashBoardAluno() {
     })
     .catch((error) => {
     });
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
-      <Header textBar1='Tarefas'/>
+      <Header textBar1='HOME' textBar2='Tarefas'/>
       <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI 337'/>
       <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
         <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
