@@ -175,6 +175,7 @@ function DashBoardAluno() {
           </Grid>
         </Grid>
       </Grid>
+      </Grid>
       <FooterNovo />
     </>
   );
