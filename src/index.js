@@ -24,6 +24,8 @@ import AccessDenied from './Pages/AccessDenied';
 import HomeProfessor from './Pages/HomeProfessor';
 import AviseClass from './Pages/AviseClass';
 import HomeAluno from './Components/HomeAluno';
+import EditPerfil from './Pages/EditPerfil';
+import TaskProvider from './Context/taskProvider';
 
 const router = createBrowserRouter([
   {
@@ -107,6 +109,10 @@ const router = createBrowserRouter([
     element: <HomeAluno/>
   },
   {
+    path:"/user/perfil",
+    element: <EditPerfil />
+  },
+  {
     path: "*",
     element: <NotFound />,
   },
@@ -116,8 +122,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
     <AuthProvider>
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <TaskProvider>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </TaskProvider>
     </AuthProvider>
   </>
 );

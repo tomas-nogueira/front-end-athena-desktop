@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import HeaderDashboards from '../Components/HeaderDashboards';
 import Style from '../Styles/Aviso.module.css';
 import MicIcon from '@mui/icons-material/Mic';
 import Select from '../Components/Select';
 import { Box, TextField, Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import Header from '../Components/Header';
 
 function AviseClass() {
   const [selectedClass, setSelectedClass] = useState('');
@@ -116,7 +116,7 @@ function AviseClass() {
   return (
     <div>
       <div>
-        <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI 337' />
+        <Header />
       </div>
       <div className={Style.recado}>
         <h3>Envie recados para a Athena</h3>
@@ -149,7 +149,6 @@ function AviseClass() {
             sx={{ width: '600px' }}
           />
         </Box>
-        {/* Botão para visualizar o texto completo do aviso */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
           <Button variant="contained" color="primary" onClick={visualizarAviso} sx={{ backgroundColor: '#1E9CFA' }}>
             Visualizar aviso completo

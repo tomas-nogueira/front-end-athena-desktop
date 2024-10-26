@@ -201,7 +201,7 @@ function Login() {
                                 <a href="#" onClick={handleToggle} className={Style.lowtext}>Ainda não é cadastrado?</a>
                             </div>
                             <div>
-                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola ou realizar Login? Clique aqui</a>
+                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola ou realizar Login Institucional? </a>
                             </div>
                             <div className={Style.btndiv}>
                                 <Button size="large" variant="contained" onClick={RealizaLogin} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>ENTRAR</Button>
@@ -285,28 +285,6 @@ function Login() {
                                             sx={{ width: '250px' }}
                                         />
                                     </Box>
-                                    <CustomSelect
-                                        label="Escolha sua escola"
-                                        variant='outlined'
-                                        menuItems={schoolOptions}
-                                        value={school}
-                                        onChange={handleSchoolChange}
-                                    />
-                                    <CustomSelect
-                                        label="Função"
-                                        menuItems={roleOptions}
-                                        value={role}
-                                        onChange={handleRoleChange}
-                                    />
-                                    {role === "estudante" &&(
-                                        <CustomSelect
-                                        label="Escolha sua sala"
-                                        variant='outlined'
-                                        menuItems={classOptions}
-                                        value={classes}
-                                        onChange={handleClassesChange}
-                                    />
-                                    )}
                                 </div>
                                 <div className={Style.inputColumn}>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -353,13 +331,37 @@ function Login() {
                                             sx={{ width: '250px' }}
                                         />
                                     </Box>
+                                    <Box>
+                                        <CustomSelect
+                                            label="Escolha sua escola"
+                                            variant='outlined'
+                                            menuItems={schoolOptions}
+                                            value={school}
+                                            onChange={handleSchoolChange}
+                                        />
+                                        <CustomSelect
+                                            label="Função"
+                                            menuItems={roleOptions}
+                                            value={role}
+                                            onChange={handleRoleChange}
+                                        />
+                                        {role === "estudante" &&(
+                                            <CustomSelect
+                                            label="Escolha sua sala"
+                                            variant='outlined'
+                                            menuItems={classOptions}
+                                            value={classes}
+                                            onChange={handleClassesChange}
+                                        />
+                                        )}
+                                    </Box>
                                 </div>
                             </div>
                             <div>
                                 <a href="#" onClick={handleToggle} className={Style.lowtext}>Já tem uma conta? Faça login</a>
                             </div>
                             <div>
-                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola ou realizar Login? Clique aqui</a>
+                                <a href="/cadastro/escola" onClick={handleToggle} className={Style.lowtext}>Quer cadastrar sua escola ou realizar Login Institucional? Clique aqui</a>
                             </div>
                             <div className={Style.btndiv}>
                                 <Button size="large" variant="contained" onClick={RealizaCadastro} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>CADASTRAR</Button>
