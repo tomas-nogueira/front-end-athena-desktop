@@ -5,14 +5,11 @@ import { Grid, Container, Typography, Box, TextField, MenuItem, Button } from '@
 import { TaskContext } from '../Context/taskProvider';
 
 function TarefasAlunoAll() {
-  // Filtro para status e matéria
   const [filterSubject, setFilterSubject] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
-  // Desestruturando os arrays do contexto
   const { totalTasksContent, completedTasksContent, delayTasksContent, inProgressContent } = useContext(TaskContext);
 
-  // Função para determinar qual conteúdo exibir com base no filtro de status
   const filteredContent = () => {
     console.log(delayTasksContent)
     switch (filterStatus) {
@@ -118,7 +115,7 @@ function TarefasAlunoAll() {
           professorName={`Professor(a) ${task.teacherName}`}
           professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
           subject={task.subject}
-          status={task.studentTaskStatus} // Use o status filtrado do estudante
+          status={task.studentTaskStatus} 
           button="Realizar tarefa"
         />
       </Grid>
