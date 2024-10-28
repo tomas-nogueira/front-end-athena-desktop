@@ -21,10 +21,10 @@ const Login = () => {
     const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; 
     return regex.test(cnpj);
   }
-  function formatCNPJ(cnpj) {
-    // Formatar o CNPJ no padrão XX.XXX.XXX/XXXX-XX
-    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
-  }
+  // function formatCNPJ(cnpj) {
+  //   // Formatar o CNPJ no padrão XX.XXX.XXX/XXXX-XX
+  //   return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+  // }
 
   function RealizaLoginEscolar(){
     if (!cnpj || !password) {
@@ -32,15 +32,15 @@ const Login = () => {
         return;
     }
     // Formata o CNPJ antes de validar
-    const formattedCNPJ = formatCNPJ(cnpj);
+    // const formattedCNPJ = formatCNPJ(cnpj);
   
     // Verifica a validade do CNPJ formatado e do código INEP
-    if (!isValidCNPJ(formattedCNPJ)) {
-      antdMessage.error("CNPJ inválido. Deve ter 14 dígitos.");
-      return;
-    }
+    // if (!isValidCNPJ(formattedCNPJ)) {
+    //   antdMessage.error("CNPJ inválido. Deve ter 14 dígitos.");
+    //   return;
+    // }
 
-    LoginEscola(formattedCNPJ, password)
+    LoginEscola(cnpj, password)
   }
   useEffect(() => {
     if (logado) {

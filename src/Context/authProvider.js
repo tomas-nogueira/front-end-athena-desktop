@@ -149,7 +149,7 @@ function AuthProvider({ children }) {
                 setCnpjContext(json.cnpj)
                 localStorage.setItem("token", json.token);
                 antdMessage.success('Login realizado com sucesso!');
-                localStorage.setItem("role", json.role)
+                localStorage.setItem("role", "admin")
                 console.log(json)
             }
             else{
@@ -196,7 +196,7 @@ function AuthProvider({ children }) {
                 setMessageContext(json.message);
                 localStorage.setItem("token", json.token);
                 antdMessage.success('Login realizado com sucesso!');
-                localStorage.setItem("role", json.role)
+                localStorage.setItem("role", "admin")
             }
             else{
                 setLogado(false);
