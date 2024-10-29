@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@mui/material';
 import * as faceapi from "face-api.js";
 
-const FaceRecognitionPage = () => {
+const FaceRecognitionPage = ({ onFaceDetected }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [faceDescriptor, setFaceDescriptor] = useState(null);
+  const [mediaStream, setMediaStream] = useState(null); // Armazenar o stream da câmera
 
   useEffect(() => {
     const loadModels = async () => {
@@ -25,14 +26,29 @@ const FaceRecognitionPage = () => {
     if (isLoaded) {
       startVideo();
     }
-  }, [isLoaded]);
+
+    return () => {
+      // Parar o stream quando o componente for desmontado
+      if (mediaStream) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [isLoaded, mediaStream]);
 
   const startVideo = () => {
     navigator.mediaDevices.getUserMedia({ video: {} })
       .then((stream) => {
         videoRef.current.srcObject = stream;
+        setMediaStream(stream); // Armazena o stream
       })
       .catch((err) => console.error("Error accessing webcam:", err));
+  };
+
+  const stopVideo = () => {
+    const stream = videoRef.current.srcObject;
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
   };
 
   const handleVideoPlay = async () => {
@@ -50,18 +66,39 @@ const FaceRecognitionPage = () => {
         faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
         faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
 
-        // Verificar se há detecções e pegar o descriptor
         if (detections.length > 0) {
-          const descriptor = detections[0].descriptor; // Pega o primeiro descriptor
-          setFaceDescriptor(descriptor); // Armazena o descriptor no estado
-          console.log("Face Descriptor:", descriptor); // Exibe no console
+          const descriptor = detections[0].descriptor;
+          setFaceDescriptor(descriptor); // Salvar o descriptor no estado
+          stopVideo(); // Parar a câmera após detectar o rosto
+        } else {
+          requestAnimationFrame(detectFaces);
         }
-
-        requestAnimationFrame(detectFaces); // Chama a função novamente para a próxima frame
       };
 
-      detectFaces(); // Inicia a detecção
+      detectFaces();
     });
+  };
+
+  const handleSaveRecognition = async () => {
+    if (faceDescriptor) {
+      try {
+        const response = await fetch('http://localhost:3030/face', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ descriptor: Array.from(faceDescriptor) })
+        });
+        if (response.ok) {
+          alert("Reconhecimento facial salvo com sucesso!");
+          onFaceDetected(); // Chame a função de callback para o face detected
+        } else {
+          alert("Erro ao salvar o reconhecimento facial.");
+        }
+      } catch (error) {
+        console.error("Erro ao enviar para a API:", error);
+      }
+    }
   };
 
   return (
@@ -71,15 +108,21 @@ const FaceRecognitionPage = () => {
         ref={videoRef}
         autoPlay
         onPlay={handleVideoPlay}
-        style={{ width: '640px', height: '480px' }}
+        style={{ width: '640px', height: '480px', display: faceDescriptor ? 'none' : 'block' }}
       />
       <canvas
         ref={canvasRef}
-        style={{ position: 'absolute', left: 0, top: 0 }}
+        style={{ position: 'absolute', left: 0, top: 0, display: faceDescriptor ? 'none' : 'block' }}
       />
-      <Button variant="contained" onClick={startVideo} disabled={isLoaded === false}>
-        Iniciar Webcam
-      </Button>
+      {faceDescriptor ? (
+        <Button variant="contained" onClick={handleSaveRecognition}>
+          Salvar Reconhecimento
+        </Button>
+      ) : (
+        <Button variant="contained" onClick={startVideo} disabled={!isLoaded}>
+          Iniciar Webcam
+        </Button>
+      )}
     </div>
   );
 };

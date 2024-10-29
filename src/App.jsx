@@ -10,11 +10,34 @@ import InovacaoImg from './Photos/InovacaoImg.png';
 import CelualarImg from './Photos/celularimg.png';
 import { useState, useEffect } from 'react';
 import { Modal } from 'antd';
+import { useNavigate } from "react-router-dom";
 
 function App() {  
   const [openInstructions, setOpenInstructions] = useState(false);
   const [welcomeVisible, setWelcomeVisible] = useState(true); 
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const role = localStorage.getItem("role")
+    if (role) {
+      if (role === "estudante") {
+        navigate("/home/aluno");
+      } else if (role === "professor") {
+        navigate("/home/professor");
+      } else if (role === "diretor" || role === "coordenador") {
+        navigate("/dashboard/diretoria");
+      } else if (
+        role === "inspetor" ||
+        role === "limpeza" ||
+        role === "cozinha"
+      ) {
+        navigate("/dashboard/funcionarios");
+      } else {
+        navigate("/");
+      }
+    }
+  }, []);
+  
   const handleOpenInstructions = () => {
     setOpenInstructions(true);
   };
