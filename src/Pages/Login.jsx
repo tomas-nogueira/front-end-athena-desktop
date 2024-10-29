@@ -16,7 +16,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
-import { message as antdMessage } from 'antd';
+import { message as antdMessage, Modal } from 'antd';
 import FaceLogin from "./FaceLogin";
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
