@@ -16,7 +16,7 @@ import Ipad from '../Photos/ipad.png'
 function HomeProfessor() {
   return (
     <Grid>
-      <Header textBar1="DASHBOARD" textBar2="Cadastrar tarefas"/> 
+      <Header textBar1="DASHBOARD" textBar2="Cadastrar tarefas" textBar3="Avaliar Tarefas"/> 
       <Grid sx={{ marginTop: '5rem' }}>
         <Banner />
         <Grid sx={{

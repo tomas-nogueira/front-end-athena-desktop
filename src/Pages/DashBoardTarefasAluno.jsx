@@ -19,6 +19,16 @@ function DashBoardTarefas() {
     window.scrollTo(0, 0);
   }, []);
 
+    //Verificando se existe os dados do usuário
+    if (!dadosUser || !dadosUser.message) {
+      return <Typography variant="h5" align="center">Carregando...</Typography>;
+    }
+  
+    // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
+    if (!dadosUser.message.role || !dadosUser.message.name) {
+      return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+    }
+
   return (
     <>
       <Header textBar1="HOME" textBar2="Minhas Notas" textBar3="Presença" />
@@ -34,7 +44,7 @@ function DashBoardTarefas() {
         </Grid>
         <Grid item xs={12} sm={4} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Typography variant="body1" sx={{ fontSize: 30, display: 'flex', flexDirection: 'row' }}>
-            Olá, <Typography component="span" variant="body1" sx={{ fontSize: 30, color: '#1754F0', fontWeight: 'bold' }}>Aluno</Typography>
+            Olá, <Typography component="span" variant="body1" sx={{ fontSize: 30, color: '#1754F0', fontWeight: 'bold' }}>{dadosUser.message.name}</Typography>
           </Typography>
           <Typography component="span" variant="body2" sx={{ color: '#676767', fontSize: 25 }}>Aluno</Typography>
         </Grid>

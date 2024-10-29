@@ -1,5 +1,5 @@
 import { Container, Typography, Box, Button, IconButton, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Autocomplete, Chip, Grid, Alert } from '@mui/material';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import CloseIcon from '@mui/icons-material/Close';
 import Header from '../Components/Header';
@@ -8,6 +8,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { AuthContext } from '../Context/authProvider';
+import { TaskContext } from '../Context/taskProvider';
+import { message as antdMessage } from 'antd';
 
 const subjectOptions = [
   { value: 'Língua Portuguesa', label: 'Língua Portuguesa' },
@@ -27,16 +30,16 @@ function CadastroTarefas() {
   const [content, setContent] = useState('');
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
-  const [IdProfessor, setIdProfessor] = useState('');
-  const [schoolProfessor, setSchoolProfessor] = useState('');
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [tipoQuestao, setTipoQuestao] = useState('');
   const [alternativas, setAlternativas] = useState([{ text: '', isCorrect: false }]);
-  const [classes, setClasses] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]); // Estado para classes selecionadas
 
   const [message, setMessage] = useState('')
+
+  const { dadosUser } = useContext(AuthContext);
+  const { GetClassProfessorById, classes, CadastrarTask, tarefaCriada, setTarefaCriada } = useContext(TaskContext);
 
   const handleTipoQuestaoChange = (event) => {
     setTipoQuestao(event.target.value);
@@ -63,94 +66,81 @@ function CadastroTarefas() {
     setAlternativas([...alternativas, { text: '', isCorrect: false }]);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch("http://localhost:3030/user", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-      setIdProfessor(json.message._id);
-      setSchoolProfessor(json.message.IdSchool);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar professor:", error);
-    });
-  }, []);
-
-  useEffect(() => {
-    if(schoolProfessor){
-      fetch(`http://localhost:3030/class/${schoolProfessor}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((resposta) => resposta.json())
-      .then((json) => {
-        setClasses(json.message); // Ajuste para usar o caminho correto
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar classes:", error);
-      });
-    }
-  }, [schoolProfessor]);
+  function excluirAlternativa(index){
+    const novasAlternativas = alternativas.filter((_, i) => i !== index);
+    setAlternativas(novasAlternativas);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  function resetFields() {
-    setSelectedSubject(null);
-    setContent('');
-    setSelectedRecipients([]);
-    setSelectedDate('');
-    setSelectedClasses([]);
-    setTipoQuestao('');
-    setAlternativas([{ text: '', isCorrect: false }]);
-    setSelectedFile(null);
-  }
-  
-  function CadastrarTarefa() {
-    const token = localStorage.getItem('token');
-    fetch("http://localhost:3030/tasks/create", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        subject: selectedSubject?.value,
-        content: content,
-        dueDate: selectedDate,
-        recipients: selectedClasses.map(cls => cls._id),
-        attachment: 20,
-        IdTeacher: IdProfessor,
-        status: "em andamento",
-        IdClass: selectedClasses.map(cls => cls._id),
-        school: schoolProfessor,
-        alternatives: tipoQuestao === 'alternativa' ? alternativas : [],
-      })
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-      setMessage(json);
-      resetFields(); // Limpa os campos após o sucesso do cadastro
-    })
-    .catch((error) => {
-      console.error("Erro ao cadastrar tarefa:", error);
-    });
-  }
-  function excluirAlternativa(index){
-    const novasAlternativas = alternativas.filter((_, i) => i !== index);
-    setAlternativas(novasAlternativas);
-  };
-  
+    //Resetando os campos
+    useEffect(() => {
+      if(tarefaCriada){
+        setSelectedSubject(null);
+        setContent('');
+        setSelectedRecipients([]);
+        setSelectedDate('');
+        setSelectedClasses([]);
+        setTipoQuestao('');
+        setAlternativas([{ text: '', isCorrect: false }]);
+        setSelectedFile(null);
+        setTarefaCriada(false)
+      }
+    }, [tarefaCriada])
 
+    //Pegando as salas
+  useEffect(() => {
+    if (dadosUser && dadosUser.message && dadosUser.message.IdSchool) {
+      GetClassProfessorById()
+    }
+  }, [dadosUser]);
+
+  function CadastrarTarefa() {
+    if (!selectedSubject) {
+      antdMessage.error("Por favor, selecione a matéria.");
+      return;
+    }
+  
+    if (!content) {
+      antdMessage.error("Por favor, preencha o conteúdo da tarefa.");
+      return;
+    }
+  
+    if (!selectedDate) {
+      antdMessage.error("Por favor, selecione uma data.");
+      return;
+    }
+  
+    if (selectedClasses.length === 0) {
+      antdMessage.error("Por favor, selecione ao menos uma classe.");
+      return;
+    }
+  
+    if (tipoQuestao === 'alternativa') {
+      if (alternativas.some(alt => !alt.text)) {
+        antdMessage.error("Preencha todas as alternativas ou remova as vazias.");
+        return;
+      }
+  
+      if (!alternativas.some(alt => alt.isCorrect)) {
+        antdMessage.error("Marque ao menos uma alternativa como correta.");
+        return;
+      }
+    }
+    // Se todos os campos estão preenchidos, chama a função de cadastro
+    CadastrarTask(
+      selectedSubject?.value, 
+      content, 
+      selectedDate, 
+      selectedClasses.map(cls => cls._id), 
+      selectedClasses.map(cls => cls._id), 
+      tipoQuestao, 
+      alternativas
+    );
+  }
+  
   return (
     <>
       <Header textBar1="Home" textBar2="DASHBOARD" textBar3="Presença de alunos"/>
@@ -192,22 +182,22 @@ function CadastroTarefas() {
           <Container maxWidth="xl">
             <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Autocomplete
-                  multiple
-                  options={classes} // Usando as classes obtidas
-                  getOptionLabel={(option) => option.name} // Exibindo o nome da classe
-                  value={selectedClasses}
-                  onChange={(event, newValue) => setSelectedClasses(newValue)} // Atualizando as classes selecionadas
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      label="Para quem?"
-                      placeholder="Selecione as classes"
-                      fullWidth
-                    />
-                  )}
+            <Autocomplete
+              multiple
+              options={classes || []} // Usa array vazio caso classes seja undefined
+              getOptionLabel={(option) => option.name} // Exibindo o nome da classe
+              value={selectedClasses}
+              onChange={(event, newValue) => setSelectedClasses(newValue)} // Atualizando as classes selecionadas
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Para quem?"
+                  placeholder="Selecione as classes"
+                  fullWidth
                 />
+              )}
+            />
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete

@@ -12,19 +12,31 @@ function TarefasAlunoAll() {
   // Desestruturando os arrays do contexto
   const { totalTasksContent, completedTasksContent, delayTasksContent, inProgressContent } = useContext(TaskContext);
 
-  // Função para determinar qual conteúdo exibir com base no filtro de status
+  // Função para determinar qual conteúdo exibir com base nos filtros de status e matéria
   const filteredContent = () => {
-    console.log(delayTasksContent)
+    let content = [];
+
+    // Filtra por status
     switch (filterStatus) {
       case 'em andamento':
-        return inProgressContent;
+        content = inProgressContent;
+        break;
       case 'atrasada':
-        return delayTasksContent;
+        content = delayTasksContent;
+        break;
       case 'pronto':
-        return completedTasksContent;
+        content = completedTasksContent;
+        break;
       default:
-        return totalTasksContent;
+        content = totalTasksContent;
     }
+
+    // Filtra por matéria
+    if (filterSubject) {
+      content = content.filter(task => task.subject === filterSubject);
+    }
+
+    return content;
   };
 
   return (
@@ -64,7 +76,13 @@ function TarefasAlunoAll() {
             </MenuItem>
             <MenuItem value="História">História</MenuItem>
             <MenuItem value="Matemática">Matemática</MenuItem>
-            <MenuItem value="Português">Português</MenuItem>
+            <MenuItem value="Língua Portuguesa">Língua Portuguesa</MenuItem>
+            <MenuItem value="Biologia">Biologia</MenuItem>
+            <MenuItem value="Física">Física</MenuItem>
+            <MenuItem value="Química">Química</MenuItem>
+            <MenuItem value="Geografia">Geografia</MenuItem>
+            <MenuItem value="Educação_Física">Educação Física</MenuItem>
+            <MenuItem value="Artes">Artes</MenuItem>
           </TextField>
 
           <TextField
@@ -82,63 +100,50 @@ function TarefasAlunoAll() {
             <MenuItem value="atrasada">Atrasada</MenuItem>
             <MenuItem value="pronto">Pronto</MenuItem>
           </TextField>
-
-          <Button 
-            variant="contained" 
-            color="primary" 
-            sx={{ 
-              padding: '10px 24px', 
-              fontWeight: 'bold',
-              borderRadius: '8px'
-            }}
-          >
-            Aplicar Filtros
-          </Button>
         </Box>
         <Grid container spacing={4} justifyContent="center">
-  {Array.isArray(filteredContent()) && filteredContent().length > 0 ? (
-    filteredContent().map(task => (
-      <Grid 
-        item 
-        xs={12} 
-        sm={6} 
-        md={4} 
-        key={task._id}
-        sx={{
-          display: 'flex', 
-          justifyContent: 'center', 
-          transition: 'transform 0.3s', 
-          '&:hover': { transform: 'scale(1.05)' }
-        }}
-      >
-        <CardTarefaMateria
-          id={task._id}
-          title={task.subject}
-          imageSrc="path/to/your/image.jpg"
-          professorName={`Professor(a) ${task.teacherName}`}
-          professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
-          subject={task.subject}
-          status={task.studentTaskStatus} // Use o status filtrado do estudante
-          button="Realizar tarefa"
-        />
-      </Grid>
-    ))
-  ) : (
-    <Grid item xs={12}>
-      <Box 
-        display="flex" 
-        justifyContent="center" 
-        alignItems="center" 
-        sx={{ height: '300px' }}
-      >
-        <Typography variant="h6" align="center" sx={{ color: '#777' }}>
-          Nenhuma tarefa encontrada.
-        </Typography>
-      </Box>
-    </Grid>
-  )}
-</Grid>
-
+          {Array.isArray(filteredContent()) && filteredContent().length > 0 ? (
+            filteredContent().map(task => (
+              <Grid 
+                item 
+                xs={12} 
+                sm={6} 
+                md={4} 
+                key={task._id}
+                sx={{
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  transition: 'transform 0.3s', 
+                  '&:hover': { transform: 'scale(1.05)' }
+                }}
+              >
+                <CardTarefaMateria
+                  id={task._id}
+                  title={task.subject}
+                  imageSrc="path/to/your/image.jpg"
+                  professorName={`Professor(a) ${task.teacherName}`}
+                  professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
+                  subject={task.subject}
+                  status={task.studentTaskStatus} // Use o status filtrado do estudante
+                  button="Realizar tarefa"
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Box 
+                display="flex" 
+                justifyContent="center" 
+                alignItems="center" 
+                sx={{ height: '300px' }}
+              >
+                <Typography variant="h6" align="center" sx={{ color: '#777' }}>
+                  Nenhuma tarefa encontrada.
+                </Typography>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
       </Container>
     </>
   );

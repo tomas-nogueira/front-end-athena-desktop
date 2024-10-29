@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 
 const { Title, Text } = Typography;
 
-function CardTarefaMateria({title, professorName, professorImage, subject, status, id, button}) {
+function CardTarefaMateria({title, professorName, professorImage, subject, status, id, button, respostas}) {
   // Lógica para determinar o ícone com base no assunto
   const getImageSrc = (subject) => {
     switch (subject) {
@@ -37,13 +37,13 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
   const navigate = useNavigate();
 
   function RedirecionarTarefa() {
-    if(button == "Realizar tarefa"){
+    if(button === "Realizar tarefa") {
       navigate(`/tarefa/${id}`);
     }
-    if(button == "Ver respostas"){
+    if(button === "Ver respostas") {
       navigate(`/respostastarefa/${id}`);
     }
-    if(button == "Voltar"){
+    if(button === "Voltar") {
       navigate(`/dashboard/tarefas/aluno/all`);
     }
   }
@@ -81,22 +81,31 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
           <Text strong style={{ fontSize: 20 }}>Assunto:</Text>
           <Title level={5} style={{ margin: '5px 0', fontWeight: 'bold', fontSize: 22 }}>{subject}</Title>
         </div>
-        <div style={{ marginBottom: 10, textAlign: 'center' }}>
-          <Text strong style={{ display: 'block', fontSize: '16px' }}>Status:</Text>
-          {status === "em andamento" ? (
-            <Tag color="#1E90FF" style={{fontWeight: 'bolder', fontSize: 18}}>Em andamento</Tag>
-          ) : status === "atrasada" ? (
-            <Tag color="#DC3545" style={{fontWeight: 'bolder', fontSize: 18}}>Atrasada</Tag>
-          ) : status === "pronto" ? (
-            <Tag color="#28A745" style={{fontWeight: 'bolder', fontSize: 18}}>Pronto</Tag>
-          ) : status === "cancelada" ? (
-            <Tag color="#6C757D" style={{fontWeight: 'bolder', fontSize: 18}}>Cancelada</Tag>
-          ) : status === "pendente" ? (
-            <Tag color="#FFC107" style={{fontWeight: 'bolder', fontSize: 18}}>Pendente</Tag>
-          ) : (
-            <Text>Carregando...</Text>
-          )}
-        </div>
+        
+        {/* Se o status existir, renderiza */}
+        {status && (
+          <div style={{ marginBottom: 10, textAlign: 'center' }}>
+            <Text strong style={{ display: 'block', fontSize: '16px' }}>Status:</Text>
+            {status === "em andamento" ? (
+              <Tag color="#FFA500" style={{ fontWeight: 'bolder', fontSize: 18 }}>Em andamento</Tag>
+            ) : status === "atrasada" ? (
+              <Tag color="#DC3545" style={{ fontWeight: 'bolder', fontSize: 18 }}>Atrasada</Tag>
+            ) : status === "pronto" ? (
+              <Tag color="#28A745" style={{ fontWeight: 'bolder', fontSize: 18 }}>Pronto</Tag>
+            ) : status === "cancelada" ? (
+              <Tag color="#6C757D" style={{ fontWeight: 'bolder', fontSize: 18 }}>Cancelada</Tag>
+            ) : status === "pendente" ? (
+              <Tag color="#FFC107" style={{ fontWeight: 'bolder', fontSize: 18 }}>Pendente</Tag>
+            ) : null }
+          </div>
+        )}
+        {respostas >= 0 && (
+          <div style={{ marginBottom: 10, textAlign: 'center' }}>
+            <Text strong style={{ display: 'block', fontSize: '16px' }}>Respostas:</Text>
+            <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{respostas}</Text>
+          </div>
+        )}
+
         <Button type="primary" style={{ width: '100%', backgroundColor: 'transparent', color: 'black', fontWeight: 'bold', border: '1px solid black' }} onClick={RedirecionarTarefa}>
           {button}
         </Button>
