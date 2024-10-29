@@ -5,6 +5,7 @@ import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
 import { AuthContext } from '../Context/authProvider';  
 import { TaskContext } from '../Context/taskProvider';
+import ChatForm from '../Components/ChatForm';
 
 function NotasProfessor() {
   const [data, setData] = useState(null);
@@ -61,6 +62,8 @@ function NotasProfessor() {
           )}
         </Grid>
       </Container>
+      <ChatForm userType={dadosUser.role} userId={dadosUser._id} />
+
     </>
   );
 }

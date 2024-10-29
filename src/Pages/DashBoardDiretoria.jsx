@@ -7,6 +7,7 @@ import Graph from '../Components/Graph';
 import Footer from '../Components/Footer';
 import HeaderDashboards from '../Components/HeaderDashboards';
 import { AuthContext } from '../Context/authProvider';
+import ChatForm from '../Components/ChatForm';
 
 function DashBoardDiretoria() {
   const { dadosUser } = useContext(AuthContext);
@@ -104,6 +105,8 @@ function DashBoardDiretoria() {
         </Grid>
       </Grid>
       <Footer />
+      <ChatForm userType={"diretoria"} userId={"diretoria"} />
+
     </>
   );
 }

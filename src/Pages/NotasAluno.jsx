@@ -3,8 +3,12 @@ import Header from '../Components/Header';
 import { TaskContext } from '../Context/taskProvider';
 import { Grid, Container, Typography } from '@mui/material';
 import CardNota from '../Components/CardNota'; // Certifique-se de importar seu componente
+import ChatForm from '../Components/ChatForm';
+import { AuthContext } from '../Context/authProvider';
 
 function NotasAluno() {
+    const { dadosUser } = useContext(AuthContext);
+
     const { gradedTasksContent } = useContext(TaskContext);
 
     // Verifique se gradedTasksContent e grades existem
@@ -32,6 +36,8 @@ function NotasAluno() {
                     ))}
                 </Grid>
             </Container>
+            <ChatForm userType={dadosUser.role} userId={dadosUser._id} />
+
         </>
     );
 }

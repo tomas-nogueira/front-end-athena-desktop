@@ -41,6 +41,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
     return () => {
       stopVideo();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cameraActive]);
 
   const startVideo = () => {

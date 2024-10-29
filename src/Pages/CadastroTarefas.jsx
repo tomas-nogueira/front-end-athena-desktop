@@ -11,6 +11,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { AuthContext } from '../Context/authProvider';
 import { TaskContext } from '../Context/taskProvider';
 import { message as antdMessage } from 'antd';
+import ChatForm from '../Components/ChatForm';
 
 const subjectOptions = [
   { value: 'Língua Portuguesa', label: 'Língua Portuguesa' },
@@ -290,6 +291,8 @@ function CadastroTarefas() {
           </Container>
         </Container>
       </section>
+      <ChatForm userType={dadosUser.role} userId={dadosUser._id} />
+
     </>
   );
 }

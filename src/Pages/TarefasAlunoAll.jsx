@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
-import { Grid, Container, Typography, Box, TextField, MenuItem, Button } from '@mui/material';
+import { Grid, Container, Typography, Box, TextField, MenuItem } from '@mui/material';
 import { TaskContext } from '../Context/taskProvider';
 
 function TarefasAlunoAll() {

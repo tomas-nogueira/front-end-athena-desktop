@@ -24,6 +24,7 @@ function DashBoardAluno() {
     if (dadosUser && dadosUser.message) {
       fetchPerformanceData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dadosUser]); 
 
   if (!dadosUser || !dadosUser.message) {
@@ -73,7 +74,6 @@ function DashBoardAluno() {
               sx={{
                 textAlign: 'center',
                 borderBottom: '3px solid #004FFF',
-                color: 'black',
                 fontWeight: 'bold',
                 width: '35%',
                 margin: '0 auto',
@@ -98,7 +98,6 @@ function DashBoardAluno() {
               sx={{
                 textAlign: 'center',
                 borderBottom: '3px solid #004FFF',
-                color: 'black',
                 fontWeight: 'bold',
                 width: '60%',
                 margin: '0 auto',
@@ -126,7 +125,6 @@ function DashBoardAluno() {
               sx={{
                 textAlign: 'center',
                 borderBottom: '3px solid #004FFF',
-                color: 'black',
                 fontWeight: 'bold',
                 width: '30%',
                 margin: '0 auto',

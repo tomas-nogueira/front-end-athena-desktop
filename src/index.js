@@ -133,7 +133,7 @@ const router = createBrowserRouter([
     element: <Presenca />,
   },
   {
-    path: "/teste",
+    path: "/cadastrar-face/user",
     element: <FaceRecognitionPage />,
   },
 ]);

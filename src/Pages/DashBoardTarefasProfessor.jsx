@@ -261,6 +261,7 @@ function DashBoardTarefas() {
         </Grid>
         <PerformanceDashboard />
       </Grid>
+      <ChatForm />
       <Footer />
     </>
   );

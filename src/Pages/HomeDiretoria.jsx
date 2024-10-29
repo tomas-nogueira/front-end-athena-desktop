@@ -12,10 +12,12 @@ import CardsAcesso from '../Components/CardsAcesso';
 import Macbook from '../Photos/macbook.png'
 import Linha from '../Photos/linha.png'
 import Ipad2 from '../Photos/Ipad2.png'
+import ChatForm from '../Components/ChatForm';
 
 
 function HomeDiretoria() {
   return (
+    <>
     <Grid>
       <Header textBar1="DashBOARD" textBar2="Recados"/> 
       <Grid sx={{ marginTop: '5rem' }}>
@@ -94,6 +96,9 @@ function HomeDiretoria() {
       </Grid>
       <Footer />
     </Grid>
+        <ChatForm />
+
+    </>
   )
 }
 

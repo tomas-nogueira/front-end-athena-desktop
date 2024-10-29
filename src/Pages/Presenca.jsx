@@ -14,8 +14,7 @@ const Presenca = () => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
-  const [studentId, setStudentId] = useState(''); // Aqui você pode configurar a obtenção do ID do estudante
-  const [classId, setClassId] = useState(''); // Aqui você pode configurar a obtenção do ID da turma
+  const [studentId, setStudentId] = useState(''); 
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -69,6 +68,7 @@ const Presenca = () => {
     return () => {
       stopVideo();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cameraActive]);
 
   const startVideo = () => {
