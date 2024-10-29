@@ -29,6 +29,7 @@ import TaskProvider from './Context/taskProvider';
 import HomeDiretoria from './Pages/HomeDiretoria';
 import FaceRecognitionPage from './Pages/FaceRecognitionPage';
 import Presenca from './Pages/Presenca';
+import NotasAluno from './Pages/NotasAluno'
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
   {
     path: "/notas/professor",
     element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
+  },
+  {
+    path: "/notas/aluno",
+    element: <ProtectedRoute element={<NotasAluno />} requiredRole="estudante" />,
   },
   {
     path: '/home/professor',
