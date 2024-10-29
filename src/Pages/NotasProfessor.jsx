@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Row, Col } from 'antd';  // Usei Row e Col para layout responsivo
 import { Grid, Container, Typography, Box, TextField, MenuItem, Button } from '@mui/material';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
-import Header from '../Components/Header'; // Certifique-se de ter o Header já implementado
-import { AuthContext } from '../Context/authProvider';
+import Header from '../Components/Header';
+import { AuthContext } from '../Context/authProvider';  
 import { TaskContext } from '../Context/taskProvider';
 
 function NotasProfessor() {
@@ -16,7 +16,7 @@ function NotasProfessor() {
 
   return (
     <>
-      <Header textBar1="HOME" textBar2="DASHBOARD"/>
+      <Header textBar1="HOME" textBar2="DASHBOARD" textBar3="Cadastrar tarefas"/>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={4} justifyContent="center">
           {Array.isArray(totalTasksContent) && totalTasksContent.length > 0 ? (
