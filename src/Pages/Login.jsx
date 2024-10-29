@@ -139,15 +139,12 @@ function Login() {
   useEffect(() => {
     if (logado) {
       if (roleContext === "estudante") {
-        navigate(0)
 
         navigate("/home/aluno");
       } else if (roleContext === "professor") {
-        navigate(0)
 
         navigate("/home/professor");
       } else if (roleContext === "diretor" || roleContext === "coordenador") {
-        navigate(0)
 
         navigate("/dashboard/diretoria");
       } else if (
@@ -155,11 +152,9 @@ function Login() {
         roleContext === "limpeza" ||
         roleContext === "cozinha"
       ) {
-        navigate(0)
 
         navigate("/dashboard/funcionarios");
       } else {
-                navigate(0)
 
         navigate("/");
       }

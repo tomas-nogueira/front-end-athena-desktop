@@ -27,6 +27,7 @@ import HomeAluno from './Components/HomeAluno';
 import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
 import HomeDiretoria from './Pages/HomeDiretoria';
+import FaceRecognitionPage from './Pages/FaceRecognitionPage';
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
+  },
+  {
+    path: "/teste",
+    element: <FaceRecognitionPage />,
   },
 ]);
 
