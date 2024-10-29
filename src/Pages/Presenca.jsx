@@ -14,7 +14,39 @@ const Presenca = () => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
+  const [studentId, setStudentId] = useState(''); // Aqui você pode configurar a obtenção do ID do estudante
+  const [classId, setClassId] = useState(''); // Aqui você pode configurar a obtenção do ID da turma
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
 
+      if (!token) {
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3030/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        console.log("Dados da API:", data);
+
+        if (response.ok && data.message) {
+          const {  _id } = data.message;
+          setStudentId(_id);
+        } else {
+            alert("erro")
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
   useEffect(() => {
     const loadModels = async () => {
       setLoading(true);
@@ -87,18 +119,18 @@ const Presenca = () => {
   };
 
   const handleSaveRecognition = async () => {
-    if (faceDescriptor) {
+    if (faceDescriptor && studentId) {
       setIsSaving(true);
       try {
-        const body = { descriptor: Array.from(faceDescriptor) };
-        const response = await fetch('http://localhost:3030/face', {
+        const body = { descriptor: Array.from(faceDescriptor), studentId }; 
+        const response = await fetch('http://localhost:3030/attendance/registerWithFaceDescriptor', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(body)
         });
-  
+
         const responseData = await response.json();
         if (response.ok) {
           notification.success({
@@ -120,6 +152,11 @@ const Presenca = () => {
       } finally {
         setIsSaving(false);
       }
+    } else {
+      notification.error({
+        message: 'Erro',
+        description: 'É necessário um descritor facial, ID do aluno e ID da turma.',
+      });
     }
   };
 

@@ -93,7 +93,6 @@ function HomeAluno() {
           </Container>
         </Grid>
       </Grid>
-      <ChatForm/>
       <Footer />
     </Grid>
     </div>
