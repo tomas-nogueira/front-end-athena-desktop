@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -8,14 +8,23 @@ import Header from '../Components/Header';
 import Graph from '../Components/Graph';
 import Footer from '../Components/Footer'
 import HeaderDashboards from '../Components/HeaderDashboards'
+import { AuthContext } from '../Context/authProvider';
 
 function DashBoardDiretoria() {
-  const [dadosUser, setDadosUser] = useState({})
-  
+  const { dadosUser } = useContext(AuthContext);
+
+  if (!dadosUser || !dadosUser.message) {
+    return <Typography variant="h5" align="center">Carregando...</Typography>;
+  }
+
+  if (!dadosUser.message.role || !dadosUser.message.name) {
+    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+  }
+
   return (
     <>
     <Header textBar1="Recados"/>
-        <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI-337'/>
+        <HeaderDashboards role={dadosUser.message.role} name={dadosUser.message.name} institution='SESI-337'/>
         <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
           <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
             <Grid item xs={12} sm={5} sx={{backgroundColor: 'white', borderRadius: 5}}>

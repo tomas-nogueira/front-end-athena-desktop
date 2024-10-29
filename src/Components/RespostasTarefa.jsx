@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -30,15 +30,26 @@ function RespostasTarefa() {
   const [selectedResponse, setSelectedResponse] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [grade, setGrade] = useState('');
+  const navigate = useNavigate();
 
   const { dadosUser } = useContext(AuthContext);
-  const { getResponsesByTaskById, GetDataTaskById, tasksResponses, dataTask, loading, CorrectionTask } = useContext(TaskContext);
+  const { getResponsesByTaskById, GetDataTaskById, tasksResponses, dataTask, loading, CorrectionTask, tarefaAvaliada } = useContext(TaskContext);
 
 
   useEffect(() => {
     getResponsesByTaskById(id)
     GetDataTaskById(id)        
   }, [id]);
+
+  useEffect(() => {
+    if (tarefaAvaliada) {
+      const timer = setTimeout(() => {
+        navigate('/notas/professor');
+        window.location.reload();
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [tarefaAvaliada, navigate]);
 
   const handleOpenDialog = (response) => {
     setSelectedResponse(response);

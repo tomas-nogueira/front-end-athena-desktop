@@ -39,7 +39,7 @@ function TarefasAlunoAll() {
 
   return (
     <>
-      <Header />
+      <Header textBar1="HOME" textBar2={"Minhas tarefas"}/>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography 
           variant="h4" 
