@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -8,10 +8,20 @@ import Header from '../Components/Header';
 import Graph from '../Components/Graph';
 import Footer from '../Components/Footer'
 import HeaderDashboards from '../Components/HeaderDashboards'
+import { AuthContext } from '../Context/authProvider';
 
 
 function DashBoardDiretoria() {
-  const [dadosUser, setDadosUser] = useState({})
+  
+const { dadosUser } = useContext(AuthContext);
+
+  if (!dadosUser || !dadosUser.message) {
+    return <Typography variant="h5" align="center">Carregando...</Typography>;
+  }
+
+  if (!dadosUser.message.role || !dadosUser.message.name) {
+    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);

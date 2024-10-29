@@ -40,6 +40,7 @@ function NotasProfessor() {
                   imageSrc="path/to/your/image.jpg"
                   subject={task.subject}
                   respostas={task.studentResponses.length}
+                  studentResponses={task.studentResponses}
                   button="Ver respostas"
                 />
               </Grid>

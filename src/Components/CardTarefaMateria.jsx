@@ -1,10 +1,9 @@
 import React from 'react';
-import { Card, Avatar, Button, Typography, Tag } from "antd";
+import { Card, Avatar, Button, Typography, Tag, Row, Col } from "antd";
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
-
 const { Title, Text } = Typography;
 
-function CardTarefaMateria({title, professorName, professorImage, subject, status, id, button, respostas}) {
+function CardTarefaMateria({ title, professorName, professorImage, subject, status, id, button, studentResponses }) {
   // Lógica para determinar o ícone com base no assunto
   const getImageSrc = (subject) => {
     switch (subject) {
@@ -37,16 +36,20 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
   const navigate = useNavigate();
 
   function RedirecionarTarefa() {
-    if(button === "Realizar tarefa") {
+    if (button === "Realizar tarefa") {
       navigate(`/tarefa/${id}`);
     }
-    if(button === "Ver respostas") {
+    if (button === "Ver respostas") {
       navigate(`/respostastarefa/${id}`);
     }
-    if(button === "Voltar") {
+    if (button === "Voltar") {
       navigate(`/dashboard/tarefas/aluno/all`);
     }
   }
+
+  // Contar respostas avaliadas e não avaliadas
+  const gradedCount = studentResponses ? studentResponses.filter(response => response.graded).length : 0;
+  const ungradedCount = studentResponses ? studentResponses.length - gradedCount : 0;
 
   return (
     <Card
@@ -72,7 +75,7 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
     >
       <div style={{ marginBottom: 15 }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
-          <Avatar src={professorImage} style={{ marginRight: 10, backgroundColor: 'transparent' }} size={50}/>
+          <Avatar src={professorImage} style={{ marginRight: 10, backgroundColor: 'transparent' }} size={50} />
           <div>
             <Title level={4} style={{ margin: 0, fontSize: 15 }}>{professorName}</Title>
           </div>
@@ -81,8 +84,6 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
           <Text strong style={{ fontSize: 20 }}>Assunto:</Text>
           <Title level={5} style={{ margin: '5px 0', fontWeight: 'bold', fontSize: 22 }}>{subject}</Title>
         </div>
-        
-        {/* Se o status existir, renderiza */}
         {status && (
           <div style={{ marginBottom: 10, textAlign: 'center' }}>
             <Text strong style={{ display: 'block', fontSize: '16px' }}>Status:</Text>
@@ -96,14 +97,37 @@ function CardTarefaMateria({title, professorName, professorImage, subject, statu
               <Tag color="#6C757D" style={{ fontWeight: 'bolder', fontSize: 18 }}>Cancelada</Tag>
             ) : status === "pendente" ? (
               <Tag color="#FFC107" style={{ fontWeight: 'bolder', fontSize: 18 }}>Pendente</Tag>
-            ) : null }
+            ) : null}
           </div>
         )}
-        {respostas >= 0 && (
-          <div style={{ marginBottom: 10, textAlign: 'center' }}>
-            <Text strong style={{ display: 'block', fontSize: '16px' }}>Respostas:</Text>
-            <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{respostas}</Text>
-          </div>
+        
+        {/* Renderização condicional para studentResponses */}
+        {studentResponses && (
+          <Row gutter={16} style={{ marginBottom: 10 }}>
+            <Col span={12}>
+              <Card 
+                style={{ textAlign: 'center', backgroundColor: '#28A745', color: 'white' }}
+                bodyStyle={{ padding: '20px' }}
+              >
+                <Title level={2} style={{ margin: 0, color: 'white' }}>
+                  {gradedCount}
+                </Title>
+              </Card>
+              <Text strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px', textAlign: 'center' }}>Avaliadas</Text>
+
+            </Col>
+            <Col span={12}>
+              <Card 
+                style={{ textAlign: 'center', backgroundColor: '#DC3545', color: 'white' }}
+                bodyStyle={{ padding: '20px' }}
+              >
+                <Title level={2} style={{ margin: 0, color: 'white' }}>
+                  {ungradedCount}
+                </Title>
+              </Card>
+              <Text strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px', textAlign: 'center' }}>Não Avaliadas</Text>
+            </Col>
+          </Row>
         )}
 
         <Button type="primary" style={{ width: '100%', backgroundColor: 'transparent', color: 'black', fontWeight: 'bold', border: '1px solid black' }} onClick={RedirecionarTarefa}>

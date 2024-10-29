@@ -17,12 +17,14 @@ function TaskProvider({ children }) {
   const [delayTasksContent, setDelayTasksContent] = useState([]);
   const [dueSoonContent, setDueSoonContent] = useState([]);
   const [inProgressContent, setInProgressContent] = useState([]);
+  const [gradedTasksContent, setGradedTasksContent] = useState([])
 
   const [dataTask, setDataTask] = useState(null)//Estado para pegar os dados da tarefa individualmente
   const [classes, setClasses] = useState([])
 
   const [tarefaEnviada, setTarefaEnviada] = useState(false)
   const [tarefaCriada, setTarefaCriada] = useState(false)
+  const [tarefaAvaliada, setTarefaAvaliada] = useState(false)
 
   const [tasksResponses, setTaskResponses] = useState([])
 
@@ -124,6 +126,24 @@ function TaskProvider({ children }) {
             setInProgress(filteredInProgressTasks.length);
           })
           .catch((error) => console.log(error));
+
+          //Pegar tarefas avaliadas
+          fetch(`http://localhost:3030/tasks/usergrade/${studentId}`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+            .then((resposta) => resposta.json())
+            .then((json) => {
+              console.log(json)
+              if(json.grades){
+                setGradedTasksContent(json)
+              }
+            })
+            .catch((error) => console.log(error));
+
+
       }
 
       // Lógica para professor
@@ -289,8 +309,10 @@ function TaskProvider({ children }) {
       .then((json) => {
         if (json.message === "Response updated successfully") {
           antdMessage.success("Avaliação enviada com sucesso!");
+          setTarefaAvaliada(true)
         } else {
           antdMessage.error("Erro ao enviar avaliação: " + json.message);
+          setTarefaAvaliada(false)
         }
       })
       .catch((error) => {
@@ -323,7 +345,9 @@ function TaskProvider({ children }) {
       getResponsesByTaskById,
       tasksResponses,
       loading,
-      CorrectionTask
+      CorrectionTask,
+      tarefaAvaliada,
+      gradedTasksContent
     }}>
       {children}
     </TaskContext.Provider>
