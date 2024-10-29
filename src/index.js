@@ -26,6 +26,9 @@ import AviseClass from './Pages/AviseClass';
 import HomeAluno from './Components/HomeAluno';
 import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
+import HomeDiretoria from './Pages/HomeDiretoria';
+import FaceRecognitionPage from './Pages/FaceRecognitionPage';
+import Presenca from './Pages/Presenca';
 
 const router = createBrowserRouter([
   {
@@ -113,8 +116,20 @@ const router = createBrowserRouter([
     element: <EditPerfil />
   },
   {
+    path:"/home/diretoria",
+    element: <HomeDiretoria />
+  },
+  {
     path: "*",
     element: <NotFound />,
+  },
+  {
+    path: "/presenca",
+    element: <Presenca />,
+  },
+  {
+    path: "/teste",
+    element: <FaceRecognitionPage />,
   },
 ]);
 

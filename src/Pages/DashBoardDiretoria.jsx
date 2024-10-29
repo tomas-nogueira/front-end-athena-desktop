@@ -10,8 +10,10 @@ import Footer from '../Components/Footer'
 import HeaderDashboards from '../Components/HeaderDashboards'
 import { AuthContext } from '../Context/authProvider';
 
+
 function DashBoardDiretoria() {
-  const { dadosUser } = useContext(AuthContext);
+  
+const { dadosUser } = useContext(AuthContext);
 
   if (!dadosUser || !dadosUser.message) {
     return <Typography variant="h5" align="center">Carregando...</Typography>;
@@ -21,10 +23,14 @@ function DashBoardDiretoria() {
     return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <>
-    <Header textBar1="Recados"/>
-        <HeaderDashboards role={dadosUser.message.role} name={dadosUser.message.name} institution='SESI-337'/>
+    <Header textBar2="Recados" textBar1="home"/>
+        <HeaderDashboards role={dadosUser.role} name={dadosUser.name} institution='SESI-337'/>
         <Grid container spacing={2} sx={{ marginTop: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 8, marginBottom: 10}}>
           <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'center', gap: '3rem'}}>
             <Grid item xs={12} sm={5} sx={{backgroundColor: 'white', borderRadius: 5}}>

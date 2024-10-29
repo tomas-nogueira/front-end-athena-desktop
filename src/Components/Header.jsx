@@ -12,19 +12,21 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from '../Photos/logo_athena 3.png';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react'; // Import useContext
-import { AuthContext } from '../Context/authProvider'; // Importe o contexto
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react'; 
+import { AuthContext } from '../Context/authProvider'; 
 
 function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const pages = [textBar1, textBar2, textBar3, textBar4]; 
-    const settings = ['Sua Conta', 'Sair'];
-
-    const { Logout } = useContext(AuthContext); // Obtenha a função Logout do contexto
+    const { Logout } = useContext(AuthContext); 
     const navigate = useNavigate();
+    const location = useLocation(); // Obtém a rota atual
+
+    const pages = [textBar1, textBar2, textBar3, textBar4]; 
+    const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
+    const userSettings = isHomeRoute ? ['Entrar'] : ['Sua Conta', 'Sair']; // Define as opções com base na rota
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -50,7 +52,6 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -101,7 +102,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         } else if (page === 'Home') {
                                             navigate('/home/professor');
                                         } else if (page === 'Cadastrar uma Tarefa') {
-                                            navigate('/cadastrotarefas');
+                                            navigate('/cadastro/tarefas');
                                         } else if (page === 'Login') {
                                             navigate('/login');
                                         } else if (page === 'Cadastro') {
@@ -124,6 +125,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         else if (page === 'Avaliar Tarefas') {
                                             navigate('/notas/professor');
                                         }
+                                        else if (page === 'DashBOARD') {
+                                            navigate('/dashboard/diretoria');
+                                        }
                                     }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
@@ -144,7 +148,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/home/professor');
                                     }
                                     else if (page === 'home') {
-                                        navigate('/');
+                                        navigate('/home/diretoria');
                                     }
                                     else if (page === 'Cadastrar uma Tarefa') {
                                         navigate('/cadastro/tarefas');
@@ -155,7 +159,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     } else if (page === 'Tarefas') {
                                         navigate('/dashboard/tarefas/aluno');
                                     } else if (page === 'Recados') {
-                                        navigate('/dashboard/diretoria/recados');
+                                        navigate('/aviso/diretor');
                                     }
                                     else if (page === 'DASHBOARD') {
                                         navigate('/dashboard/tarefas/professor');
@@ -174,6 +178,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     }
                                     else if (page === 'Avaliar Tarefas') {
                                         navigate('/notas/professor');
+                                    }
+                                    else if (page === 'DashBOARD') {
+                                        navigate('/dashboard/diretoria');
                                     }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -205,7 +212,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting, index) => (
+                            {userSettings.map((setting, index) => (
                                 <MenuItem
                                     key={index}
                                     onClick={() => {
@@ -214,6 +221,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                             setTimeout(() => {
                                                 navigate('/');
                                             }, 1000);
+                                        } else if (setting === 'Entrar') {
+                                            navigate('/login');
                                         }
                                         handleCloseUserMenu();
                                     }}

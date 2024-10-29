@@ -13,6 +13,33 @@ function AuthProvider({ children }) {
     const [dadosUser, setDadosUser] = useState({})
     const [dadosSchool, setDadosSchool] = useState({})
 
+    function LoginFacial(descriptor) {
+        fetch("http://localhost:3030/user/facelogin", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ descriptor })
+        })
+        .then(response => response.json())
+        .then(json => {
+            if (json.token) {
+                setLogado(true);
+                localStorage.setItem("token", json.token);
+                localStorage.setItem("role", json.role);
+                antdMessage.success('Login bem-sucedido!');
+            } else {
+                setLogado(false);
+                antdMessage.error(`Falha no reconhecimento facial. Similaridade: ${json.similarityScore}.`);
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao processar o login facial:", error);
+            antdMessage.error("Erro no login facial. Tente novamente.");
+        });
+    }
+    
+
     function Login(email, senha) {
         fetch("http://localhost:3030/user/login", {
             method: "POST",
@@ -209,7 +236,7 @@ function AuthProvider({ children }) {
     }
 
     return (
-        <AuthContext.Provider value={{ Login, Cadastrar, messageContext, logado, roleContext, Logout, dadosUser: dadosUser, LoginEscola, CadastrarEscola, cnpjContext, dadosSchool: dadosSchool }}>
+        <AuthContext.Provider value={{ Login, LoginFacial, Cadastrar, messageContext, logado, roleContext, Logout, dadosUser: dadosUser, LoginEscola, CadastrarEscola, cnpjContext, dadosSchool: dadosSchool }}>
             {children}
         </AuthContext.Provider>
     );

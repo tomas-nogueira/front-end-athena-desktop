@@ -16,9 +16,11 @@ import Style from "../Styles/EditPerfil.module.css";
 import Footer from '../Components/Footer';
 import Header from '../Components/Header';
 
+
+
 const EditPerfil = () => {
   const { userId } = useContext(AuthContext);
-  const [id, setId] = useState()
+  const [id, setId] = useState();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -60,7 +62,7 @@ const EditPerfil = () => {
           setStreet(address?.street || '');
           setCep(address?.cep || '');
           setState(address?.state || '');
-          setId(_id)
+          setId(_id);
           setCity(address?.city || '');
         } else {
           setError(data.message || 'Erro ao buscar dados do usuário.');
@@ -82,17 +84,21 @@ const EditPerfil = () => {
       return;
     }
 
-    if (!userId) {
+    if (!id) {
       setError('ID de usuário não encontrado.');
       return;
     }
 
+    console.log("Atualizando usuário com ID:", id);
+
     try {
+     
+
       const response = await fetch(`http://localhost:3030/user/edit/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           name,
@@ -125,7 +131,7 @@ const EditPerfil = () => {
   return (
     <div className={Style.bg}>
       <div className={Style.header}>
-        <Header textBar1="Home"/>
+        <Header textBar1="home"/>
       </div>
       <div className={Style.container}>
         <div className={Style.highbox}>
@@ -237,7 +243,7 @@ const EditPerfil = () => {
           </form>
         </Grid>
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };
