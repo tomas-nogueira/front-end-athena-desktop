@@ -131,7 +131,7 @@ const EditPerfil = () => {
   return (
     <div className={Style.bg}>
       <div className={Style.header}>
-        <Header textBar1="Home"/>
+        <Header textBar1="home"/>
       </div>
       <div className={Style.container}>
         <div className={Style.highbox}>
