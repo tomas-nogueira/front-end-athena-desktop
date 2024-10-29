@@ -12,19 +12,21 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from '../Photos/logo_athena 3.png';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../Context/authProvider';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useContext } from 'react'; 
+import { AuthContext } from '../Context/authProvider'; 
 
-function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
+function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const pages = [textBar1, textBar2, textBar3, textBar4];
-    const settings = ['Sua Conta', 'Sair'];
-
-    const { logado, Logout } = useContext(AuthContext); // Obtém o estado de login
+    const { Logout } = useContext(AuthContext); 
     const navigate = useNavigate();
+    const location = useLocation(); // Obtém a rota atual
+
+    const pages = [textBar1, textBar2, textBar3, textBar4]; 
+    const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
+    const userSettings = isHomeRoute ? ['Entrar'] : ['Sua Conta', 'Sair']; // Define as opções com base na rota
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -42,18 +44,6 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
         setAnchorElUser(null);
     };
 
-    const handleUserMenuClick = (setting) => {
-        if (setting === 'Sair') {
-            Logout();
-            setTimeout(() => {
-                navigate('/');
-            }, 1000);
-        } else if (setting === 'Sua Conta') {
-            navigate('/user/Perfil', { replace: true });
-        }
-        handleCloseUserMenu();
-    };
-
     return (
         <AppBar position="static" style={{ borderBottom: "2px solid black", paddingTop: 5, paddingBottom: 5, backgroundColor: "#394255" }}>
             <Container maxWidth="xl">
@@ -62,7 +52,6 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -105,27 +94,39 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                         >
                             {pages.map((page, index) => (
                                 <MenuItem
-                                    key={index}
+                                    key={index} 
                                     onClick={() => {
                                         handleCloseNavMenu();
-                                        if (page === 'Instruções') {
-                                            onTextBar2Click();
+                                        if (page === 'Instruções') { 
+                                            onTextBar2Click(); 
                                         } else if (page === 'Home') {
                                             navigate('/home/professor');
                                         } else if (page === 'Cadastrar uma Tarefa') {
-                                            navigate('/cadastrotarefas');
+                                            navigate('/cadastro/tarefas');
+                                        } else if (page === 'Login') {
+                                            navigate('/login');
+                                        } else if (page === 'Cadastro') {
+                                            navigate('/login');
                                         } else if (page === 'Tarefas') {
                                             navigate('/dashboard/tarefas/aluno');
-                                        } else if (page === 'DASHBOARD') {
+                                        }
+                                        else if (page === 'DASHBOARD') {
                                             navigate('/dashboard/tarefas/professor');
-                                        } else if (page === 'HOME') {
+                                        }
+                                        else if (page === 'HOME') {
                                             navigate('/home/aluno');
-                                        } else if (page === 'Minhas tarefas') {
+                                        }
+                                        else if (page === 'Minhas tarefas') {
                                             navigate('/dashboard/tarefas/aluno');
-                                        } else if (page === 'dashboard') {
+                                        }
+                                        else if (page === 'dashboard') {
                                             navigate('/dashboard/aluno');
-                                        } else if (page === 'Avaliar Tarefas') {
+                                        }
+                                        else if (page === 'Avaliar Tarefas') {
                                             navigate('/notas/professor');
+                                        }
+                                        else if (page === 'DashBOARD') {
+                                            navigate('/dashboard/diretoria');
                                         }
                                     }}
                                 >
@@ -138,33 +139,48 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
                             <Button
-                                key={index}
+                                key={index} 
                                 onClick={() => {
                                     handleCloseNavMenu();
                                     if (page === 'Instruções') {
-                                        onTextBar2Click();
+                                        onTextBar2Click(); // Abre o pop-up de instruções
                                     } else if (page === 'Home') {
                                         navigate('/home/professor');
-                                    } else if (page === 'home') {
-                                        navigate('/');
-                                    } else if (page === 'Cadastrar uma Tarefa') {
+                                    }
+                                    else if (page === 'home') {
+                                        navigate('/home/diretoria');
+                                    }
+                                    else if (page === 'Cadastrar uma Tarefa') {
                                         navigate('/cadastro/tarefas');
+                                    } else if (page === 'Login') { 
+                                        navigate('/login');
+                                    } else if (page === 'Cadastro') {
+                                        navigate('/login');
                                     } else if (page === 'Tarefas') {
                                         navigate('/dashboard/tarefas/aluno');
                                     } else if (page === 'Recados') {
                                         navigate('/aviso/diretor');
-                                    } else if (page === 'DASHBOARD') {
+                                    }
+                                    else if (page === 'DASHBOARD') {
                                         navigate('/dashboard/tarefas/professor');
-                                    } else if (page === 'Cadastrar tarefas') {
+                                    }
+                                    else if (page === 'Cadastrar tarefas') {
                                         navigate('/cadastro/tarefas');
-                                    } else if (page === 'HOME') {
+                                    }
+                                    else if (page === 'HOME') {
                                         navigate('/home/aluno');
-                                    } else if (page === 'Minhas tarefas') {
+                                    }
+                                    else if (page === 'Minhas tarefas') {
                                         navigate('/dashboard/tarefas/aluno');
-                                    } else if (page === 'dashboard') {
+                                    }
+                                    else if (page === 'dashboard') {
                                         navigate('/dashboard/aluno');
-                                    } else if (page === 'Avaliar Tarefas') {
+                                    }
+                                    else if (page === 'Avaliar Tarefas') {
                                         navigate('/notas/professor');
+                                    }
+                                    else if (page === 'DashBOARD') {
+                                        navigate('/dashboard/diretoria');
                                     }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -196,21 +212,24 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {logado && settings.map((setting, index) => (
+                            {userSettings.map((setting, index) => (
                                 <MenuItem
                                     key={index}
-                                    onClick={() => handleUserMenuClick(setting)}
+                                    onClick={() => {
+                                        if (setting === 'Sair') {
+                                            Logout();
+                                            setTimeout(() => {
+                                                navigate('/');
+                                            }, 1000);
+                                        } else if (setting === 'Entrar') {
+                                            navigate('/login');
+                                        }
+                                        handleCloseUserMenu();
+                                    }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                                 </MenuItem>
                             ))}
-                            {!logado && (
-                                <MenuItem
-                                    onClick={() => navigate('/login')} // Navega para a página de login se o usuário não estiver logado
-                                >
-                                    <Typography sx={{ textAlign: 'center' }}>Login</Typography>
-                                </MenuItem>
-                            )}
                         </Menu>
                     </Box>
                 </Toolbar>

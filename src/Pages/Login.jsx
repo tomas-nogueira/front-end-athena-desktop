@@ -114,21 +114,21 @@ function Login() {
 
   useEffect(() => {
     if (logado) {
-      if (roleContext === "estudante") {
-        navigate("/home/aluno");
-      } else if (roleContext === "professor") {
-        navigate("/home/professor");
-      } else if (roleContext === "diretor" || roleContext === "coordenador") {
-        navigate("/dashboard/diretoria");
-      } else if (
-        roleContext === "inspetor" ||
-        roleContext === "limpeza" ||
-        roleContext === "cozinha"
-      ) {
-        navigate("/dashboard/funcionarios");
-      } else {
-        navigate("/");
-      }
+        if (roleContext === 'estudante') {
+            navigate('/home/aluno');
+        } 
+        else if (roleContext === 'professor') {
+            navigate('/home/professor');
+        } 
+        else if (roleContext === 'diretor' || roleContext === 'coordenador') {
+            navigate('/home/diretoria');
+        } 
+        else if (roleContext === 'inspetor' || roleContext === 'limpeza' || roleContext === 'cozinha') {
+            navigate('/dashboard/funcionarios');
+        } 
+        else {
+            navigate('/');
+        }
     }
   }, [logado, navigate, roleContext]);
 
