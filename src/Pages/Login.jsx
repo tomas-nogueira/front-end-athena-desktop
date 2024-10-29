@@ -14,15 +14,16 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { AuthContext } from '../Context/authProvider';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { message as antdMessage } from 'antd';
+import FaceLogin from "./FaceLogin";
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function Login() {
-    const { Login, Cadastrar, logado, roleContext} = useContext(AuthContext);
+  const { Login, Cadastrar, logado, roleContext } = useContext(AuthContext);
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -38,55 +39,64 @@ function Login() {
     const [school, setSchool] = useState('');
     const [confirmsenha, setConfirmSenha] = useState('')
     const [showPassword, setShowPassword] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
+
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+  const [schoolOptions, setSchoolOptions] = useState([]);
 
-    const [schoolOptions, setSchoolOptions] = useState([])
+  const [classOptions, setClassOptions] = useState([]);
 
-    const [classOptions, setClassOptions] = useState([])
-
-    const [classes, setClasses] = useState('')
+  const [classes, setClasses] = useState("");
 
     const [message, setMessage] = useState('')
     const navigate = useNavigate();
 
-    const handleToggle = () => {
-        setIsLogin(!isLogin);
-    };
 
-    const handleSchoolChange = (event) => {
-        setSchool(event.target.value);
-    };
+  const handleToggle = () => {
+    setIsLogin(!isLogin);
+  };
 
-    const handleClassesChange = (event) => {
-        setClasses(event.target.value);
-    };
+  const handleSchoolChange = (event) => {
+    setSchool(event.target.value);
+  };
 
-    const handleRoleChange = (event) => {
-        setRole(event.target.value);
-    };
+  const handleClassesChange = (event) => {
+    setClasses(event.target.value);
+  };
 
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  };
 
-    const roleOptions = [
-        { value: 'inspetor', label: 'Inspetor' },
-        { value: 'estudante', label: 'Estudante' },
-        { value: 'professor', label: 'Professor' },
-        { value: 'diretor', label: 'Diretoria' },
-        { value: 'limpeza', label: 'Limpeza' },
-        { value: 'cozinha', label: 'Cozinha' },
-        { value: 'coordenador', label: 'Coordenador' },
-        { value: 'outro', label: 'Outro' },
-    ];
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
 
-    function RealizaLogin() {
-        if (!email || !senha) {
-            antdMessage.error("Por favor, preencha todos os campos"); 
-              return;
-          }
-        Login(email, senha);
+  const handleCloseModal = () => {
+    setOpenModal(false); // Certifique-se de que 'setOpenModal' está corretamente definido.
+  };
+  
+  const roleOptions = [
+    { value: "inspetor", label: "Inspetor" },
+    { value: "estudante", label: "Estudante" },
+    { value: "professor", label: "Professor" },
+    { value: "diretor", label: "Diretoria" },
+    { value: "limpeza", label: "Limpeza" },
+    { value: "cozinha", label: "Cozinha" },
+    { value: "coordenador", label: "Coordenador" },
+    { value: "outro", label: "Outro" },
+  ];
+
+  function RealizaLogin() {
+    if (!email || !senha) {
+      antdMessage.error("Por favor, preencha todos os campos");
+      return;
     }
+    Login(email, senha);
+  }
 
     function RealizaCadastro() {
       if (!nome || !email || !senha || !confirmsenha || !telefone || !cpf || !role || !rua || !cep || !estado || !cidade || !school) {
@@ -120,52 +130,51 @@ function Login() {
             navigate('/');
         }
     }
-}, [logado, navigate, roleContext]);
+  }, [logado, navigate, roleContext]);
 
-    useEffect(() =>{
-        fetch("http://localhost:3030/school", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
+  useEffect(() => {
+    fetch("http://localhost:3030/school", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-        const options = json.schools.map(school => ({
-            value: school._id,
-            label: school.name,
+      .then((resposta) => resposta.json())
+      .then((json) => {
+        const options = json.schools.map((school) => ({
+          value: school._id,
+          label: school.name,
         }));
-        setSchoolOptions(options);    })
-    .catch((error) => {
-    });
-    }, [])
+        setSchoolOptions(options);
+      })
+      .catch((error) => {});
+  }, []);
 
-    useEffect(() =>{
-        fetch(`http://localhost:3030/class/${school}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
+  useEffect(() => {
+    fetch(`http://localhost:3030/class/${school}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((resposta) => resposta.json())
-    .then((json) => {
+      .then((resposta) => resposta.json())
+      .then((json) => {
         // Verifica se a resposta contém uma array de classes
         if (Array.isArray(json.message) && json.message.length > 0) {
-            const optionsClass = json.message.map(classes => ({
-                value: classes._id,
-                label: classes.name,
-            }));
-            setClassOptions(optionsClass);
+          const optionsClass = json.message.map((classes) => ({
+            value: classes._id,
+            label: classes.name,
+          }));
+          setClassOptions(optionsClass);
         } else {
-            // Se a array estiver vazia, define um texto padrão
-            setClassOptions([{ value: '', label: 'Nenhuma sala encontrada' }]);
+          // Se a array estiver vazia, define um texto padrão
+          setClassOptions([{ value: "", label: "Nenhuma sala encontrada" }]);
         }
-    })
-    .catch((error) => {
-        console.log(error)
-    });
-    
-    }, [school])
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [school]);
 
     return (
         <div className={Style.bg}>
@@ -173,6 +182,15 @@ function Login() {
                 <div>
                     <img src={Logo} className={Style.logo} alt="Logo" />
                 </div>
+                <Modal
+        open={openModal}
+        onCancel={handleCloseModal} // Use onCancel para fechar o modal
+        centered
+        closable // Habilita o botão de fechar no canto superior direito
+        width={600}
+      >
+        <FaceLogin />
+      </Modal>
                 {isLogin ? (
                     <>
                         <div className={Style.highbox}>
@@ -220,6 +238,14 @@ function Login() {
                             <div className={Style.btndiv}>
                                 <Button size="large" variant="contained" onClick={RealizaLogin} style={{ backgroundColor: '#235BD5', fontWeight: '500' }}>ENTRAR</Button>
                             </div>
+                            <Button
+                  size="large"
+                  variant="contained"
+                  onClick={handleOpenModal}
+                  style={{ backgroundColor: "#FF5722", fontWeight: "500" }}
+                >
+                  LOGIN FACIAL
+                </Button>
                         </div>
                     </>
                 ) : (

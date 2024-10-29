@@ -121,6 +121,7 @@ function AviseClass() {
     <div>
       <div>
         <Header textBar1="home" textBar2="DashBOARD"/>
+        <Header/>
       </div>
       <div className={Style.recado}>
         <h3>Envie recados para a Athena</h3>
