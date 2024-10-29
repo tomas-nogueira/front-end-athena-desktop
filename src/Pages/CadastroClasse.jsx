@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography, Alert, Chip, Autocomplete, MenuItem
 import { Add, Remove } from '@mui/icons-material';
 import CadastroBack from '../Photos/Cadastro-back.png';
 import Header from '../Components/Header';
+import { message as antdMessage } from 'antd';
 
 function CadastroClasse() {
   const [name, setName] = useState('');
@@ -80,7 +81,7 @@ function CadastroClasse() {
           .then(scheduleRes => scheduleRes.json())
           .then(scheduleData => {
             if (scheduleData) {
-              setSuccessMessage("Classe e cronograma cadastrados com sucesso!");
+              antdMessage.success("Classe e cronograma cadastrados com sucesso!");
               // Limpeza dos campos
               setName('');
               setGrade('');
@@ -97,7 +98,7 @@ function CadastroClasse() {
         }
       })
       .catch(error => {
-        setErrorMessage("Erro ao cadastrar a classe e cronograma.");
+        antdMessage.error("Erro ao cadastrar a classe e cronograma.");
         console.error("Erro ao cadastrar classe e cronograma:", error);
       });
     }

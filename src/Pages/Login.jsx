@@ -89,18 +89,27 @@ function Login() {
     }
 
     function RealizaCadastro() {
-      if (!nome || !email || !senha || !confirmsenha || !telefone || !cpf || !role || !rua || !cep || !estado || !cidade || !school) {
-        antdMessage.error("Por favor, preencha todos os campos"); 
-          return;
-      }
-  
-      if (senha !== confirmsenha) {
-        antdMessage.error("As senhas não coincidem"); 
-        return;
-      }
-  
-      Cadastrar(nome, email, senha, school, classes, telefone, cpf, role, rua, cep, estado, cidade);
-  }
+        if (
+            !nome || !email || !senha || !confirmsenha || !telefone || !cpf || 
+            !role || !rua || !cep || !estado || !cidade || !school
+        ) {
+            antdMessage.error("Por favor, preencha todos os campos"); 
+            return;
+        }
+    
+        if (senha !== confirmsenha) {
+            antdMessage.error("As senhas não coincidem"); 
+            return;
+        }
+    
+        if (cpf.length !== 11 || !/^\d{11}$/.test(cpf)) {
+            antdMessage.error("CPF inválido. Deve conter 11 dígitos numéricos."); 
+            return;
+        }
+    
+        Cadastrar(nome, email, senha, school, classes, telefone, cpf, role, rua, cep, estado, cidade);
+    }
+    
 
   useEffect(() => {
     if (logado) {

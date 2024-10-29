@@ -8,6 +8,7 @@ import FooterNovo from '../Components/Footer';
 import HeaderDashboards from '../Components/HeaderDashboards';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { AuthContext } from '../Context/authProvider';
+import { TaskContext } from '../Context/taskProvider';
 
 
 
@@ -15,16 +16,7 @@ function DashBoardAluno() {
   const { dadosUser } = useContext(AuthContext);
   const [performanceData, setPerformanceData] = useState([]);
 
-
-  const activities = [
-    { text: 'Análise Combinatória - Professora Letícia' },
-    { text: 'Exercícios Mecânica - Professor William' },
-    { text: 'Prova de Isomeria - Professor Dexter' },
-    { text: 'Prova de Transgenia - Professora Aline' },
-    { text: 'Exercícios de Orogenia - Professora Marina' }
-  ];
-
-
+  const { dueSoon, dueSoonContent } = useContext(TaskContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,9 +48,6 @@ function DashBoardAluno() {
         throw new Error('Erro ao buscar dados de desempenho');
       }
       const data = await response.json();
-
-      console.log('Dados da API:', data); 
-
       const mappedData = data.map(item => ({
         name: item.name, 
         value: item.averageLevel, 
@@ -71,9 +60,6 @@ function DashBoardAluno() {
       console.error('Erro ao buscar dados de desempenho:', error);
     }
 };
-
-
-
 
   return (
     <>
@@ -163,52 +149,70 @@ function DashBoardAluno() {
           </Grid>
 
           <Grid item xs={12} sm={5} sx={{ backgroundColor: 'white', borderRadius: 5 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center', // Alinha verticalmente os itens
+              justifyContent: 'center', // Centraliza horizontalmente
+              borderBottom: '3px solid #004FFF',
+              width: '70%',
+              margin: '0 auto',
+              padding: '8px 0',
+            }}
+          >
             <Typography
               sx={{
-                textAlign: 'center',
-                borderBottom: '3px solid #004FFF',
-                color: 'black',
+                color: '#394255',
                 fontWeight: 'bold',
-                width: '70%',
-                margin: '0 auto',
-                padding: '8px 0',
                 fontSize: 25,
-                color: '#394255'
+                marginRight: '8px', // Adiciona espaço entre os textos
               }}
             >
               TAREFAS PARA OS PRÓXIMOS DOIS DIAS
             </Typography>
+            <Typography
+              sx={{
+                backgroundColor: 'red',
+                color: 'white', // Para contraste
+                fontWeight: 'bold',
+                padding: '4px 8px', // Adiciona um pouco de padding para o fundo vermelho
+                borderRadius: '4px', // Opcional: arredonda os cantos
+              }}
+            >
+              {dueSoon}
+            </Typography>
+          </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
-              <List sx={{ width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {activities.map((activity, index) => (
-                  <ListItem
-                    key={index}
+            <List sx={{ width: '100%', maxWidth: '90%', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+              {dueSoonContent.slice(0, 4).map((activity, index) => (
+                <ListItem
+                  key={index}
+                  sx={{
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: 2,
+                    marginBottom: 1,
+                    padding: '10px',
+                    boxShadow: 1,
+                    position: 'relative',
+                    '&:last-child': {
+                      marginBottom: 0
+                    }
+                  }}
+                >
+                  <ListItemText primary={activity.subject} secondary={`Professor: ${activity.teacherName}`} />
+                  <Box
                     sx={{
-                      backgroundColor: '#f9f9f9',
-                      borderRadius: 2,
-                      marginBottom: 1,
-                      padding: '10px',
-                      boxShadow: 1,
-                      position: 'relative',
-                      '&:last-child': {
-                        marginBottom: 0
-                      }
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '3px',
+                      backgroundColor: 'red'
                     }}
-                  >
-                    <ListItemText primary={activity.text} />
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '3px',
-                        backgroundColor: '#4caf50'
-                      }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
+                  />
+                </ListItem>
+              ))}
+            </List>
             </Box>
           </Grid>
         </Grid>
