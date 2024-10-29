@@ -121,6 +121,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         else if (page === 'dashboard') {
                                             navigate('/dashboard/aluno');
                                         }
+                                        else if (page === 'Avaliar Tarefas') {
+                                            navigate('/notas/professor');
+                                        }
                                     }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
@@ -168,6 +171,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     }
                                     else if (page === 'dashboard') {
                                         navigate('/dashboard/aluno');
+                                    }
+                                    else if (page === 'Avaliar Tarefas') {
+                                        navigate('/notas/professor');
                                     }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}

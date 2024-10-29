@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Container,
@@ -19,51 +19,24 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import Header from './Header';
+import { AuthContext } from '../Context/authProvider';
+import { TaskContext } from '../Context/taskProvider';
+import CardTarefaMateria from './CardTarefaMateria';
 
 function RespostasTarefa() {
   const { id } = useParams(); // id da tarefa
-  const [taskResponses, setTaskResponses] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedResponse, setSelectedResponse] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [grade, setGrade] = useState('');
 
-  const [dataTask, setDataTask]= useState('')
+  const { dadosUser } = useContext(AuthContext);
+  const { getResponsesByTaskById, GetDataTaskById, tasksResponses, dataTask, loading } = useContext(TaskContext);
+
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch(`http://localhost:3030/tasks/responsesbytask/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        setTaskResponses(json);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-
-      fetch(`http://localhost:3030/tasks/getId/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          setDataTask(json);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-        
+    getResponsesByTaskById(id)
+    GetDataTaskById(id)        
   }, [id]);
 
   const handleOpenDialog = (response) => {
@@ -121,7 +94,7 @@ function RespostasTarefa() {
     );
   }
 
-  if (!taskResponses || !taskResponses.responses || taskResponses.responses.length === 0) {
+  if (!tasksResponses || !tasksResponses.responses || tasksResponses.responses.length === 0) {
     return (
       <>
         <Header />
@@ -134,71 +107,86 @@ function RespostasTarefa() {
 
   return (
     <>
-      <Header />
+      <Header textBar1="Home" />
       <Container maxWidth="lg">
         <Box my={4} textAlign="center">
-          <Typography variant="h4" component="h1" color="primary" fontWeight="bold" gutterBottom>
+          <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
             Respostas da Tarefa
           </Typography>
           <Divider />
         </Box>
         <Grid container spacing={3}>
-          {taskResponses.responses.map((response) => (
-            <Grid item xs={12} sm={6} md={4} key={response._id}>
-              <Card
-                elevation={3}
+  {Array.isArray(tasksResponses?.responses) && tasksResponses.responses.length > 0 ? (
+    tasksResponses.responses.map((response) => (
+      <Grid item xs={12} sm={6} md={4} key={response._id}>
+        <Card
+          elevation={3}
+          sx={{
+            height: '100%',
+            borderRadius: '12px',
+            transition: 'transform 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'scale(1.03)',
+              boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+            },
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              color="primary"
+              fontWeight="bold"
+              gutterBottom
+              sx={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Aluno: {response.studentName || 'Nome não disponível'}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+              Data de Envio: {moment(response.submissionDate).format('DD/MM/YYYY HH:mm')}
+            </Typography>
+            <Box mt={2}>
+              <Typography
+                variant="body2"
                 sx={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  transition: 'transform 0.2s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.03)',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                  },
+                  color: response.graded ? 'green' : 'red',
+                  fontWeight: 'bold',
                 }}
               >
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    color="primary"
-                    fontWeight="bold"
-                    gutterBottom
-                    sx={{
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    Aluno: {response.studentName || 'Nome não disponível'}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" gutterBottom>
-                    Data de Envio: {moment(response.submissionDate).format('DD/MM/YYYY HH:mm')}
-                  </Typography>
-                  <Box mt={2}>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: response.graded ? 'green' : 'red',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {response.graded ? 'Avaliado' : 'Não Avaliado'}
-                    </Typography>
-                  </Box>
-                  <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleOpenDialog(response)}
-                    >
-                      Ver Resposta
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                {response.graded ? 'Avaliado' : 'Não Avaliado'}
+              </Typography>
+            </Box>
+            <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleOpenDialog(response)}
+              >
+                Ver Resposta
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+    ))
+  ) : (
+    <Grid item xs={12}>
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        sx={{ height: '300px' }}
+      >
+        <Typography variant="h6" align="center" sx={{ color: '#777' }}>
+          Nenhuma resposta encontrada para esta tarefa.
+        </Typography>
+      </Box>
+    </Grid>
+  )}
+</Grid>
         <Dialog
   open={openDialog}
   onClose={handleCloseDialog}

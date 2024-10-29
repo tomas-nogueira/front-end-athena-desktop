@@ -1,72 +1,67 @@
 import { Container, Box, Grid, Snackbar } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
 import { TextField } from '@mui/material';
 import { Button, Typography, Radio } from "antd";
 import { useParams, useNavigate } from 'react-router-dom'; // Importar useParams e useNavigate
+import { AuthContext } from '../Context/authProvider';
+import { TaskContext } from '../Context/taskProvider';
+import { message as antdMessage } from 'antd';
 
 function Tarefa() {
   const [selectedValue, setSelectedValue] = useState(null);
-  const [dataTask, setDataTask] = useState(null);
   const [dissertativeResponse, setDissertativeResponse] = useState('');
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // Estado para o Snackbar
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const { id } = useParams(); // Pegar o id da URL
   const navigate = useNavigate(); // Hook para navegação
 
-  useEffect(() => {
-    if (id) {
-      const token = localStorage.getItem('token');
-      fetch(`http://localhost:3030/tasks/getId/${id}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      })
-        .then((resposta) => resposta.json())
-        .then((json) => {
-          setDataTask(json);
-          console.log(json);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+  const { dadosUser } = useContext(AuthContext);
+  const { EnivarRespostaTask, tarefaEnviada, GetDataTaskById, dataTask} = useContext(TaskContext);
+  
+  useEffect(() =>{
+    if(id){
+      GetDataTaskById(id)
     }
-  }, [id]); // O useEffect será chamado sempre que o id mudar
+  }, [])
+
+  // Função para buscar o status do estudante logado
+  const getStudentStatus = () => {
+    if (dataTask && dadosUser) {
+      const studentStatus = dataTask.studentStatus.find(status => status.studentId === dadosUser.message._id);
+      return studentStatus ? studentStatus.status : 'Status não encontrado';
+    }
+    return 'Carregando...';
+  };
 
   function EnviarResposta() {
-    const token = localStorage.getItem('token');
-
-    fetch(`http://localhost:3030/tasks/response`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        idTask: id, // Envie o id capturado
-        responseContent: dissertativeResponse || null,
-        selectedAlternative: selectedValue || null,
-      })
-    })
-      .then((resposta) => resposta.json())
-      .then((data) => {
-        console.log(data);
-        setSnackbarMessage(data.message); 
-        setSnackbarOpen(true);
-        setTimeout(() => {
-          navigate('/dashboard/tarefas/aluno');
-        }, 3000);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (dataTask && dataTask.alternatives && dataTask.alternatives.length === 0) {
+      // Verifica se a resposta dissertativa está preenchida
+      if (!dissertativeResponse) {
+        antdMessage.error("Por favor, preencha a resposta dissertativa");
+        return;
+      }
+    } 
+    else {
+      // Verifica se a alternativa foi selecionada
+      if (!selectedValue) {
+        antdMessage.error("Por favor, selecione uma alternativa");
+        return;
+      }
+    }
+    // Chama a função de envio de resposta
+    EnivarRespostaTask(id, dissertativeResponse, selectedValue);
   }
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  
+  useEffect(() => {
+    if (tarefaEnviada) {
+      const timer = setTimeout(() => {
+        navigate('/dashboard/tarefas/aluno');
+        window.location.reload();
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [tarefaEnviada, navigate]);
+  
 
   return (
     <>
@@ -77,7 +72,7 @@ function Tarefa() {
             <CardTarefaMateria 
               title={dataTask ? `Tarefa de ${dataTask.subject}` : 'Carregando...'}
               subject={dataTask ? dataTask.subject : 'Carregando...'}
-              status={dataTask ? dataTask.status : 'Carregando...'}
+              status={getStudentStatus()} // Status do estudante logado
               button='Voltar'
             />
           </Grid>
@@ -124,18 +119,6 @@ function Tarefa() {
           </Grid>
         </Grid>
       </Container>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000} // Duração do Snackbar
-        onClose={handleCloseSnackbar}
-        message={snackbarMessage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Posição centralizada no topo
-        action={
-          <Button color="inherit" onClick={handleCloseSnackbar}>
-            Fechar
-          </Button>
-        }
-      />
     </>
   );
 }
