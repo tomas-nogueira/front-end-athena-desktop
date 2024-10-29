@@ -13,7 +13,7 @@ import { Modal } from 'antd';
 
 function App() {  
   const [openInstructions, setOpenInstructions] = useState(false);
-  const [welcomeVisible, setWelcomeVisible] = useState(true); // Estado para o novo pop-up
+  const [welcomeVisible, setWelcomeVisible] = useState(true); 
 
   const handleOpenInstructions = () => {
     setOpenInstructions(true);
@@ -27,9 +27,7 @@ function App() {
     setWelcomeVisible(false);
   };
 
-  // Ao carregar a página, exibe automaticamente o novo pop-up
   useEffect(() => {
-    // Aqui você pode adicionar lógica extra se necessário
   }, []);
 
   return (
@@ -67,7 +65,6 @@ function App() {
       </div>
       <Footer/>
 
-      {/* Pop-up original com MUI */}
       <Dialog open={openInstructions} onClose={handleCloseInstructions}>
         <DialogTitle>Instruções</DialogTitle>
         <DialogContent>

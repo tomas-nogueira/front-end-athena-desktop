@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,8 @@ import { AuthContext } from '../Context/authProvider';
 
 function DashBoardAluno() {
   const { dadosUser } = useContext(AuthContext);
+  const [performanceData, setPerformanceData] = useState([]);
+
 
   const activities = [
     { text: 'Análise Combinatória - Professora Letícia' },
@@ -22,19 +24,55 @@ function DashBoardAluno() {
     { text: 'Exercícios de Orogenia - Professora Marina' }
   ];
 
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
 
-  //Verificando se existe os dados do usuário
+    if (dadosUser && dadosUser.message) {
+      fetchPerformanceData();
+    }
+  }, [dadosUser]); 
+
   if (!dadosUser || !dadosUser.message) {
     return <Typography variant="h5" align="center">Carregando...</Typography>;
   }
 
-  // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
   if (!dadosUser.message.role || !dadosUser.message.name) {
     return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
   }
+
+  const fetchPerformanceData = async () => {
+    const userId = dadosUser.message._id;
+
+    if (!userId) {
+      console.error('ID do usuário não encontrado.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3030/stats/proficiency/${userId}`);
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados de desempenho');
+      }
+      const data = await response.json();
+
+      console.log('Dados da API:', data); 
+
+      const mappedData = data.map(item => ({
+        name: item.name, 
+        value: item.averageLevel, 
+        color: '#004FFF'
+      }));
+
+
+      setPerformanceData(mappedData);
+    } catch (error) {
+      console.error('Erro ao buscar dados de desempenho:', error);
+    }
+};
+
+
 
 
   return (
@@ -61,18 +99,11 @@ function DashBoardAluno() {
               SEU DESEMPENHO
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Graph
-                type='bar'
-                data={[
-                  { name: 'Matemática', value: 75, color: '#004FFF' },
-                  { name: 'Química', value: 90, color: '#004FFF' },
-                  { name: 'Português', value: 65, color: '#004FFF' },
-                  { name: 'Inglês', value: 40, color: '#004FFF' },
-                  { name: 'Física', value: 80, color: '#004FFF' },
-                  { name: 'Biologia', value: 80, color: '#004FFF' },
-                  { name: 'Geografia', value: 95, color: '#004FFF' },
-                ]}
-              />
+              {performanceData.length > 0 ? (
+                <Graph type='bar' data={performanceData} />
+              ) : (
+                <Typography variant="h6" align="center">Nenhum dado disponível.</Typography>
+              )}
             </Box>
           </Grid>
 

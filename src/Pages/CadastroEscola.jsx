@@ -64,16 +64,13 @@ const CadastroEscola = () => {
   }
   
   function RealizaCadastroEscola() {
-    // Verifica se todos os campos estão preenchidos
     if (!name || !email || !phone || !inepCode || !cnpj || !street || !cep || !state || !city || !institutionType || !educationLevels.length || !password) {
       antdMessage.error("Por favor, preencha todos os campos"); 
       return;
     }
   
-    // Formata o CNPJ antes de validar
     const formattedCNPJ = formatCNPJ(cnpj);
   
-    // Verifica a validade do CNPJ formatado e do código INEP
     if (!isValidCNPJ(formattedCNPJ)) {
       antdMessage.error("CNPJ inválido. Deve ter 14 dígitos.");
       return;
@@ -89,7 +86,6 @@ const CadastroEscola = () => {
       return;
     }
   
-    // Realiza o cadastro enviando o CNPJ formatado para a API
     CadastrarEscola(name, email, phone, inepCode, formattedCNPJ, street, cep, state, city, institutionType, educationLevels, password);
   }
   
