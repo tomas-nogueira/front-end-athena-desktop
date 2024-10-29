@@ -22,34 +22,39 @@ import HeaderDashboards from "../Components/HeaderDashboards";
 import NotificationCard from "../Components/NotificationCard";
 import ChatForm from "../Components/ChatForm";
 import PerformanceDashboard from "../Components/PerformanceDashboard";
+import { useNavigate } from "react-router-dom";
+
 function DashBoardTarefas() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedClass2, setSelectedClass2] = useState("");
   const [openNotification, setOpenNotification] = useState(false);
-  const [dadosUser, setDadosUser] = useState({})
+  const [dadosUser, setDadosUser] = useState({});
+  
+  const navigate = useNavigate();
 
-
-  useEffect(() =>{
+  useEffect(() => {
     const token = localStorage.getItem('token');
 
-      fetch("http://localhost:3030/user", {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
+    fetch("http://localhost:3030/user", {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
     })
     .then((resposta) => resposta.json())
     .then((json) => {
-        setDadosUser(json.message)
-        console.log(dadosUser)
+      setDadosUser(json.message);
+      console.log(dadosUser);
     })
     .catch((error) => {
+      console.error("Erro ao buscar dados do usuário:", error);
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setOpenNotification(true); 
   }, []);
 
   const handleClassChange = (event) => {
@@ -60,31 +65,16 @@ function DashBoardTarefas() {
     setSelectedClass2(event.target.value);
   };
 
-  // Notificação para avisar que os dados estão sendo atualizados
-  useEffect(() => {
-    setOpenNotification(true); // Abre a notificação quando a página for carregada
-  }, []);
-
   const handleCloseNotification = () => {
-    setOpenNotification(false); // Fecha a notificação
+    setOpenNotification(false);
+  };
+
+  const handleAvaliar = () => {
+    console.log("Botão clicado! Redirecionando para /notas/professor...");
+    navigate('/notas/professor');
   };
 
   const classOptions = [
-    { value: "1ano", label: "1º Ano" },
-    { value: "2ano", label: "2º Ano" },
-    { value: "3ano", label: "3º Ano" },
-    { value: "4ano", label: "4º Ano" },
-    { value: "5ano", label: "5º Ano" },
-    { value: "6ano", label: "6º Ano" },
-    { value: "7ano", label: "7º Ano" },
-    { value: "8ano", label: "8º Ano" },
-    { value: "9ano", label: "9º Ano" },
-    { value: "1medio", label: "1º Médio" },
-    { value: "2medio", label: "2º Médio" },
-    { value: "3medio", label: "3º Médio" },
-  ];
-
-  const classOptions2 = [
     { value: "1ano", label: "1º Ano" },
     { value: "2ano", label: "2º Ano" },
     { value: "3ano", label: "3º Ano" },
@@ -104,8 +94,7 @@ function DashBoardTarefas() {
       <Header
         textBar1="Home"
         textBar2="Cadastrar uma Tarefa"
-        textBar3="Lançar Notas"
-        textBar4="Presença dos Alunos"
+        textBar3="Avaliar Tarefas"
       />
       <HeaderDashboards
         name={dadosUser.name}
@@ -207,6 +196,7 @@ function DashBoardTarefas() {
             </CardActionArea>
             <CardActions>
               <Button
+                onClick={handleAvaliar}
                 size="large"
                 sx={{
                   fontWeight: "bold",
@@ -215,7 +205,7 @@ function DashBoardTarefas() {
                   color: "white",
                   width: "300px",
                   "&:hover": {
-                    backgroundColor: "#002F99", // Cor desejada ao passar o mouse
+                    backgroundColor: "#002F99",
                   },
                 }}
               >

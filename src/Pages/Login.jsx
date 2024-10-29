@@ -14,6 +14,9 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { AuthContext } from '../Context/authProvider';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import { message as antdMessage } from 'antd';
@@ -34,6 +37,11 @@ function Login() {
     const [isLogin, setIsLogin] = useState(true);
     const [school, setSchool] = useState('');
     const [confirmsenha, setConfirmSenha] = useState('')
+    const [showPassword, setShowPassword] = useState(true);
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const [schoolOptions, setSchoolOptions] = useState([])
 
@@ -43,7 +51,6 @@ function Login() {
 
     const [message, setMessage] = useState('')
     const navigate = useNavigate();
-
 
     const handleToggle = () => {
         setIsLogin(!isLogin);
@@ -190,11 +197,18 @@ function Login() {
                                     <TextField
                                         label="Digite sua senha"
                                         variant="standard"
-                                        type="password"
+                                        type={showPassword ? 'text' : 'password'}
                                         value={senha}
                                         onChange={(e) => setSenha(e.target.value)}
-                                        sx={{ width: '250px' }}
+                                        sx={{ width: '210px' }}
                                     />
+                                    <IconButton sx={{ ml: 1 }}
+                                        aria-label="toggle password visibility"
+                                        onClick={handleTogglePasswordVisibility}
+                                        edge="end"
+                                        >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
                                 </Box>
                             </div>
                             <div>
