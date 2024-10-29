@@ -12,6 +12,7 @@ import CardsAcesso from '../Components/CardsAcesso';
 import Macbook from '../Photos/macbook.png'
 import Linha from '../Photos/linha.png'
 import Ipad from '../Photos/ipad.png'
+import ChatForm from './ChatForm';
 
 function HomeAluno() {
   return (
@@ -92,6 +93,7 @@ function HomeAluno() {
           </Container>
         </Grid>
       </Grid>
+      <ChatForm/>
       <Footer />
     </Grid>
     </div>

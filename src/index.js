@@ -28,6 +28,7 @@ import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
 import HomeDiretoria from './Pages/HomeDiretoria';
 import FaceRecognitionPage from './Pages/FaceRecognitionPage';
+import Presenca from './Pages/Presenca';
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
+  },
+  {
+    path: "/presenca",
+    element: <Presenca />,
   },
   {
     path: "/teste",

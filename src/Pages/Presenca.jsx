@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Typography, CircularProgress, Box, Paper, Container } from '@mui/material';
 import { notification } from 'antd';
 import * as faceapi from "face-api.js";
-import Header from '../Components/Header';
-import CadastroBack from '../Photos/Cadastro-back.png';
+import Header from '../Components/Header'; // Certifique-se de que o Header está corretamente configurado
+import CadastroBack from '../Photos/Cadastro-back.png'; // Caminho da imagem de fundo
 
-const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
+const Presenca = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,10 +14,6 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
-
- 
-
-    
 
   useEffect(() => {
     const loadModels = async () => {
@@ -49,9 +45,9 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         videoRef.current.srcObject = stream;
         setMediaStream(stream);
         setCameraActive(true);
-        setTimeout(() => handleVideoPlay(), 2000); // Dê um tempo para o usuário se centralizar
+        setTimeout(() => handleVideoPlay(), 2000); // Tempo para o usuário se centralizar
       })
-      .catch((err) => console.error("Error accessing webcam:", err));
+      .catch((err) => console.error("Erro ao acessar a webcam:", err));
   };
 
   const stopVideo = () => {
@@ -91,8 +87,6 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   };
 
   const handleSaveRecognition = async () => {
-    const token = localStorage.getItem('token');
-
     if (faceDescriptor) {
       setIsSaving(true);
       try {
@@ -100,8 +94,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         const response = await fetch('http://localhost:3030/face', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(body)
         });
@@ -112,7 +105,6 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
             message: 'Sucesso',
             description: 'Reconhecimento facial salvo com sucesso!',
           });
-          onFaceDetected();
           stopVideo();
         } else {
           notification.error({
@@ -133,7 +125,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
 
   return (
     <>
-      <Header textBar1="dashboard" textBar2="Minhas tarefas" />
+      <Header textBar1="dashboard" textBar2="Registro de Presença" />
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
@@ -141,7 +133,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         position: 'relative'
       }}>
         <Container maxWidth="md" style={{
@@ -172,7 +164,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
               boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)'
             }}>
               <Typography variant="h4" gutterBottom sx={{ color: '#2196f3' }}>
-                Reconhecimento Facial
+                Registro de Presença
               </Typography>
               <Typography variant="body1" gutterBottom sx={{ color: '#666' }}>
                 Por favor, centralize seu rosto na câmera antes de iniciar.
@@ -229,4 +221,4 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   );
 };
 
-export default FaceRecognitionPage;
+export default Presenca;
