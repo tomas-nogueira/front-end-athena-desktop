@@ -223,6 +223,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                             }, 1000);
                                         } else if (setting === 'Entrar') {
                                             navigate('/login');
+                                        } else if (setting === 'Sua Conta') { // Redireciona para a tela de perfil
+                                            navigate('/user/perfil');
                                         }
                                         handleCloseUserMenu();
                                     }}
