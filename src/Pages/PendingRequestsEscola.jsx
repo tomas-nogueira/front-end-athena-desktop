@@ -22,12 +22,14 @@ function PendingRequestsEscola() {
     });
   }, []);
 
-  const loadPendingRequests = () => {
+  function GetPendingRequests(){
+    const token = localStorage.getItem('token');
     if (schoolId) {
       fetch(`http://localhost:3030/schools/${schoolId}/pending-requests`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
       })
       .then((resposta) => resposta.json())
@@ -37,10 +39,10 @@ function PendingRequestsEscola() {
         }
       });
     }
-  };
+  }
 
   useEffect(() => {
-    loadPendingRequests();
+    GetPendingRequests();
   }, [schoolId]);
 
   // Função para remover usuário da lista local

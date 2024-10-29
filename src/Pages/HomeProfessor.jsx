@@ -82,8 +82,8 @@ function HomeProfessor() {
             />
             <img src={Linha}/>
             <CardsAcesso 
-            texto1="Cadastrar tarefas"
-            texto2="Envie e dê notas às tarefas dos alunos"
+            texto1="Tarefas"
+            texto2="Cadastre novas tarefas e avalie as realizadas"
             rotaBotao="/cadastro/tarefas"
             imagemSrc={Ipad}
             imagemAlt="Imagem de exemplo"

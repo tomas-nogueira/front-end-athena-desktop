@@ -143,7 +143,7 @@ function CadastroTarefas() {
   
   return (
     <>
-      <Header textBar1="Home" textBar2="DASHBOARD" textBar3="Presença de alunos"/>
+      <Header textBar1="Home" textBar2="DASHBOARD" textBar3="Avaliar Tarefas"/>
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
