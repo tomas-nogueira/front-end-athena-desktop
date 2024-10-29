@@ -89,7 +89,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
         // Tarefas que vão vencer em breve
-        fetch(`http://localhost:3030/tasks/duesoon/${studentId}`, {
+        fetch(`http://localhost:3030/tasks/duesoon-user/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -164,7 +164,6 @@ function TaskProvider({ children }) {
     })
       .then((resposta) => resposta.json())
       .then((json) => {
-        console.log(json)
         if(json.message === "Resposta enviada com sucesso."){
           antdMessage.success('Sua tarefa foi enviada com sucesso! Você será notificado quando a avaliação estiver disponível!');
           setTarefaEnviada(true)
