@@ -116,7 +116,7 @@ function AviseClass() {
   return (
     <div>
       <div>
-        <Header />
+        <Header/>
       </div>
       <div className={Style.recado}>
         <h3>Envie recados para a Athena</h3>

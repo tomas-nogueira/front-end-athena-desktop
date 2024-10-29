@@ -7,18 +7,18 @@
 }
 
 .recado .but{
-    padding: 120px;
+    padding: 90px;
     border-radius: 360px;
-    width: 15%;
+    width: 13%;
     margin: 50px auto;
     transition: all 0.3s;
     cursor: pointer;
 }
 
 .recado .but:hover{
-    padding: 120px;
+    padding: 100px;
     border-radius: 360px;
-    width: 16%;
+    width: 14%;
     background: #315cfd;
     color: white;
 }
