@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import Header from './Header';
+import { message as antdMessage } from 'antd';
 import { AuthContext } from '../Context/authProvider';
 import { TaskContext } from '../Context/taskProvider';
 import CardTarefaMateria from './CardTarefaMateria';
@@ -31,7 +32,7 @@ function RespostasTarefa() {
   const [grade, setGrade] = useState('');
 
   const { dadosUser } = useContext(AuthContext);
-  const { getResponsesByTaskById, GetDataTaskById, tasksResponses, dataTask, loading } = useContext(TaskContext);
+  const { getResponsesByTaskById, GetDataTaskById, tasksResponses, dataTask, loading, CorrectionTask } = useContext(TaskContext);
 
 
   useEffect(() => {
@@ -53,38 +54,18 @@ function RespostasTarefa() {
 
   function EnviarAvaliacao() {
     if (!feedback || !grade) {
-      alert("Preencha a nota e o feedback.");
+      antdMessage.error("Preencha a nota e o feedback.");
       return;
     }
-
-    const token = localStorage.getItem('token');
-    fetch(`http://localhost:3030/tasks/correction`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        idStudent: selectedResponse.studentId, // ID do estudante
-        idTask: id, // ID da tarefa
-        feedback,
-        grade,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Response updated successfully") {
-          alert("Avaliação enviada com sucesso!");
-          handleCloseDialog();
-        } else {
-          alert("Erro ao enviar avaliação: " + data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Erro ao enviar avaliação:', error);
-        alert('Erro ao enviar avaliação.');
-      });
-  };
+  
+    if (grade < 0 || grade > 10) {
+      antdMessage.error("A nota deve estar entre 0 e 10.");
+      return;
+    }
+  
+    CorrectionTask(selectedResponse.studentId, id, feedback, grade);
+  }
+  
 
   if (loading) {
     return (

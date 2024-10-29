@@ -269,6 +269,35 @@ function TaskProvider({ children }) {
       .catch((error) => {
         console.error(error);
       });
+    }
+
+  function CorrectionTask(studentId, idTask, feedback, grade){
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3030/tasks/correction`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        idStudent: studentId, // ID do estudante
+        idTask: idTask, // ID da tarefa
+        feedback,
+        grade,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.message === "Response updated successfully") {
+          antdMessage.success("Avaliação enviada com sucesso!");
+        } else {
+          antdMessage.error("Erro ao enviar avaliação: " + json.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar avaliação:', error);
+        antdMessage.error('Erro ao enviar avaliação.');
+      });
   }
 
   return (
@@ -294,7 +323,8 @@ function TaskProvider({ children }) {
       classes,
       getResponsesByTaskById,
       tasksResponses,
-      loading
+      loading,
+      CorrectionTask
     }}>
       {children}
     </TaskContext.Provider>
