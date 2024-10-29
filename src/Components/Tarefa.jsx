@@ -65,7 +65,7 @@ function Tarefa() {
 
   return (
     <>
-      <Header />
+      <Header textBar1="HOME" textBar2="Minhas tarefas"/>
       <Container>
         <Grid container spacing={2} sx={{ marginTop: 5, marginBottom: 10, justifyContent: 'center', alignItems: 'center', gap: 5, width: '100%' }}>
           <Grid item xl={3} sm={6}>

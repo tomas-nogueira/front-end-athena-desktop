@@ -71,6 +71,10 @@ function AviseClass() {
     setAviso(transcript); // Atualiza o input também
   }, [transcript, listening]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   function EnviarMensagem() {
     if (!aviso || !selectedClass || !data) {
       Swal.fire({
@@ -116,7 +120,7 @@ function AviseClass() {
   return (
     <div>
       <div>
-        <Header />
+        <Header textBar1="home" textBar2="DashBOARD"/>
       </div>
       <div className={Style.recado}>
         <h3>Envie recados para a Athena</h3>

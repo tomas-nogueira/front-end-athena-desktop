@@ -111,7 +111,7 @@ function Login() {
             navigate('/home/professor');
         } 
         else if (roleContext === 'diretor' || roleContext === 'coordenador') {
-            navigate('/dashboard/diretoria');
+            navigate('/home/diretoria');
         } 
         else if (roleContext === 'inspetor' || roleContext === 'limpeza' || roleContext === 'cozinha') {
             navigate('/dashboard/funcionarios');
