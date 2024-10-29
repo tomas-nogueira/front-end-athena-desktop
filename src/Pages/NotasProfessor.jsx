@@ -16,7 +16,7 @@ function NotasProfessor() {
 
   return (
     <>
-      <Header textBar1="HOME" textBar2="DASHBOARD" textBar3="Cadastrar tarefas"/>
+      <Header textBar1="Home" textBar2="DASHBOARD" textBar3="Cadastrar tarefas"/>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={4} justifyContent="center">
           {Array.isArray(totalTasksContent) && totalTasksContent.length > 0 ? (

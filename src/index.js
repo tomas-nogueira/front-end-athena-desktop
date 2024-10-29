@@ -26,6 +26,7 @@ import AviseClass from './Pages/AviseClass';
 import HomeAluno from './Components/HomeAluno';
 import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
+import HomeDiretoria from './Pages/HomeDiretoria';
 
 const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
   {
     path:"/user/perfil",
     element: <EditPerfil />
+  },
+  {
+    path:"/home/diretoria",
+    element: <HomeDiretoria />
   },
   {
     path: "*",
