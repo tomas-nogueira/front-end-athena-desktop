@@ -11,6 +11,7 @@ function TaskProvider({ children }) {
   const [delayTasks, setDelayTasks] = useState(0);
   const [dueSoon, setDueSoon] = useState(0);
   const [inProgress, setInProgress] = useState(0);
+  const [ungradedTasks, setUngradedTasks] = useState(0);
 
   const [totalTasksContent, setTotalTasksContent] = useState([]);
   const [completedTasksContent, setCompletedTasksContent] = useState([]);
@@ -18,6 +19,11 @@ function TaskProvider({ children }) {
   const [dueSoonContent, setDueSoonContent] = useState([]);
   const [inProgressContent, setInProgressContent] = useState([]);
   const [gradedTasksContent, setGradedTasksContent] = useState([])
+
+  const [completedTasksClass, setCompletedTasksClass] = useState(0);
+  const [delayTasksClass, setDelayTasksClass] = useState(0);
+  const [inProgressTasksClass, setInProgressTasksClass] = useState(0);
+
 
   const [dataTask, setDataTask] = useState(null)//Estado para pegar os dados da tarefa individualmente
   const [classes, setClasses] = useState([])
@@ -161,6 +167,19 @@ function TaskProvider({ children }) {
           .then((resposta) => resposta.json())
           .then((json) => {
             setTotalTasksContent(json.tasks);
+            // Contando o total de studentResponses com graded = false
+            const ungradedTaskslength = json.tasks.reduce((accumulator, task) => {
+              // Verifica se existem studentResponses e filtra por graded = false
+              if (task.studentResponses) {
+                  const unratedResponsesCount = task.studentResponses.filter(response => !response.graded).length;
+                  return accumulator + unratedResponsesCount;
+              }
+              return accumulator; // Retorna o acumulador se não houver respostas
+          }, 0);
+          setUngradedTasks(ungradedTaskslength); // Atualiza o estado com o total
+          setCompletedTasksClass(json.countCompleted)
+          setDelayTasksClass(json.countLate)
+          setInProgressTasksClass(json.countOngoing)
           })
           .catch((error) => console.log(error));
         }
@@ -321,6 +340,25 @@ function TaskProvider({ children }) {
       });
   }
 
+  function GetTasksByClass(idClass){
+    fetch(`http://localhost:3030/tasks/getalltasksclass/${idClass}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        setCompletedTasksClass(json.countCompleted)
+        setDelayTasksClass(json.countLate)
+        setInProgressTasksClass(json.countOngoing)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+  }
+
   return (
     <TaskContext.Provider value={{
       totalTasks,
@@ -347,7 +385,12 @@ function TaskProvider({ children }) {
       loading,
       CorrectionTask,
       tarefaAvaliada,
-      gradedTasksContent
+      gradedTasksContent,
+      ungradedTasks,
+      GetTasksByClass,
+      completedTasksClass,
+      delayTasksClass,
+      inProgressTasksClass
     }}>
       {children}
     </TaskContext.Provider>

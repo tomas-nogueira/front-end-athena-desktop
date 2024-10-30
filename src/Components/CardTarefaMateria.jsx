@@ -103,29 +103,28 @@ function CardTarefaMateria({ title, professorName, professorImage, subject, stat
         
         {/* Renderização condicional para studentResponses */}
         {studentResponses && (
-          <Row gutter={16} style={{ marginBottom: 10 }}>
-            <Col span={12}>
+          <Row gutter={16} style={{ marginBottom: 10,justifyContent: 'center' }}>
+            <Col span={10}>
               <Card 
                 style={{ textAlign: 'center', backgroundColor: '#28A745', color: 'white' }}
                 bodyStyle={{ padding: '20px' }}
               >
-                <Title level={2} style={{ margin: 0, color: 'white' }}>
+                <Title level={5} style={{ margin: 0, color: 'white' }}>
                   {gradedCount}
                 </Title>
               </Card>
-              <Text strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px', textAlign: 'center' }}>Avaliadas</Text>
-
+              <Text strong style={{ display: 'block', fontSize: '14px', marginBottom: '8px', textAlign: 'center' }}>Avaliadas</Text>
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <Card 
-                style={{ textAlign: 'center', backgroundColor: '#DC3545', color: 'white' }}
+                style={{ textAlign: 'center', backgroundColor: '#FF4C4C', color: 'white' }}
                 bodyStyle={{ padding: '20px' }}
               >
-                <Title level={2} style={{ margin: 0, color: 'white' }}>
+                <Title level={5} style={{ margin: 0, color: 'white' }}>
                   {ungradedCount}
                 </Title>
               </Card>
-              <Text strong style={{ display: 'block', fontSize: '16px', marginBottom: '8px', textAlign: 'center' }}>Não Avaliadas</Text>
+              <Text strong style={{ display: 'block', fontSize: '14px', marginBottom: '8px', textAlign: 'center' }}>Não Avaliadas</Text>
             </Col>
           </Row>
         )}
