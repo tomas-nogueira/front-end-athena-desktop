@@ -45,6 +45,11 @@ footer {
     margin-top: 1.5rem;
 } 
 
+.footerlist a{
+    text-decoration: none;
+    color: var(--color-neutral-30);
+}
+
 .footersocialmedia .footerlink {
     display: flex;
     align-items: center;
@@ -54,6 +59,12 @@ footer {
     color: var(--color-neutral-40);
     border-radius: 50%;
     transition: all 0.4s;
+}
+
+.footersocialmedia{
+    width: 65%;
+    display: flex;
+    justify-content: space-around;
 }
 
 .footersocialmedia .footerlink i {

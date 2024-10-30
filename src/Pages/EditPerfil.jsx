@@ -9,6 +9,7 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import CallIcon from '@mui/icons-material/Call';
+import { Container } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { useNavigate } from 'react-router-dom';
 import Style from "../Styles/EditPerfil.module.css";

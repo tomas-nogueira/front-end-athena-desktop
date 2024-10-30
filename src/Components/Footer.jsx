@@ -7,6 +7,10 @@ import emailjs from 'emailjs-com';
 const Footer = () => {
     const emailInputRef = useRef(null); // Cria uma referência para o campo de e-mail
 
+    const FileUm = `${process.env.PUBLIC_URL}/athena-negocios.pdf`
+    const FileDois = `${process.env.PUBLIC_URL}/athena-bm-canvas.pdf`
+    const FileTres = `${process.env.PUBLIC_URL}/athena-relatorio.pdf`
+
     const sendEmail = (e) => {
         e.preventDefault();
 
@@ -50,28 +54,29 @@ const Footer = () => {
                         <a href="https://www.instagram.com/logicwave.sistemas/" target='_blank' rel="noopener noreferrer" className={`${Style.footerlink} ${Style.instagram}`}>
                             <i className="fa-brands fa-instagram"></i>
                         </a>
-                        <a href="#" className={`${Style.footerlink} ${Style.facebook}`}>
+                        <a href="https://www.facebook.com/profile.php?id=61568133594675&mibextid=ZbWKwL" target='_blank' className={`${Style.footerlink} ${Style.facebook}`}>
                             <i className="fa-brands fa-facebook-f"></i>
-                        </a>
-                        <a href="#" className={`${Style.footerlink} ${Style.whatsapp}`}>
-                            <i className="fa-brands fa-whatsapp"></i>
                         </a>
                     </div>
                 </div>
 
                 <ul className={Style.footerlist}>
-                    <li>
-                        <h3>Sobre Nós</h3>
-                    </li>
-                    <li>
-                        <a href="#" className={Style.footerlink}>A empresa</a>
-                    </li>
-                    <li>
-                        <a href="#" className={Style.footerlink}>Segurança e Privacidade</a>
-                    </li>
-                    <li>
-                        <a href="#" className={Style.footerlink}>Quem somos</a>
-                    </li>
+                    <h3>Sobre Nós</h3>
+                    <div>
+                        <a href={FileUm} download>
+                            Relatório de Negócios
+                        </a>
+                    </div>
+                    <div>
+                        <a href={FileDois} download>
+                            Estrutura de negócios
+                        </a>
+                    </div>
+                    <div>
+                        <a href={FileTres} download>
+                            Relatório da Athena
+                        </a>
+                    </div>
                 </ul>
 
                 <ul className={Style.footerlist}>
