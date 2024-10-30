@@ -8,7 +8,7 @@ function FaceLogin() {
     const videoRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
     const [mediaStream, setMediaStream] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [faceDetected, setFaceDetected] = useState(false);
     const navigate = useNavigate();
     const { LoginFacial } = useContext(AuthContext);
 
@@ -22,7 +22,7 @@ function FaceLogin() {
         loadModels();
 
         const intervalId = setInterval(() => {
-            if (!loggedIn) {
+            if (!faceDetected) {
                 detectFace();
             }
         }, 1000);
@@ -31,7 +31,7 @@ function FaceLogin() {
             clearInterval(intervalId);
             closeCamera();
         };
-    }, [loggedIn]);
+    }, [faceDetected]);
 
     const startVideo = () => {
         navigator.mediaDevices.getUserMedia({ video: {} })
@@ -55,14 +55,20 @@ function FaceLogin() {
             .withFaceDescriptor();
 
         if (detections) {
-            handleFaceLogin(detections);
+            setFaceDetected(true); 
         }
     };
 
-    const handleFaceLogin = async (detections) => {
-        const descriptor = Array.from(detections.descriptor);
-        await LoginFacial(descriptor);
-        closeCamera();
+    const handleFaceLogin = async () => {
+        const detections = await faceapi.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+        if (detections) {
+            const descriptor = Array.from(detections.descriptor);
+            await LoginFacial(descriptor);
+            closeCamera();
+        }
     };
 
     return (
@@ -70,6 +76,16 @@ function FaceLogin() {
             <h2>Login com Reconhecimento Facial</h2>
             <video ref={videoRef} autoPlay muted width="480" height="360" onPlay={() => setIsLoading(false)} />
             {isLoading ? <p>Carregando...</p> : <p>Aguardando reconhecimento facial...</p>}
+            
+            {faceDetected && (
+                <button onClick={handleFaceLogin} className="login-button">
+                    Login
+                </button>
+            )}
+
+            <button onClick={closeCamera} className="close-button">
+                Fechar Câmera
+            </button>
         </div>
     );
 }
