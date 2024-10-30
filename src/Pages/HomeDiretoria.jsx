@@ -13,6 +13,7 @@ import Macbook from '../Photos/macbook.png'
 import Linha from '../Photos/linha.png'
 import Ipad2 from '../Photos/Ipad2.png'
 import ChatForm from '../Components/ChatForm';
+import Face from "../Photos/face.png"
 
 
 function HomeDiretoria() {
@@ -92,6 +93,14 @@ function HomeDiretoria() {
               imagemSrc={Ipad2}
               imagemAlt="Imagem de exemplo"
               />
+              <img src={Linha}/>
+              <CardsAcesso 
+              texto1="Reconhecimento facial"
+              texto2="Eleve seu desempenho com o nosso Reconhecimento Facial"
+              rotaBotao="/cadastrar-face/user"
+              imagemSrc={Face}
+              imagemAlt="Imagem de exemplo"
+            />
           </Container>
         </Grid>
       </Grid>
