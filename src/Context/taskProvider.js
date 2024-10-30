@@ -349,9 +349,18 @@ function TaskProvider({ children }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        setCompletedTasksClass(json.countCompleted)
-        setDelayTasksClass(json.countLate)
-        setInProgressTasksClass(json.countOngoing)
+        console.log(json)
+        if(json.message){//Se retornar uma message quer dizer que não há tarefas
+          setCompletedTasksClass(0)
+          setDelayTasksClass(0)
+          setInProgressTasksClass(0)
+        }
+        else{
+          setCompletedTasksClass(json.countCompleted)
+          setDelayTasksClass(json.countLate)
+          setInProgressTasksClass(json.countOngoing)
+          console.log("certo")
+        }
       })
       .catch((error) => {
         console.log(error)

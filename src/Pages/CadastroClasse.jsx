@@ -125,7 +125,7 @@ function CadastroClasse() {
 
   return (
     <>
-      <Header textBar1="Home" textBar2="DashBoard" textBar3="Item 3" />
+      <Header textBar1="Painel de Controle"/>
       <section
         style={{
           backgroundImage: `url(${CadastroBack})`,

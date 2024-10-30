@@ -8,20 +8,17 @@ import {
   Grid,
   Card,
   CardActionArea,
-  CardMedia,
   CardActions,
   CardContent,
   Button,
-  Snackbar, // Adicionado para a notificação
+  Snackbar,
   Alert,
   Autocomplete,
-  TextField,   // Adicionado para estilizar a notificação
+  TextField,
 } from "@mui/material";
 import Footer from "../Components/Footer";
 import Graph from "../Components/Graph";
-import Select from "../Components/Select";
 import HeaderDashboards from "../Components/HeaderDashboards";
-import NotificationCard from "../Components/NotificationCard";
 import ChatForm from "../Components/ChatForm";
 import PerformanceDashboard from "../Components/PerformanceDashboard";
 import { useNavigate } from "react-router-dom";
@@ -46,13 +43,14 @@ function DashBoardTarefas() {
     setOpenNotification(false);
   };
 
-  function RedirecionarAvaliar(){
+  function RedirecionarAvaliar() {
     navigate('/notas/professor');
   }
-  //Pegando as salas
+
+  // Pegando as salas
   useEffect(() => {
     if (dadosUser && dadosUser.message && dadosUser.message.IdSchool) {
-      GetClassProfessorById()
+      GetClassProfessorById();
     }
   }, [dadosUser]);
 
@@ -63,16 +61,16 @@ function DashBoardTarefas() {
     }
   }, [selectedClass]);
 
-    //Verificando se existe os dados do usuário
-    if (!dadosUser || !dadosUser.message) {
-      return <Typography variant="h5" align="center">Carregando...</Typography>;
-    }
-  
-    // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
-    if (!dadosUser.message.role || !dadosUser.message.name) {
-      return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
-    }
-    
+  // Verificando se existe os dados do usuário
+  if (!dadosUser || !dadosUser.message) {
+    return <Typography variant="h5" align="center">Carregando...</Typography>;
+  }
+
+  // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
+  if (!dadosUser.message.role || !dadosUser.message.name) {
+    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+  }
+
   return (
     <>
       <Header
@@ -97,7 +95,7 @@ function DashBoardTarefas() {
           Atualizando os dados com base nas informações coletadas pela IA...
         </Alert>
       </Snackbar>
-
+      
       <Grid
         container
         spacing={2}
@@ -151,33 +149,33 @@ function DashBoardTarefas() {
               marginTop: 2,
             }}
           >
-          <CardActionArea>
-            <Typography
-              sx={{
-                fontSize: 50,
-                fontWeight: "bold",
-                color: "#004FFF",
-                textAlign: "center",
-              }}
-            >
-              {ungradedTasks}
-            </Typography>
-            <CardContent sx={{ textAlign: "center" }}>
+            <CardActionArea disableRipple sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
               <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                sx={{ fontWeight: "bold" }}
+                sx={{
+                  fontSize: 50,
+                  fontWeight: "bold",
+                  color: "#004FFF",
+                  textAlign: "center",
+                }}
               >
-                {ungradedTasks > 0 ? "FEEDBACKS E AVALIAÇÕES" : "Nenhuma tarefa pendente"}
+                {ungradedTasks}
               </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {ungradedTasks > 0
-                  ? "Caro Professor, é necessário que o senhor(a) dê os feedbacks e avalie as tarefas realizadas pelos alunos, clique no botão abaixo para ver quais tarefas são necessárias!!!"
-                  : "Não há tarefas para avaliar no momento."}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+              <CardContent sx={{ textAlign: "center" }}>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  {ungradedTasks > 0 ? "FEEDBACKS E AVALIAÇÕES" : "Nenhuma tarefa pendente"}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {ungradedTasks > 0
+                    ? "Caro Professor, é necessário que o senhor(a) dê os feedbacks e avalie as tarefas realizadas pelos alunos, clique no botão abaixo para ver quais tarefas são necessárias!!!"
+                    : "Não há tarefas para avaliar no momento."}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
             <CardActions>
               <Button
                 onClick={RedirecionarAvaliar}
@@ -198,7 +196,6 @@ function DashBoardTarefas() {
             </CardActions>
           </Card>
         </Grid>
-
         <Grid
           item
           xs={12}
@@ -220,14 +217,14 @@ function DashBoardTarefas() {
             STATUS DE SUAS TAREFAS
           </Typography>
           <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: 5,
-          }}
-        >
-          <Autocomplete
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: 5,
+            }}
+          >
+            <Autocomplete
               options={classes || []} // Usa array vazio caso classes seja undefined
               getOptionLabel={(option) => option.name} // Exibindo o nome da classe
               value={selectedClass}
@@ -243,15 +240,29 @@ function DashBoardTarefas() {
                 />
               )}
             />
-          <Graph
-            type="pie"
-            data={[
-              { name: "Concluídas", value: completedTasksClass, color: "#83E509" },
-              { name: "Em andamento", value: inProgressTasksClass, color: "#FFA500" },
-              { name: "Atrasadas", value: delayTasksClass, color: "#FF4C4C" },
-            ]}
-          />
-        </Box>
+            {completedTasksClass === 0 && inProgressTasksClass === 0 && delayTasksClass === 0 ? (
+              <Typography variant="h6" align="center" sx={{
+                textAlign: "center",
+                color: "black",
+                fontWeight: "bold",
+                width: "50%",
+                margin: "0 auto",
+                padding: "8px 0",
+                fontSize: 25,
+              }}>
+                Não há tarefas cadastradas para essa sala
+              </Typography>
+            ) : (
+              <Graph
+                type="pie"
+                data={[
+                  { name: "Concluídas", value: completedTasksClass, color: "#83E509" },
+                  { name: "Em andamento", value: inProgressTasksClass, color: "#FFA500" },
+                  { name: "Atrasadas", value: delayTasksClass, color: "#FF4C4C" },
+                ]}
+              />
+            )}
+          </Box>
         </Grid>
         <PerformanceDashboard />
       </Grid>
