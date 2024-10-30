@@ -13,6 +13,8 @@ import ChatForm from '../Components/ChatForm';
 
 
 function DashBoardAluno() {
+  const [attendanceData, setAttendanceData] = useState([]);
+
   const { dadosUser } = useContext(AuthContext);
   const [performanceData, setPerformanceData] = useState([]);
 
@@ -23,9 +25,39 @@ function DashBoardAluno() {
 
     if (dadosUser && dadosUser.message) {
       fetchPerformanceData();
+      fetchAttendanceData();  // Adicione esta linha
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dadosUser]); 
+ }, [dadosUser]); 
+
+ const fetchAttendanceData = async () => {
+  const userId = dadosUser.message._id;
+
+  if (!userId) {
+    console.error('ID do usuário não encontrado.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3030/attendance/${userId}`);
+    if (!response.ok) {
+      throw new Error('Erro ao buscar dados de presença');
+    }
+
+    const data = await response.json();
+
+    const attendanceRate = data.attendanceRate; 
+    const presentCount = attendanceRate;
+    const absentCount = 100 - presentCount;
+
+    setAttendanceData([
+      { name: 'Presente', value: presentCount, color: '#235BD5' },
+      { name: 'Ausente', value: absentCount, color: '#405480' },
+    ]);
+  } catch (error) {
+    console.error('Erro ao buscar dados de presença:', error);
+  }
+};
+
 
   if (!dadosUser || !dadosUser.message) {
     return <Typography variant="h5" align="center">Carregando...</Typography>;
@@ -37,31 +69,34 @@ function DashBoardAluno() {
 
   const fetchPerformanceData = async () => {
     const userId = dadosUser.message._id;
-
+  
     if (!userId) {
       console.error('ID do usuário não encontrado.');
       return;
     }
-
+  
     try {
       const response = await fetch(`http://localhost:3030/stats/proficiency/${userId}`);
       if (!response.ok) {
         throw new Error('Erro ao buscar dados de desempenho');
       }
       const data = await response.json();
-      const mappedData = data.map(item => ({
-        name: item.name, 
-        value: item.averageLevel, 
-        color: '#004FFF'
-      }));
-
-
-      setPerformanceData(mappedData);
+  
+      if (Array.isArray(data)) { // Verifica se 'data' é um array
+        const mappedData = data.map(item => ({
+          name: item.name,
+          value: item.averageLevel,
+          color: '#004FFF'
+        }));
+        setPerformanceData(mappedData);
+      } else {
+        console.error('Dados de desempenho não são um array:', data);
+      }
     } catch (error) {
       console.error('Erro ao buscar dados de desempenho:', error);
     }
-};
-
+  };
+  
   return (
     <>
       <Header textBar2='Tarefas' textBar1="HOME"/>
@@ -136,13 +171,8 @@ function DashBoardAluno() {
               SUA FREQUÊNCIA
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Graph
-                type='pie'
-                data={[
-                  { name: 'Presente', value: 90, color: '#235BD5' },
-                  { name: 'Ausente', value: 10, color: '#405480' },
-                ]}
-              />
+            <Graph type='pie' data={attendanceData.length ? attendanceData : [{ name: 'Presente', value: 0 }, { name: 'Ausente', value: 0 }]} />
+
             </Box>
           </Grid>
 
