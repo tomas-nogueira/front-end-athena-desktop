@@ -15,10 +15,6 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
 
- 
-
-    
-
   useEffect(() => {
     const loadModels = async () => {
       setLoading(true);
@@ -50,7 +46,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         videoRef.current.srcObject = stream;
         setMediaStream(stream);
         setCameraActive(true);
-        setTimeout(() => handleVideoPlay(), 2000); // Dê um tempo para o usuário se centralizar
+        setTimeout(() => handleVideoPlay(), 2000); 
       })
       .catch((err) => console.error("Error accessing webcam:", err));
   };
@@ -70,27 +66,39 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         width: videoRef.current.videoWidth,
         height: videoRef.current.videoHeight
       };
-      faceapi.matchDimensions(canvasRef.current, displaySize);
-
-      const detectFaces = async () => {
-        const detections = await faceapi.detectAllFaces(videoRef.current).withFaceLandmarks().withFaceDescriptors();
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-
-        if (detections.length > 0) {
-          const descriptor = detections[0].descriptor;
-          setFaceDescriptor(descriptor);
-        } else {
-          requestAnimationFrame(detectFaces);
-        }
-      };
-
-      detectFaces();
+      
+      // Verifica se o canvasRef.current está disponível
+      if (canvasRef.current) {
+        faceapi.matchDimensions(canvasRef.current, displaySize);
+  
+        const detectFaces = async () => {
+          if (!canvasRef.current) return; // Sai da função se o canvas não estiver pronto
+  
+          const detections = await faceapi.detectAllFaces(videoRef.current)
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+          const resizedDetections = faceapi.resizeResults(detections, displaySize);
+  
+          const ctx = canvasRef.current.getContext('2d');
+          if (ctx) { // Confirma que o contexto 2D está disponível
+            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+            faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+          }
+  
+          requestAnimationFrame(detectFaces); // Atualiza o canvas enquanto o rosto está na tela
+  
+          if (detections.length > 0) {
+            const descriptor = detections[0].descriptor;
+            setFaceDescriptor(descriptor);
+          }
+        };
+  
+        detectFaces();
+      }
     });
   };
-
+  
   const handleSaveRecognition = async () => {
     const token = localStorage.getItem('token');
 
@@ -182,15 +190,25 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
                 <CircularProgress />
               ) : (
                 <>
-                  <video
-                    ref={videoRef}
-                    autoPlay
-                    style={{ width: '100%', borderRadius: '10px', marginBottom: '20px', display: cameraActive ? 'block' : 'none' }}
-                  />
-                  <canvas
-                    ref={canvasRef}
-                    style={{ position: 'absolute', left: 0, top: 0, display: cameraActive ? 'block' : 'none' }}
-                  />
+                  <div style={{ position: 'relative', width: '100%', height: 'auto' }}>
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      style={{ width: '100%', borderRadius: '10px', display: cameraActive ? 'block' : 'none' }}
+                    />
+                    <canvas
+                      ref={canvasRef}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: '10px',
+                        display: cameraActive ? 'block' : 'none'
+                      }}
+                    />
+                  </div>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
                     {!cameraActive ? (
                       <Button

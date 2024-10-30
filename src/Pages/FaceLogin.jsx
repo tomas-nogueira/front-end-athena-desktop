@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import { useNavigate } from 'react-router-dom';
+import { notification } from 'antd';
 import "../Styles/FaceLogin.css";
 import { AuthContext } from '../Context/authProvider';
 
@@ -55,7 +56,12 @@ function FaceLogin() {
             .withFaceDescriptor();
 
         if (detections) {
-            setFaceDetected(true); 
+            setFaceDetected(true);
+            notification.success({
+                message: 'Rosto Detectado',
+                description: 'Clique no botão de login para prosseguir.',
+                placement: 'topRight',
+            });
         }
     };
 
@@ -78,9 +84,12 @@ function FaceLogin() {
             {isLoading ? <p>Carregando...</p> : <p>Aguardando reconhecimento facial...</p>}
             
             {faceDetected && (
-                <button onClick={handleFaceLogin} className="login-button">
-                    Login
-                </button>
+                <>
+                    <p>Rosto reconhecido. Clique no botão abaixo para prosseguir com o login.</p>
+                    <button onClick={handleFaceLogin} className="login-button">
+                        Login
+                    </button>
+                </>
             )}
 
             <button onClick={closeCamera} className="close-button">
