@@ -4,11 +4,11 @@ import Style from '../Styles/CardsAcesso.module.css'
 import {  Button } from '@mui/material';
 
 function CardsAcesso({ texto1, texto2, rotaBotao, imagemSrc, imagemAlt }) {
-  const navigate = useNavigate(); // Hook para navegar entre as rotas
+  const navigate = useNavigate();
 
   return (
         <div className={Style.container}>
-            <div className='high-box'>
+            <div className={Style.high}>
                 <div>
                     <p className={Style.texto1}>{texto1}</p>
                 </div>

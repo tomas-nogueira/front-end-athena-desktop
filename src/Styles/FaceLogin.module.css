@@ -1,4 +1,4 @@
-.face-login-container {
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,27 +10,27 @@
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.h2 {
     margin-bottom: 20px;
     font-size: 1.8rem;
     font-weight: 600;
     color: #333;
 }
 
-video {
+.video {
     border: 2px solid #007bff;
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.2);
 }
 
-p {
+.p {
     font-size: 1rem;
     color: #555;
     margin: 10px 0;
 }
 
-button {
+.button {
     padding: 10px 25px;
     background-color: #007bff;
     color: #fff;
@@ -43,7 +43,7 @@ button {
     margin: 8px;
 }
 
-button:hover {
+.button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
 }
