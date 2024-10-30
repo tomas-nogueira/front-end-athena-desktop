@@ -20,10 +20,10 @@ function NotasAluno() {
         <>
             <Header textBar1="HOME" textBar2="DASHBOARD" />
             <Container sx={{padding: 5}}>
-                <Typography variant="h4" align="center" gutterBottom sx={{color: "#004FFF", fontWeight: 'bolder', mb: 5}}>
+                <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bolder'}}>
                     SUAS NOTAS
                 </Typography>
-                <Grid container spacing={2} sx={{backgroundColor: "#EEECEC", borderRadius: 5, padding: 5, alignItems: 'center'}} maxWidth="lg">
+                <Grid container spacing={2} sx={{borderRadius: 5, padding: 5, alignItems: 'center'}} maxWidth="lg">
                     {gradedTasksContent.grades.map(task => (
                         <Grid item xs={12} sm={6} md={4} key={task.taskId}>
                             <CardNota 
@@ -37,7 +37,6 @@ function NotasAluno() {
                 </Grid>
             </Container>
             <ChatForm userType={dadosUser.role} userId={dadosUser._id} />
-
         </>
     );
 }
