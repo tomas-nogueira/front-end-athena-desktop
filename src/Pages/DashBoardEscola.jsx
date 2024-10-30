@@ -7,6 +7,7 @@ import Imagem from '../Photos/back-class.jpg'
 import Imagem2 from '../Photos/back-solicit.jpg'
 import { Typography } from 'antd';
 import { AuthContext } from '../Context/authProvider';
+import Footer from '../Components/Footer';
 
 function DashBoardEscola() {
   const { dadosSchool } = useContext(AuthContext);
@@ -36,6 +37,7 @@ function DashBoardEscola() {
           <Card title='Adicionar classes' description='Adicione as classes de sua escola' button1Text='ADICIONAR' button1Route='/cadastro/classe' image={Imagem}/>
           <Card title='Solicitações pendentes' description='Visualize suas solicitações pendentes' button1Text='Visualizar' button1Route='/reqpendentes/escola' image={Imagem2}/>
         </Grid>
+        <Footer/>
       </Grid>
     </>
   );
