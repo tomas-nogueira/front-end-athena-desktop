@@ -15,6 +15,7 @@ import Linha from '../Photos/linha.png';
 import Ipad from '../Photos/ipad.png';
 import Face from "../Photos/face.png"
 import { AuthContext } from '../Context/authProvider';
+import ChatForm from '../Components/ChatForm';
 
 
 function HomeProfessor() {
@@ -182,7 +183,7 @@ function HomeProfessor() {
           </Button>
         </Box>
       </Modal>
-
+      <ChatForm />
       <Footer />
     </Grid>
     </>

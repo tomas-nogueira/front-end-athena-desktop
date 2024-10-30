@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
-import "../Styles/FaceLogin.css";
+import  Style from "../Styles/FaceLogin.module.css";
 import { AuthContext } from '../Context/authProvider';
 
 function FaceLogin() {
@@ -78,21 +78,21 @@ function FaceLogin() {
     };
 
     return (
-        <div className="face-login-container">
-            <h2>Login com Reconhecimento Facial</h2>
-            <video ref={videoRef} autoPlay muted width="480" height="360" onPlay={() => setIsLoading(false)} />
-            {isLoading ? <p>Carregando...</p> : <p>Aguardando reconhecimento facial...</p>}
+        <div className={Style.container}>
+            <h2 className={Style.h2}>Login com Reconhecimento Facial</h2>
+            <video className={Style.video} ref={videoRef} autoPlay muted width="480" height="360" onPlay={() => setIsLoading(false)} />
+            {isLoading ? <p className={Style.p}>Carregando...</p> : <p className={Style.p}>Aguardando reconhecimento facial...</p>}
             
             {faceDetected && (
                 <>
                     <p>Rosto reconhecido. Clique no botão abaixo para prosseguir com o login.</p>
-                    <button onClick={handleFaceLogin} className="login-button">
+                    <button onClick={handleFaceLogin} className={Style.button}>
                         Login
                     </button>
                 </>
             )}
 
-            <button onClick={closeCamera} className="close-button">
+            <button onClick={closeCamera} className={Style.button}>
                 Fechar Câmera
             </button>
         </div>
