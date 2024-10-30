@@ -12,7 +12,6 @@ import CardsAcesso from '../Components/CardsAcesso';
 import Macbook from '../Photos/macbook.png'
 import Linha from '../Photos/linha.png'
 import Ipad2 from '../Photos/Ipad2.png'
-import ChatForm from '../Components/ChatForm';
 
 
 function HomeDiretoria() {
@@ -31,7 +30,6 @@ function HomeDiretoria() {
           gap: '2rem', 
         }}>
           <Texto />
-          <ChatForm/>
           
           <Container sx={{display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
             <Grid sx={{backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem'}}>
@@ -97,8 +95,6 @@ function HomeDiretoria() {
       </Grid>
       <Footer />
     </Grid>
-        <ChatForm />
-
     </>
   )
 }
