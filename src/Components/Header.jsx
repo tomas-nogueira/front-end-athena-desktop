@@ -128,6 +128,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         else if (page === 'DashBOARD') {
                                             navigate('/dashboard/diretoria');
                                         }
+                                        else if( page === 'Minhas Notas'){
+                                            navigate('/notas/aluno');
+                                        }
                                     }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
@@ -182,6 +185,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     else if (page === 'DashBOARD') {
                                         navigate('/dashboard/diretoria');
                                     }
+                                    else if( page === 'Minhas Notas'){
+                                        navigate('/notas/aluno');
+                                    }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
@@ -223,6 +229,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                             }, 1000);
                                         } else if (setting === 'Entrar') {
                                             navigate('/login');
+                                        } else if (setting === 'Sua Conta') { // Redireciona para a tela de perfil
+                                            navigate('/user/perfil');
                                         }
                                         handleCloseUserMenu();
                                     }}

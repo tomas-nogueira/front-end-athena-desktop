@@ -9,6 +9,7 @@ import Logo from '../Photos/logo_athena 5.png';
 import Graph from '../Components/Graph';
 import { TaskContext } from '../Context/taskProvider';
 import { AuthContext } from '../Context/authProvider';
+import ChatForm from '../Components/ChatForm';
 
 function DashBoardTarefas() {  
   const { dadosUser } = useContext(AuthContext);
@@ -102,6 +103,7 @@ function DashBoardTarefas() {
         </Grid>
       </Grid>
       <Footer />
+      <ChatForm userId={dadosUser._id} userType={dadosUser.role} />
     </>
   );
 }

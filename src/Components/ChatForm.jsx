@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextField, IconButton, Box, Dialog, DialogContent, DialogTitle, List, ListItem, ListItemText, FormControlLabel, Checkbox } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -6,26 +6,37 @@ import Style from "../Styles/ChatForm.module.css";
 import logoMin from '../Photos/logo_min.png';
 import userIcon from '../Photos/user.png';
 
-const ChatForm = ({ onSendMessage, userId, userType }) => {
+const ChatForm = ({ userId, userType }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [openChat, setOpenChat] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
-    const [doNotShowAgain, setDoNotShowAgain] = useState(false); // Estado para o checkbox
+    const [doNotShowAgain, setDoNotShowAgain] = useState(false);
 
-    useEffect(() => {
-        // Verifica se o usuário já optou por não mostrar os termos novamente
-        const termsAccepted = localStorage.getItem('termsAccepted');
-        if (!termsAccepted) {
-            setOpenTerms(true); // Abre os termos de uso se não foi aceito
+    const handleOpenChat = () => {
+        if (!localStorage.getItem('termsAccepted')) {
+            setOpenTerms(true);
+        } else {
+            setOpenChat(true);
         }
-    }, []);
+    };
+
+    const handleCloseChat = () => {
+        setOpenChat(false);
+    };
+
+    const handleCloseTerms = () => {
+        if (doNotShowAgain) {
+            localStorage.setItem('termsAccepted', 'true');
+        }
+        setOpenTerms(false);
+        setOpenChat(true);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
-
             fetch("http://localhost:3030/teste/assisthena/message", {
                 method: "POST",
                 headers: {
@@ -33,8 +44,8 @@ const ChatForm = ({ onSendMessage, userId, userType }) => {
                 },
                 body: JSON.stringify({
                     message: message,
-                    userId: "userId",
-                    userType: "professor"
+                    userId: userId,
+                    userType: userType
                 })
             })
                 .then(response => response.json())
@@ -51,33 +62,18 @@ const ChatForm = ({ onSendMessage, userId, userType }) => {
         }
     };
 
-    const handleOpenChat = () => {
-        if (!localStorage.getItem('termsAccepted')) {
-            setOpenTerms(true); 
-        } else {
-            setOpenChat(true); 
-        }
-    };
-
-    const handleCloseChat = () => {
-        setOpenChat(false);
-    };
-
-    const handleCloseTerms = () => {
-        if (doNotShowAgain) {
-            localStorage.setItem('termsAccepted', 'true');
-        }
-        setOpenTerms(false);
-        setOpenChat(true); 
-    };
-
     return (
         <Box className={Style.popupContainer}>
             <IconButton className={Style.chatIcon} onClick={handleOpenChat}>
                 <ChatIcon />
             </IconButton>
-
-            <Dialog open={openChat} onClose={handleCloseChat} className={Style.dialog} fullWidth maxWidth="md" PaperProps={{ className: Style.dialogPaper }}>
+            <Dialog
+                open={openChat}
+                onClose={handleCloseChat}
+                fullWidth
+                maxWidth="md"
+                PaperProps={{ className: Style.dialogPaper, style: { position: 'fixed', bottom: '80px', right: '20px' } }} // Ajuste aqui
+            >
                 <DialogTitle className={Style.dialogTitle}>Assisthena</DialogTitle>
                 <DialogContent>
                     <List className={Style.messageList}>
@@ -114,7 +110,7 @@ const ChatForm = ({ onSendMessage, userId, userType }) => {
                 </DialogContent>
             </Dialog>
 
-            {/* Termos de uso Popup, centralizado na tela */}
+            {/* Termos de uso Popup */}
             <Dialog open={openTerms} onClose={handleCloseTerms} fullWidth maxWidth="sm" className={Style.termsDialog}>
                 <DialogTitle>A Athena Alerta:</DialogTitle>
                 <DialogContent>
@@ -134,7 +130,6 @@ const ChatForm = ({ onSendMessage, userId, userType }) => {
                 </DialogContent>
             </Dialog>
         </Box>
-
     );
 };
 

@@ -17,6 +17,7 @@ import ChatForm from '../Components/ChatForm';
 
 function HomeDiretoria() {
   return (
+    <>
     <Grid>
       <Header textBar1="DashBOARD" textBar2="Recados"/> 
       <Grid sx={{ marginTop: '5rem' }}>
@@ -96,6 +97,9 @@ function HomeDiretoria() {
       </Grid>
       <Footer />
     </Grid>
+        <ChatForm />
+
+    </>
   )
 }
 

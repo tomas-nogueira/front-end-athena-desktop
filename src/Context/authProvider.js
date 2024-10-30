@@ -132,13 +132,35 @@ function AuthProvider({ children }) {
         })
         .then((resposta) => resposta.json())
         .then((json) => {
-            setDadosUser(json)
+
+            console.log(json.message)
+            setDadosUser(json.message)
         })
         .catch((error) => {
             console.log(error)
         });
     }, [logado])
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        fetch("http://localhost:3030/user", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+        .then((resposta) => resposta.json())
+        .then((json) => {
+
+            console.log(json.message)
+            setDadosUser(json.message)
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+    }, [])
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         fetch("http://localhost:3030/school/data", {

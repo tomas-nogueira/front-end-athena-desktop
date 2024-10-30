@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Typography, CircularProgress, Box, Paper, Container } from '@mui/material';
 import { notification } from 'antd';
 import * as faceapi from "face-api.js";
-import Header from '../Components/Header';
-import CadastroBack from '../Photos/Cadastro-back.png';
+import Header from '../Components/Header'; // Certifique-se de que o Header está corretamente configurado
+import CadastroBack from '../Photos/Cadastro-back.png'; // Caminho da imagem de fundo
 
-const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
+const Presenca = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,11 +14,38 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
+  const [studentId, setStudentId] = useState(''); 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
 
- 
+      if (!token) {
+        return;
+      }
 
-    
+      try {
+        const response = await fetch('http://localhost:3030/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
+        const data = await response.json();
+        console.log("Dados da API:", data);
+
+        if (response.ok && data.message) {
+          const {  _id } = data.message;
+          setStudentId(_id);
+        } else {
+            alert("erro")
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
   useEffect(() => {
     const loadModels = async () => {
       setLoading(true);
@@ -50,9 +77,9 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         videoRef.current.srcObject = stream;
         setMediaStream(stream);
         setCameraActive(true);
-        setTimeout(() => handleVideoPlay(), 2000); // Dê um tempo para o usuário se centralizar
+        setTimeout(() => handleVideoPlay(), 2000); // Tempo para o usuário se centralizar
       })
-      .catch((err) => console.error("Error accessing webcam:", err));
+      .catch((err) => console.error("Erro ao acessar a webcam:", err));
   };
 
   const stopVideo = () => {
@@ -92,28 +119,24 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   };
 
   const handleSaveRecognition = async () => {
-    const token = localStorage.getItem('token');
-
-    if (faceDescriptor) {
+    if (faceDescriptor && studentId) {
       setIsSaving(true);
       try {
-        const body = { descriptor: Array.from(faceDescriptor) };
-        const response = await fetch('http://localhost:3030/face', {
+        const body = { descriptor: Array.from(faceDescriptor), studentId }; 
+        const response = await fetch('http://localhost:3030/attendance/registerWithFaceDescriptor', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(body)
         });
-  
+
         const responseData = await response.json();
         if (response.ok) {
           notification.success({
             message: 'Sucesso',
             description: 'Reconhecimento facial salvo com sucesso!',
           });
-          onFaceDetected();
           stopVideo();
         } else {
           notification.error({
@@ -129,12 +152,17 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
       } finally {
         setIsSaving(false);
       }
+    } else {
+      notification.error({
+        message: 'Erro',
+        description: 'É necessário um descritor facial, ID do aluno e ID da turma.',
+      });
     }
   };
 
   return (
     <>
-      <Header textBar1="dashboard" textBar2="Minhas tarefas" />
+      <Header textBar1="dashboard" textBar2="Registro de Presença" />
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
@@ -142,7 +170,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         position: 'relative'
       }}>
         <Container maxWidth="md" style={{
@@ -173,7 +201,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
               boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)'
             }}>
               <Typography variant="h4" gutterBottom sx={{ color: '#2196f3' }}>
-                Reconhecimento Facial
+                Registro de Presença
               </Typography>
               <Typography variant="body1" gutterBottom sx={{ color: '#666' }}>
                 Por favor, centralize seu rosto na câmera antes de iniciar.
@@ -230,4 +258,4 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   );
 };
 
-export default FaceRecognitionPage;
+export default Presenca;

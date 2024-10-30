@@ -27,6 +27,9 @@ import HomeAluno from './Components/HomeAluno';
 import EditPerfil from './Pages/EditPerfil';
 import TaskProvider from './Context/taskProvider';
 import HomeDiretoria from './Pages/HomeDiretoria';
+import FaceRecognitionPage from './Pages/FaceRecognitionPage';
+import Presenca from './Pages/Presenca';
+import NotasAluno from './Pages/NotasAluno'
 
 const router = createBrowserRouter([
   {
@@ -98,6 +101,10 @@ const router = createBrowserRouter([
     element: <ProtectedRoute element={<NotasProfessor />} requiredRole="professor" />,
   },
   {
+    path: "/notas/aluno",
+    element: <ProtectedRoute element={<NotasAluno />} requiredRole="estudante" />,
+  },
+  {
     path: '/home/professor',
     element: <HomeProfessor/>
   },
@@ -120,6 +127,14 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
+  },
+  {
+    path: "/presenca",
+    element: <Presenca />,
+  },
+  {
+    path: "/cadastrar-face/user",
+    element: <FaceRecognitionPage />,
   },
 ]);
 

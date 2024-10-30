@@ -62,19 +62,6 @@ function FaceLogin() {
     const handleFaceLogin = async (detections) => {
         const descriptor = Array.from(detections.descriptor);
         await LoginFacial(descriptor);
-        const role = localStorage.getItem("role")
-        if (role === 'estudante') {
-            navigate('/home/aluno');
-        } 
-        else if (role === 'professor') {
-            navigate('/home/professor');
-        } 
-        else if (role === 'diretor' || role === 'coordenador') {
-            navigate('/dashboard/diretoria');
-        } 
-        else if (role === 'inspetor' || role === 'limpeza' || role === 'cozinha') {
-            navigate('/dashboard/funcionarios');
-        } 
         closeCamera();
     };
 
