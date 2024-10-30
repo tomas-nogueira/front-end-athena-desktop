@@ -65,7 +65,7 @@ const ChatForm = ({ userId, userType }) => {
     return (
         <Box className={Style.popupContainer}>
             <IconButton className={Style.chatIcon} onClick={handleOpenChat}>
-                <ChatIcon />
+                <ChatIcon className={Style.chat}/>
             </IconButton>
             <Dialog
                 open={openChat}
