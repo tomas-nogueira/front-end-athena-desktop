@@ -56,7 +56,7 @@ function App() {
   return (
     <div className={Style.container}>
       <Header 
-        textBar1="Instruções" 
+        textBar1="Instruções" textBar2="Login"
         onTextBar2Click={handleOpenInstructions}
       />
       <div className={Style.boxmid}>
