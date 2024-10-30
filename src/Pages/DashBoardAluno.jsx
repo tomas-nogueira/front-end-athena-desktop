@@ -9,7 +9,7 @@ import HeaderDashboards from '../Components/HeaderDashboards';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { AuthContext } from '../Context/authProvider';
 import { TaskContext } from '../Context/taskProvider';
-
+import ChatForm from '../Components/ChatForm';
 
 
 function DashBoardAluno() {
@@ -216,7 +216,7 @@ function DashBoardAluno() {
         </Grid>
       </Grid>
       </Grid>
-      <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
+      <ChatForm />
 
       <FooterNovo />
     </>

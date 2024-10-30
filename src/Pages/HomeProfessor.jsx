@@ -186,7 +186,7 @@ function HomeProfessor() {
 
       <Footer />
     </Grid>
-    <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
+    <ChatForm/>
     </>
   );
 }
