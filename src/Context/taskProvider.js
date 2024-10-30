@@ -142,7 +142,6 @@ function TaskProvider({ children }) {
           })
             .then((resposta) => resposta.json())
             .then((json) => {
-              console.log(json)
               if(json.grades){
                 setGradedTasksContent(json)
               }
