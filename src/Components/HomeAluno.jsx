@@ -182,7 +182,7 @@ imagemAlt="Imagem de exemplo"
       </Modal>
       <Footer />
     </Grid>
-    <ChatForm userId={dadosUser._id} userType={dadosUser.role} />
+    <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
     </div>
   )
 }

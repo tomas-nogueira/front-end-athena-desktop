@@ -72,29 +72,40 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         faceapi.matchDimensions(canvasRef.current, displaySize);
   
         const detectFaces = async () => {
-          if (!canvasRef.current) return; // Sai da função se o canvas não estiver pronto
-  
+          // Verifica se `videoRef.current` e `canvasRef.current` estão definidos
+          if (!videoRef.current || !canvasRef.current) return;
+        
+          const displaySize = {
+            width: videoRef.current.videoWidth,
+            height: videoRef.current.videoHeight
+          };
+        
+          // Configura as dimensões do canvas
+          faceapi.matchDimensions(canvasRef.current, displaySize);
+        
           const detections = await faceapi.detectAllFaces(videoRef.current)
             .withFaceLandmarks()
             .withFaceDescriptors();
           const resizedDetections = faceapi.resizeResults(detections, displaySize);
-  
+        
+          // Verifica se o contexto do canvas está disponível
           const ctx = canvasRef.current.getContext('2d');
-          if (ctx) { // Confirma que o contexto 2D está disponível
+          if (ctx) {
             ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
             faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
           }
-  
-          requestAnimationFrame(detectFaces); // Atualiza o canvas enquanto o rosto está na tela
-  
+        
           if (detections.length > 0) {
             const descriptor = detections[0].descriptor;
             setFaceDescriptor(descriptor);
           }
+        
+          // Chama a próxima detecção
+          requestAnimationFrame(detectFaces);
         };
-  
-        detectFaces();
+        
+        videoRef.current.addEventListener('loadedmetadata', detectFaces);
       }
     });
   };

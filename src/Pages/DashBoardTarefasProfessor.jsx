@@ -261,7 +261,7 @@ function DashBoardTarefas() {
         </Grid>
         <PerformanceDashboard />
       </Grid>
-      <ChatForm />
+      <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
       <Footer />
     </>
   );
