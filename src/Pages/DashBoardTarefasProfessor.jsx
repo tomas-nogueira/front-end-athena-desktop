@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Style from "../Styles/Style.css";
 import Header from "../Components/Header";
 import {
@@ -13,7 +13,9 @@ import {
   CardContent,
   Button,
   Snackbar, // Adicionado para a notificação
-  Alert,   // Adicionado para estilizar a notificação
+  Alert,
+  Autocomplete,
+  TextField,   // Adicionado para estilizar a notificação
 } from "@mui/material";
 import Footer from "../Components/Footer";
 import Graph from "../Components/Graph";
@@ -23,72 +25,54 @@ import NotificationCard from "../Components/NotificationCard";
 import ChatForm from "../Components/ChatForm";
 import PerformanceDashboard from "../Components/PerformanceDashboard";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/authProvider";
+import { TaskContext } from "../Context/taskProvider";
 
 function DashBoardTarefas() {
-  const [selectedClass, setSelectedClass] = useState("");
-  const [selectedClass2, setSelectedClass2] = useState("");
+  const [selectedClass, setSelectedClass] = useState(null);
   const [openNotification, setOpenNotification] = useState(false);
-  const [dadosUser, setDadosUser] = useState({});
-  
+
+  const { dadosUser } = useContext(AuthContext);
+  const { ungradedTasks, classes, GetClassProfessorById, GetTasksByClass, completedTasksClass, delayTasksClass, inProgressTasksClass } = useContext(TaskContext);
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    fetch("http://localhost:3030/user", {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-    })
-    .then((resposta) => resposta.json())
-    .then((json) => {
-      setDadosUser(json.message);
-      console.log(dadosUser);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar dados do usuário:", error);
-    });
-  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setOpenNotification(true); 
   }, []);
 
-  const handleClassChange = (event) => {
-    setSelectedClass(event.target.value);
-  };
-
-  const handleClassChange2 = (event) => {
-    setSelectedClass2(event.target.value);
-  };
-
   const handleCloseNotification = () => {
     setOpenNotification(false);
   };
 
-  const handleAvaliar = () => {
-    console.log("Botão clicado! Redirecionando para /notas/professor...");
+  function RedirecionarAvaliar(){
     navigate('/notas/professor');
-  };
+  }
+  //Pegando as salas
+  useEffect(() => {
+    if (dadosUser && dadosUser.message && dadosUser.message.IdSchool) {
+      GetClassProfessorById()
+    }
+  }, [dadosUser]);
 
-  const classOptions = [
-    { value: "1ano", label: "1º Ano" },
-    { value: "2ano", label: "2º Ano" },
-    { value: "3ano", label: "3º Ano" },
-    { value: "4ano", label: "4º Ano" },
-    { value: "5ano", label: "5º Ano" },
-    { value: "6ano", label: "6º Ano" },
-    { value: "7ano", label: "7º Ano" },
-    { value: "8ano", label: "8º Ano" },
-    { value: "9ano", label: "9º Ano" },
-    { value: "1medio", label: "1º Médio" },
-    { value: "2medio", label: "2º Médio" },
-    { value: "3medio", label: "3º Médio" },
-  ];
+  // Chama GetTasksByClass sempre que selectedClass mudar
+  useEffect(() => {
+    if (selectedClass) {
+      GetTasksByClass(selectedClass._id); // Passa a classe selecionada, se necessário
+    }
+  }, [selectedClass]);
 
+    //Verificando se existe os dados do usuário
+    if (!dadosUser || !dadosUser.message) {
+      return <Typography variant="h5" align="center">Carregando...</Typography>;
+    }
+  
+    // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
+    if (!dadosUser.message.role || !dadosUser.message.name) {
+      return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+    }
+    
   return (
     <>
       <Header
@@ -97,7 +81,7 @@ function DashBoardTarefas() {
         textBar3="Avaliar Tarefas"
       />
       <HeaderDashboards
-        name={dadosUser.name}
+        name={dadosUser.message.name}
         institution="SESI 337"
         role="Professor"
       />
@@ -167,36 +151,36 @@ function DashBoardTarefas() {
               marginTop: 2,
             }}
           >
-            <CardActionArea>
+          <CardActionArea>
+            <Typography
+              sx={{
+                fontSize: 50,
+                fontWeight: "bold",
+                color: "#004FFF",
+                textAlign: "center",
+              }}
+            >
+              {ungradedTasks}
+            </Typography>
+            <CardContent sx={{ textAlign: "center" }}>
               <Typography
-                sx={{
-                  fontSize: 50,
-                  fontWeight: "bold",
-                  color: "#004FFF",
-                  textAlign: "center",
-                }}
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ fontWeight: "bold" }}
               >
-                23
+                {ungradedTasks > 0 ? "FEEDBACKS E AVALIAÇÕES" : "Nenhuma tarefa pendente"}
               </Typography>
-              <CardContent sx={{ textAlign: "center" }}>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  sx={{ fontWeight: "bold" }}
-                >
-                  FEEDBACKS E AVALIAÇÕES
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Caro Professor, é necessário que o senhor(a) dê os feedbacks e
-                  avalie as tarefas realizadas pelos alunos, clique no botão
-                  abaixo para ver quais tarefas são necessárias!!!
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                {ungradedTasks > 0
+                  ? "Caro Professor, é necessário que o senhor(a) dê os feedbacks e avalie as tarefas realizadas pelos alunos, clique no botão abaixo para ver quais tarefas são necessárias!!!"
+                  : "Não há tarefas para avaliar no momento."}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
             <CardActions>
               <Button
-                onClick={handleAvaliar}
+                onClick={RedirecionarAvaliar}
                 size="large"
                 sx={{
                   fontWeight: "bold",
@@ -236,28 +220,38 @@ function DashBoardTarefas() {
             STATUS DE SUAS TAREFAS
           </Typography>
           <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: 5,
-            }}
-          >
-            <Select
-              label="Selecione a sala"
-              menuItems={classOptions}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 5,
+          }}
+        >
+          <Autocomplete
+              options={classes || []} // Usa array vazio caso classes seja undefined
+              getOptionLabel={(option) => option.name} // Exibindo o nome da classe
               value={selectedClass}
-              onChange={handleClassChange}
+              fullWidth
+              onChange={(event, newValue) => setSelectedClass(newValue)} // Atualizando as classes selecionadas
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Selecione a sala..."
+                  placeholder="Selecione as classes"
+                  fullWidth
+                />
+              )}
             />
-            <Graph
-              type="pie"
-              data={[
-                { name: "Concluídas", value: 20, color: "#4CAF50" },
-                { name: "Em andamento", value: 31, color: "#FF9800" },
-                { name: "Atrasadas", value: 31, color: "#F44336" },
-              ]}
-            />
-          </Box>
+          <Graph
+            type="pie"
+            data={[
+              { name: "Concluídas", value: completedTasksClass, color: "#83E509" },
+              { name: "Em andamento", value: inProgressTasksClass, color: "#FFA500" },
+              { name: "Atrasadas", value: delayTasksClass, color: "#FF4C4C" },
+            ]}
+          />
+        </Box>
         </Grid>
         <PerformanceDashboard />
       </Grid>
