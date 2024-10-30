@@ -32,7 +32,6 @@ function HomeDiretoria() {
           gap: '2rem', 
         }}>
           <Texto />
-          <ChatForm/>
           
           <Container sx={{display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
             <Grid sx={{backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem'}}>
@@ -106,8 +105,6 @@ function HomeDiretoria() {
       </Grid>
       <Footer />
     </Grid>
-        <ChatForm />
-
     </>
   )
 }

@@ -65,7 +65,6 @@ function AuthProvider({ children }) {
                 setLogado(false);
                 setMessageContext('Erro ao fazer login, verifique suas credenciais.');
                 antdMessage.error('Erro ao fazer login, verifique suas credenciais.'); 
-                localStorage.setItem("role", json.role)
             }
         }
         )}

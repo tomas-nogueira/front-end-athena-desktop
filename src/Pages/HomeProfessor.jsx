@@ -14,7 +14,6 @@ import Macbook from '../Photos/macbook.png';
 import Linha from '../Photos/linha.png';
 import Ipad from '../Photos/ipad.png';
 import Face from "../Photos/face.png"
-import ChatForm from '../Components/ChatForm';
 import { AuthContext } from '../Context/authProvider';
 
 
@@ -186,7 +185,6 @@ function HomeProfessor() {
 
       <Footer />
     </Grid>
-    <ChatForm/>
     </>
   );
 }
