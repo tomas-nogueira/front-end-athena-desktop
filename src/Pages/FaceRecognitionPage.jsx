@@ -78,53 +78,44 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   };
 
   const handleVideoPlay = () => {
-    videoRef.current.addEventListener('loadedmetadata', () => {
-      const displaySize = {
-        width: videoRef.current.videoWidth,
-        height: videoRef.current.videoHeight
-      };
-      
-      // Verifica se o canvasRef.current está disponível
-      if (canvasRef.current) {
-        faceapi.matchDimensions(canvasRef.current, displaySize);
+    const displaySize = {
+      width: videoRef.current.videoWidth,
+      height: videoRef.current.videoHeight,
+    };
   
-        const detectFaces = async () => {
-          // Verifica se `videoRef.current` e `canvasRef.current` estão definidos
-          if (!videoRef.current || !canvasRef.current) return;
+    if (canvasRef.current) {
+      canvasRef.current.width = displaySize.width;
+      canvasRef.current.height = displaySize.height;
+      faceapi.matchDimensions(canvasRef.current, displaySize);
+  
+      const detectFaces = async () => {
+        if (!videoRef.current || !canvasRef.current) return;
+  
+        const detections = await faceapi.detectAllFaces(videoRef.current)
+          .withFaceLandmarks()
+          .withFaceDescriptors();
         
-          const displaySize = {
-            width: videoRef.current.videoWidth,
-            height: videoRef.current.videoHeight
-          };
-        
-          // Configura as dimensões do canvas
-          faceapi.matchDimensions(canvasRef.current, displaySize);
-        
-          const detections = await faceapi.detectAllFaces(videoRef.current)
-            .withFaceLandmarks()
-            .withFaceDescriptors();
-          const resizedDetections = faceapi.resizeResults(detections, displaySize);
-        
-          // Verifica se o contexto do canvas está disponível
-          const ctx = canvasRef.current.getContext('2d');
-          if (ctx) {
-            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-            faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-          }
-        
-          if (detections.length > 0) {
-            const descriptor = detections[0].descriptor;
-            setFaceDescriptor(descriptor);
-          }
-        
-          // Chama a próxima detecção
-          requestAnimationFrame(detectFaces);
-        };
-        
-        videoRef.current.addEventListener('loadedmetadata', detectFaces);
-      }
-    });
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+  
+        // Obtém o contexto do `canvas` e limpa para desenhar as novas detecções
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+  
+        // Desenha as detecções e landmarks faciais no `canvas`
+        faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+  
+        if (detections.length > 0) {
+          const descriptor = detections[0].descriptor;
+          setFaceDescriptor(descriptor);
+        }
+  
+        // Chama `requestAnimationFrame` para continuar detectando
+        requestAnimationFrame(detectFaces);
+      };
+  
+      detectFaces(); // Inicia a detecção de faces imediatamente
+    }
   };
   
   const handleSaveRecognition = async () => {

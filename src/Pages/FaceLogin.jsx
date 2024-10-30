@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import  Style from "../Styles/FaceLogin.module.css";
 import { AuthContext } from '../Context/authProvider';
+import {Box} from '@mui/material'
 
 function FaceLogin() {
     const videoRef = useRef(null);
@@ -12,6 +13,8 @@ function FaceLogin() {
     const [faceDetected, setFaceDetected] = useState(false);
     const navigate = useNavigate();
     const { LoginFacial } = useContext(AuthContext);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+
 
     useEffect(() => {
         const loadModels = async () => {
@@ -39,6 +42,7 @@ function FaceLogin() {
             .then(stream => {
                 videoRef.current.srcObject = stream;
                 setMediaStream(stream);
+                setIsCameraOpen(true)
             })
             .catch(err => console.error("Erro ao acessar a câmera:", err));
     };
@@ -47,7 +51,13 @@ function FaceLogin() {
         if (mediaStream) {
             mediaStream.getTracks().forEach(track => track.stop());
             setMediaStream(null);
+            setIsCameraOpen(false)
+
         }
+    };
+
+    const openCamera = () => {
+        startVideo();
     };
 
     const detectFace = async () => {
@@ -82,7 +92,7 @@ function FaceLogin() {
             <h2 className={Style.h2}>Login com Reconhecimento Facial</h2>
             <video className={Style.video} ref={videoRef} autoPlay muted width="480" height="360" onPlay={() => setIsLoading(false)} />
             {isLoading ? <p className={Style.p}>Carregando...</p> : <p className={Style.p}>Aguardando reconhecimento facial...</p>}
-            
+
             {faceDetected && (
                 <>
                     <p>Rosto reconhecido. Clique no botão abaixo para prosseguir com o login.</p>
@@ -91,10 +101,16 @@ function FaceLogin() {
                     </button>
                 </>
             )}
+            {isCameraOpen ? (
+                <button onClick={closeCamera} className={Style.button}>
+                    Fechar Câmera
+                </button>
+            ) : (
+                <button onClick={openCamera} className={Style.button}>
+                    Abrir Câmera
+                </button>
+            )}
 
-            <button onClick={closeCamera} className={Style.button}>
-                Fechar Câmera
-            </button>
         </div>
     );
 }
