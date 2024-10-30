@@ -27,7 +27,7 @@ function DashBoardEscola() {
 
   return (
     <>
-      <Header />
+      <Header textBar1="Dashboard de Presença"/>
       <HeaderDashboards role={dadosSchool.message.role} name={dadosSchool.message.name} institution='CONTA ADMINISTRATIVA' />
       <Grid item xs={12} sm={6} display='flex' alignItems='center' justifyContent='center' gap='2rem' flexDirection='column' sx={{marginTop: '2rem'}}>
         <Grid>

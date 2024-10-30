@@ -149,6 +149,10 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         onTextBar2Click(); // Abre o pop-up de instruções
                                     } else if (page === 'Home') {
                                         navigate('/home/professor');
+                                    } else if (page === 'hoME') {
+                                        navigate('/dashboard/escola')
+                                    } else if (page === "Dashboard de Presença") {
+                                        navigate('/presenca/escola')
                                     }
                                     else if (page === 'home') {
                                         navigate('/home/diretoria');
