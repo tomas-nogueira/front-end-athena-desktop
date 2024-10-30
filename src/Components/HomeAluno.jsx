@@ -119,30 +119,30 @@ function HomeAluno() {
           </Container>
 
           <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem'}}>
-          <CardsAcesso 
-            texto1="Minha dashboard"
-            texto2="Acesse sua dashboard e veja seus dados"
-            rotaBotao="/dashboard/aluno"
-            imagemSrc={Macbook}
-            imagemAlt="Imagem de exemplo"
-            />
-                                    <img src={Linha}/>
-
-<CardsAcesso 
-texto1="Reconhecimento facial"
-texto2="Eleve seu desempenho com o nosso Reconhecimento Facial"
-rotaBotao="/cadastrar-face/user"
-imagemSrc={Face}
-imagemAlt="Imagem de exemplo"
-/>
-            <img src={Linha}/>
             <CardsAcesso 
-            texto1="Minhas tarefas"
-            texto2="Visualize suas tarefas e realize-as!"
-            rotaBotao="/dashboard/tarefas/aluno"
-            imagemSrc={Ipad}
-            imagemAlt="Imagem de exemplo"
-            />
+              texto1="Minha dashboard"
+              texto2="Acesse sua dashboard e veja seus dados"
+              rotaBotao="/dashboard/aluno"
+              imagemSrc={Macbook}
+              imagemAlt="Imagem de exemplo"
+              />
+                                      <img src={Linha}/>
+
+              <CardsAcesso 
+              texto1="Reconhecimento facial"
+              texto2="Eleve seu desempenho com o nosso Reconhecimento Facial"
+              rotaBotao="/cadastrar-face/user"
+              imagemSrc={Face}
+              imagemAlt="Imagem de exemplo"
+              />
+              <img src={Linha}/>
+              <CardsAcesso 
+              texto1="Minhas tarefas"
+              texto2="Visualize suas tarefas e realize-as!"
+              rotaBotao="/dashboard/tarefas/aluno"
+              imagemSrc={Ipad}
+              imagemAlt="Imagem de exemplo"
+              />
           </Container>
         </Grid>
       </Grid>

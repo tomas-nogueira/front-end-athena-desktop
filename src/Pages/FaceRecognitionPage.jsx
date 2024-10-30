@@ -18,6 +18,21 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [home, setHome] = useState('')
 
   useEffect(() => {
+    const role = localStorage.getItem('role');
+    if (role) {
+      if (role === 'estudante') {
+        setHome('HOME');
+      } else if (role === 'diretor') {
+        setHome('home');
+      } else if (role === 'professor') {
+        setHome('Home');
+      } else {
+        setHome(''); 
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const loadModels = async () => {
       setLoading(true);
       await Promise.all([
@@ -159,7 +174,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
 
   return (
     <>
-      <Header textBar1='home' />
+      <Header textBar1={home} />
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
