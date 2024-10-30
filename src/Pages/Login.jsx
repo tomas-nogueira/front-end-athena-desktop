@@ -38,7 +38,7 @@ function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [school, setSchool] = useState("");
   const [confirmsenha, setConfirmSenha] = useState("");
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const handleTogglePasswordVisibility = () => {

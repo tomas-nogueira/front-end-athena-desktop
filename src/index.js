@@ -30,6 +30,7 @@ import HomeDiretoria from './Pages/HomeDiretoria';
 import FaceRecognitionPage from './Pages/FaceRecognitionPage';
 import Presenca from './Pages/Presenca';
 import NotasAluno from './Pages/NotasAluno'
+import PresencaEscola from './Pages/PresencaEscola';
 
 const router = createBrowserRouter([
   {
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastrar-face/user",
     element: <FaceRecognitionPage />,
+  },
+  {
+    path: "/presenca/escola",
+    element: <PresencaEscola />,
   },
 ]);
 
