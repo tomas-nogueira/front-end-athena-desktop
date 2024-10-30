@@ -15,6 +15,8 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
 
+  const [home, setHome] = useState('')
+
   useEffect(() => {
     const loadModels = async () => {
       setLoading(true);
@@ -151,9 +153,13 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
   return (
     <>
-      <Header textBar1="dashboard" textBar2="Minhas tarefas" />
+      <Header textBar1='home' />
       <section style={{
         backgroundImage: `url(${CadastroBack})`,
         backgroundSize: 'cover',
