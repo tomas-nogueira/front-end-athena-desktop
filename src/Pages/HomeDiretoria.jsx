@@ -31,6 +31,7 @@ function HomeDiretoria() {
           gap: '2rem', 
         }}>
           <Texto />
+          <ChatForm/>
           
           <Container sx={{display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
             <Grid sx={{backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem'}}>
@@ -76,21 +77,21 @@ function HomeDiretoria() {
           </Container>
 
           <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem'}}>
-          <CardsAcesso 
-            texto1="Minha dashboard"
-            texto2="Acesse sua dashboard e veja seus dados"
-            rotaBotao="/dashboard/diretoria"
-            imagemSrc={Macbook}
-            imagemAlt="Imagem de exemplo"
-            />
-            <img src={Linha}/>
             <CardsAcesso 
-            texto1="Recados"
-            texto2="Envie recados para as salas de aula!"
-            rotaBotao="/aviso/diretor"
-            imagemSrc={Ipad2}
-            imagemAlt="Imagem de exemplo"
-            />
+              texto1="Minha dashboard"
+              texto2="Acesse sua dashboard e veja seus dados"
+              rotaBotao="/dashboard/diretoria"
+              imagemSrc={Macbook}
+              imagemAlt="Imagem de exemplo"
+              />
+              <img src={Linha}/>
+              <CardsAcesso 
+              texto1="Recados"
+              texto2="Envie recados para as salas de aula!"
+              rotaBotao="/aviso/diretor"
+              imagemSrc={Ipad2}
+              imagemAlt="Imagem de exemplo"
+              />
           </Container>
         </Grid>
       </Grid>
