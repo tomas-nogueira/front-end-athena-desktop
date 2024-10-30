@@ -5,7 +5,7 @@ function Texto() {
   return (
     <div className={Style.card}>
         <div className={Style.loader}>
-            <p>melhore seu</p>
+            <p className={Style.melhore}>melhore seu</p>
     <div className={Style.words}>
       <span className={Style.word}>desempenho</span>
       <span className={Style.word}>foco</span>

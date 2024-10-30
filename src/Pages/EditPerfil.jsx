@@ -9,14 +9,13 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import CallIcon from '@mui/icons-material/Call';
+import { Container } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import { AuthContext } from "../Context/authProvider";
 import { useNavigate } from 'react-router-dom';
 import Style from "../Styles/EditPerfil.module.css";
 import Footer from '../Components/Footer';
 import Header from '../Components/Header';
-
-
+import { AuthContext } from '../Context/authProvider';
 
 const EditPerfil = () => {
   const { userId } = useContext(AuthContext);
@@ -31,8 +30,27 @@ const EditPerfil = () => {
   const [city, setCity] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [home, setHome] = useState('')
+
+  const { dadosUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Obter a role do usuário do localStorage e definir o estado de home
+    const role = localStorage.getItem('role');
+    if (role) {
+      if (role === 'estudante') {
+        setHome('HOME');
+      } else if (role === 'diretor') {
+        setHome('home');
+      } else if (role === 'professor') {
+        setHome('Home');
+      } else {
+        setHome(''); // Valor padrão se a role não for encontrada
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -92,8 +110,6 @@ const EditPerfil = () => {
     console.log("Atualizando usuário com ID:", id);
 
     try {
-     
-
       const response = await fetch(`http://localhost:3030/user/edit/${id}`, {
         method: 'PUT',
         headers: {
@@ -131,7 +147,7 @@ const EditPerfil = () => {
   return (
     <div className={Style.bg}>
       <div className={Style.header}>
-        <Header textBar1="home"/>
+        <Header textBar1={home} />
       </div>
       <div className={Style.container}>
         <div className={Style.highbox}>
@@ -139,10 +155,10 @@ const EditPerfil = () => {
           <AssignmentIndIcon className={Style.hand} />
         </div>
         {error && (
-          <Alert variant='filled' severity="error" sx={{ textAlign:"center", borderRadius: '5px' }}>{error}</Alert>
+          <Alert variant='filled' severity="error" sx={{ textAlign: "center", borderRadius: '5px' }}>{error}</Alert>
         )}
         {message && (
-          <Alert variant='filled' severity="info" sx={{ textAlign:"center", borderRadius: '5px' }}>{message}</Alert>
+          <Alert variant='filled' severity="info" sx={{ textAlign: "center", borderRadius: '5px' }}>{message}</Alert>
         )}
         <Grid elevation={3} style={{ padding: '20px', width: '100%', backgroundColor: 'transparent', border: 'none' }}>
           <form className={Style.lowcontainer}>
@@ -162,7 +178,6 @@ const EditPerfil = () => {
               <TextField
                 label="Email"
                 variant="standard"
-                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 sx={{ width: '450px' }}
@@ -192,7 +207,7 @@ const EditPerfil = () => {
               />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', marginTop: "20px" }}>
-              <AssignmentIndIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
               <TextField
                 label="Rua"
                 variant="standard"
@@ -203,7 +218,7 @@ const EditPerfil = () => {
               />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', marginTop: "20px" }}>
-              <AssignmentIndIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              <MailIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
               <TextField
                 label="CEP"
                 variant="standard"
@@ -214,7 +229,7 @@ const EditPerfil = () => {
               />
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', marginTop: "20px" }}>
-              <AssignmentIndIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+              <CallIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
               <TextField
                 label="Estado"
                 variant="standard"
@@ -243,7 +258,7 @@ const EditPerfil = () => {
           </form>
         </Grid>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
