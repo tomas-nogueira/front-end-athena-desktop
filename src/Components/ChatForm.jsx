@@ -12,6 +12,7 @@ const ChatForm = ({ userId, userType }) => {
     const [openChat, setOpenChat] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
     const [doNotShowAgain, setDoNotShowAgain] = useState(false);
+    const [wantsToListen, setWantsToListen] = useState(false); // Novo estado para controlar a preferência de ouvir respostas
 
     const handleOpenChat = () => {
         if (!localStorage.getItem('termsAccepted')) {
@@ -33,6 +34,11 @@ const ChatForm = ({ userId, userType }) => {
         setOpenChat(true);
     };
 
+    const speakText = (text) => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(utterance);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (message.trim()) {
@@ -52,6 +58,10 @@ const ChatForm = ({ userId, userType }) => {
                 .then(json => {
                     if (json.response) {
                         setMessages((prevMessages) => [...prevMessages, { text: json.response, sender: 'assisthena' }]);
+                        // Se o checkbox estiver marcado, fala a resposta
+                        if (wantsToListen) {
+                            speakText(json.response);
+                        }
                     }
                 })
                 .catch(error => {
@@ -65,14 +75,14 @@ const ChatForm = ({ userId, userType }) => {
     return (
         <Box className={Style.popupContainer}>
             <IconButton className={Style.chatIcon} onClick={handleOpenChat}>
-                <ChatIcon className={Style.chat}/>
+                <ChatIcon className={Style.chat} />
             </IconButton>
             <Dialog
                 open={openChat}
                 onClose={handleCloseChat}
                 fullWidth
                 maxWidth="md"
-                PaperProps={{ className: Style.dialogPaper, style: { position: 'fixed', bottom: '80px', right: '20px' } }} // Ajuste aqui
+                PaperProps={{ className: Style.dialogPaper, style: { position: 'fixed', bottom: '80px', right: '20px' } }}
             >
                 <DialogTitle className={Style.dialogTitle}>Assisthena</DialogTitle>
                 <DialogContent>
@@ -93,6 +103,18 @@ const ChatForm = ({ userId, userType }) => {
                             </ListItem>
                         ))}
                     </List>
+
+                    {/* Checkbox para permitir que o usuário ouça as respostas */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={wantsToListen}
+                                onChange={(e) => setWantsToListen(e.target.checked)}
+                                color="primary"
+                            />
+                        }
+                        label="Ouvir as respostas"
+                    />
 
                     <form onSubmit={handleSubmit} className={Style.form}>
                         <TextField
