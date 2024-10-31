@@ -37,15 +37,15 @@ const ChatForm = ({ userId, userType }) => {
         e.preventDefault();
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
-            fetch("http://localhost:3030/teste/assisthena/message", {
+            fetch("http://localhost:1010/api/process", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    message: message,
-                    userId: userId,
-                    userType: userType
+                    userInput: message,
+                    userId: "teste",
+                    userType: "estudante"
                 })
             })
                 .then(response => response.json())
