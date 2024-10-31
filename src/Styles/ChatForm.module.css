@@ -47,12 +47,16 @@
 
 .userMessage {
     text-align: right;
-    color: blue;
+    color: #3f51b5;
+    background-color: rgba(243, 243, 243, 0.5);
 }
 
 .assisthenaMessage {
+    margin-top: 10px;
     text-align: left;
-    color: green;
+    background-color: rgba(243, 243, 243, 0.5);
+
+    color: #3f51b5;
 }
 
 .messageIcon {
