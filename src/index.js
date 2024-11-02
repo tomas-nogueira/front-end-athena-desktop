@@ -31,6 +31,7 @@ import FaceRecognitionPage from './Pages/FaceRecognitionPage';
 import Presenca from './Pages/Presenca';
 import NotasAluno from './Pages/NotasAluno'
 import PresencaEscola from './Pages/PresencaEscola';
+import Loading from './Components/loading';
 
 const router = createBrowserRouter([
   {
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
   {
     path: "/presenca/escola",
     element: <PresencaEscola />,
+  },
+  {
+    path: "/loading",
+    element: <Loading />,
   },
 ]);
 

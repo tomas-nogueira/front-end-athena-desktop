@@ -10,6 +10,7 @@ import Graph from '../Components/Graph';
 import { TaskContext } from '../Context/taskProvider';
 import { AuthContext } from '../Context/authProvider';
 import ChatForm from '../Components/ChatForm';
+import Loading from '../Components/loading';
 
 function DashBoardTarefas() {  
   const { dadosUser } = useContext(AuthContext);
@@ -22,7 +23,7 @@ function DashBoardTarefas() {
 
     //Verificando se existe os dados do usuário
     if (!dadosUser || !dadosUser.message) {
-      return <Typography variant="h5" align="center">Carregando...</Typography>;
+      return <><Loading /></>;
     }
   
     // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
