@@ -9,11 +9,12 @@ import userIcon from '../Photos/user.png';
 const ChatForm = ({ userId, userType }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false); // Novo estado para indicar que a Assisthena está digitando
     const [openChat, setOpenChat] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
     const [doNotShowAgain, setDoNotShowAgain] = useState(false);
-    const [wantsToListen, setWantsToListen] = useState(false); // Novo estado para controlar a preferência de ouvir respostas
-    const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
+    const [wantsToListen, setWantsToListen] = useState(false);
+    const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA;
 
     const handleOpenChat = () => {
         if (!localStorage.getItem('termsAccepted')) {
@@ -44,6 +45,9 @@ const ChatForm = ({ userId, userType }) => {
         e.preventDefault();
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
+            setMessage('');
+            setIsTyping(true); // Define como "digitando" antes de chamar a API
+
             fetch(`${apiUrl}/api/process`, {
                 method: "POST",
                 headers: {
@@ -59,7 +63,6 @@ const ChatForm = ({ userId, userType }) => {
                 .then(json => {
                     if (json.response) {
                         setMessages((prevMessages) => [...prevMessages, { text: json.response, sender: 'assisthena' }]);
-                        // Se o checkbox estiver marcado, fala a resposta
                         if (wantsToListen) {
                             speakText(json.response);
                         }
@@ -67,9 +70,10 @@ const ChatForm = ({ userId, userType }) => {
                 })
                 .catch(error => {
                     console.error('Erro ao enviar mensagem:', error);
+                })
+                .finally(() => {
+                    setIsTyping(false); // Define como "não digitando" após a resposta
                 });
-
-            setMessage('');
         }
     };
 
@@ -103,9 +107,17 @@ const ChatForm = ({ userId, userType }) => {
                                 )}
                             </ListItem>
                         ))}
+
+                        {/* Mostrar "Assisthena está digitando..." enquanto isTyping for true */}
+                        {isTyping && (
+                            <ListItem className={Style.assisthenaMessage}>
+                                <img src={logoMin} alt="Assisthena" className={Style.messageIcon} />
+                                <ListItemText primary="Assisthena está digitando..." />
+                            </ListItem>
+                        )}
                     </List>
 
-                    {/* Checkbox para permitir que o usuário ouça as respostas */}
+                    {/* Checkbox para ouvir respostas */}
                     <FormControlLabel
                         control={
                             <Checkbox

@@ -130,6 +130,9 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         }
                                         else if( page === 'Minhas Notas'){
                                             navigate('/notas/aluno');
+                                        }else if (page === "Reconhecimento Facial")
+                                        {
+                                            navigate('/cadastrar-face/user');
                                         }
                                     }}
                                 >

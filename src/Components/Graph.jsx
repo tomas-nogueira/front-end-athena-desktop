@@ -84,7 +84,7 @@ function Graph({ data, type }) {
                     }
                 ]
             };
-        } else if (type === 'stackedLine') { // Adicionando a linha empilhada
+        }else if (type === 'stackedLine') { 
             option = {
                 tooltip: {
                     trigger: 'axis',
@@ -94,7 +94,7 @@ function Graph({ data, type }) {
                 },
                 xAxis: {
                     type: 'category',
-                    data: data[0]?.values.map((_, index) => `Category ${index + 1}`) || [], // Ajuste para os eixos
+                    data: data[0]?.categories || [], // Ajuste para usar categorias reais
                 },
                 yAxis: {
                     type: 'value'
@@ -102,7 +102,7 @@ function Graph({ data, type }) {
                 series: data.map(item => ({
                     name: item.name,
                     type: 'line',
-                    stack: 'total', // Aqui está o empilhamento
+                    stack: 'total', 
                     data: item.values,
                     itemStyle: {
                         color: item.color
@@ -114,6 +114,8 @@ function Graph({ data, type }) {
                     areaStyle: {} // Para o efeito de preenchimento abaixo da linha
                 }))
             };
+        
+        
         }
 
         chart.setOption(option);

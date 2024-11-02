@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Typography, CircularProgress, Box, Paper, Container } from '@mui/material';
+import { Button, Typography, CircularProgress, Box, Paper, Container, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { notification } from 'antd';
 import * as faceapi from "face-api.js";
 import Header from '../Components/Header';
@@ -14,9 +14,14 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
-  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
-
-  const [home, setHome] = useState('')
+  const [imageExists, setImageExists] = useState(false);
+  const [password, setPassword] = useState('');
+  const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
+  const [attempts, setAttempts] = useState(0); 
+  const [isBlocked, setIsBlocked] = useState(false);
+  const apiUrl = "http://localhost:3030"; 
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [home, setHome] = useState('');
 
   useEffect(() => {
     const role = localStorage.getItem('role');
@@ -29,6 +34,29 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         setHome('Home');
       } else {
         setHome(''); 
+      }
+    }
+    const blockedData = localStorage.getItem('accessBlocked');
+    if (blockedData) {
+      const { timeBlocked, attemptsCount } = JSON.parse(blockedData);
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - timeBlocked;
+
+
+      if (elapsedTime < 43200000) { 
+          setIsBlocked(true);
+          setAttempts(attemptsCount);
+          setTimeRemaining(43200000 - elapsedTime); 
+          const timeToUnlock = setTimeout(() => {
+              localStorage.removeItem('accessBlocked');
+              setIsBlocked(false);
+              setAttempts(0);
+          }, 43200000 - elapsedTime);
+      
+      
+        return () => clearTimeout(timeToUnlock);
+      } else {
+        localStorage.removeItem('accessBlocked');
       }
     }
   }, []);
@@ -49,13 +77,26 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   }, []);
 
   useEffect(() => {
+    const checkImageExists = async () => {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/check-image`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setImageExists(data.imageExists);
+    };
+    checkImageExists();
+  }, [apiUrl]);
+
+  useEffect(() => {
     if (isLoaded && cameraActive) {
       handleVideoPlay();
     }
     return () => {
       stopVideo();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, cameraActive]);
 
   const startVideo = () => {
@@ -98,11 +139,9 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
   
-        // Obtém o contexto do `canvas` e limpa para desenhar as novas detecções
         const ctx = canvasRef.current.getContext('2d');
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   
-        // Desenha as detecções e landmarks faciais no `canvas`
         faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
         faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
   
@@ -111,23 +150,22 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
           setFaceDescriptor(descriptor);
         }
   
-        // Chama `requestAnimationFrame` para continuar detectando
         requestAnimationFrame(detectFaces);
       };
   
-      detectFaces(); // Inicia a detecção de faces imediatamente
+      detectFaces();
     }
   };
-  
+
   const handleSaveRecognition = async () => {
     const token = localStorage.getItem('token');
 
     if (faceDescriptor) {
       setIsSaving(true);
       try {
-        const body = { descriptor: Array.from(faceDescriptor) };
+        const body = { descriptor: Array.from(faceDescriptor), password };
         const response = await fetch(`${apiUrl}/face`, {
-          method: 'POST',
+          method: imageExists ? 'PUT' : 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -148,6 +186,17 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
             message: 'Erro',
             description: responseData.message || 'Erro ao salvar o reconhecimento facial.',
           });
+          setAttempts(prev => prev + 1); // Incrementar tentativas
+          if (attempts + 1 >= 3) {
+            setIsBlocked(true);
+            const currentTime = Date.now();
+            localStorage.setItem('accessBlocked', JSON.stringify({ timeBlocked: currentTime, attemptsCount: attempts + 1 }));
+            setTimeout(() => {
+                setIsBlocked(false);
+                setAttempts(0);
+            }, 43200000); // 12 horas em milissegundos
+        }
+        
         }
       } catch (error) {
         notification.error({
@@ -156,13 +205,52 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
         });
       } finally {
         setIsSaving(false);
+        setOpenPasswordDialog(false);
+        setPassword('');
       }
     }
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [])
+
+  const handlePasswordSubmit = async () => {
+    if (isBlocked) {
+      const hoursRemaining = Math.ceil(timeRemaining / 3600000); // Converte milissegundos em horas
+      notification.error({
+        message: 'Acesso Bloqueado',
+        description: `Você excedeu o número de tentativas. Tente novamente em ${hoursRemaining} horas.`,
+    });
+      return;
+    }
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`${apiUrl}/confirm-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    if (response.ok) {
+      handleSaveRecognition();
+    } else {
+      notification.error({
+        message: 'Senha Incorreta',
+        description: 'A senha inserida está incorreta. Tente novamente.',
+      });
+      setAttempts(prev => prev + 1); // Incrementar tentativas
+      if (attempts + 1 >= 3) {
+        setIsBlocked(true);
+        const currentTime = Date.now();
+        localStorage.setItem('accessBlocked', JSON.stringify({ timeBlocked: currentTime, attemptsCount: attempts + 1 }));
+        setTimeout(() => {
+          setIsBlocked(false);
+          setAttempts(0);
+        }, 86400000); // 24 horas em milissegundos
+      }
+    }
+  };
 
   return (
     <>
@@ -210,6 +298,12 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
               <Typography variant="body1" gutterBottom sx={{ color: '#666' }}>
                 Por favor, centralize seu rosto na câmera antes de iniciar.
               </Typography>
+
+              {isBlocked && (
+                <Typography variant="body2" color="error">
+                  Você excedeu o número de tentativas. Tente novamente em {Math.ceil(timeRemaining / 3600000)} horas.
+                </Typography>
+              )}
               {loading ? (
                 <CircularProgress />
               ) : (
@@ -254,11 +348,11 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
                     {faceDescriptor && (
                       <Button
                         variant="contained"
-                        onClick={handleSaveRecognition}
-                        disabled={isSaving}
+                        onClick={() => setOpenPasswordDialog(true)}
+                        disabled={isSaving || isBlocked}
                         sx={{ marginTop: '20px', backgroundColor: '#2196f3', color: '#fff', borderRadius: '25px', padding: '10px 20px' }}
                       >
-                        {isSaving ? <CircularProgress size={24} /> : 'Salvar Reconhecimento'}
+                        {isSaving ? <CircularProgress size={24} /> : imageExists ? 'Atualizar Face' : 'Salvar Reconhecimento'}
                       </Button>
                     )}
                   </Box>
@@ -268,6 +362,33 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
           </Box>
         </Container>
       </section>
+      
+      <Dialog open={openPasswordDialog} onClose={() => setOpenPasswordDialog(false)}>
+        <DialogTitle>Confirmação de Senha</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Por favor, insira sua senha para continuar com a atualização facial.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Senha"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isBlocked} // Desabilitar se bloqueado
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPasswordDialog(false)} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handlePasswordSubmit} color="primary">
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

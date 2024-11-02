@@ -14,6 +14,7 @@ import ChatForm from '../Components/ChatForm';
 
 function DashBoardAluno() {
   const [attendanceData, setAttendanceData] = useState([]);
+  const [semesterData, setSemesterData] = useState([]); // Novo estado para os dados de "Semestre Atual x Passado"
 
   const { dadosUser } = useContext(AuthContext);
   const [performanceData, setPerformanceData] = useState([]);
@@ -27,6 +28,7 @@ function DashBoardAluno() {
     if (dadosUser && dadosUser.message) {
       fetchPerformanceData();
       fetchAttendanceData();  
+      fetchSemesterData();
     }
  }, [dadosUser]); 
 
@@ -97,6 +99,44 @@ function DashBoardAluno() {
       console.error('Erro ao buscar dados de desempenho:', error);
     }
   };
+
+  const fetchSemesterData = async () => {
+    const userId = dadosUser.message._id;
+
+    if (!userId) {
+      console.error('ID do usuário não encontrado.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/stats/semester/${userId}`);
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados de semestre');
+      }
+
+      const data = await response.json();
+
+      const formattedData = [
+        {
+            name: 'Semestre Atual',
+            categories: data.map(item => item.category), // Matérias como categorias
+            values: data.map(item => item.currentPercentage),
+            color: '#235BD5'
+        },
+        {
+            name: 'Semestre Passado',
+            categories: data.map(item => item.category), // Matérias como categorias
+            values: data.map(item => item.pastPercentage),
+            color: '#405480'
+        }
+    ];
+
+      setSemesterData(formattedData);
+    } catch (error) {
+      console.error('Erro ao buscar dados de semestre:', error);
+    }
+  };
+
   
   return (
     <>
@@ -135,23 +175,21 @@ function DashBoardAluno() {
                 textAlign: 'center',
                 borderBottom: '3px solid #004FFF',
                 fontWeight: 'bold',
-                width: '60%',
+                width: '75%',
                 margin: '0 auto',
                 padding: '8px 0',
                 fontSize: 25,
                 color: '#394255'
               }}
             >
-              SEMESTRE ATUAL X PASSADO
+              DESEMPENHO SEMESTRE ATUAL X PASSADO
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Graph
-                type='stackedLine'
-                data={[
-                  { name: 'Presente', values: [120, 132, 101, 134, 90, 230, 210], color: '#235BD5' },
-                  { name: 'Ausente', values: [220, 182, 191, 234, 290, 330, 310], color: '#405480' },
-                ]}
-              />
+              {semesterData.length > 0 ? (
+                <Graph type='stackedLine' data={semesterData} />
+              ) : (
+                <Typography variant="h6" align="center">Nenhum dado disponível.</Typography>
+              )}
             </Box>
           </Grid>
 
