@@ -19,7 +19,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
   const [attempts, setAttempts] = useState(0); 
   const [isBlocked, setIsBlocked] = useState(false);
-  const apiUrl = "http://localhost:3030"; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [home, setHome] = useState('');
 
