@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import { TaskContext } from '../Context/taskProvider';
 import { Grid, Container, Typography } from '@mui/material';
@@ -8,13 +8,31 @@ import { AuthContext } from '../Context/authProvider';
 
 function NotasAluno() {
     const { dadosUser } = useContext(AuthContext);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const { gradedTasksContent } = useContext(TaskContext);
 
-    // Verifique se gradedTasksContent e grades existem
+    useEffect(() => {
+        if (dadosUser) {
+          setLoading(false);
+          if (!dadosUser.message.role || !dadosUser.message.name) {
+            setError(true);
+          }
+        }
+        window.scrollTo(0, 0);
+      }, [dadosUser]);
+
     if (!gradedTasksContent || !gradedTasksContent.grades) {
         return <Typography variant="h5" align="center">Carregando...</Typography>;
     }
+
+    if (loading) {
+        return <Typography variant="h5" align="center">Carregando...</Typography>;
+      }
+    
+      if (error) {
+        return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+      }
 
     return (
         <>
@@ -36,7 +54,7 @@ function NotasAluno() {
                     ))}
                 </Grid>
             </Container>
-            <ChatForm userType={dadosUser.role} userId={dadosUser._id} />
+            <ChatForm userType={dadosUser.message.role} userId={dadosUser.message._id} />
         </>
     );
 }

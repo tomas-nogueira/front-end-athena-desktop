@@ -14,6 +14,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   const [home, setHome] = useState('')
 
@@ -125,7 +126,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
       setIsSaving(true);
       try {
         const body = { descriptor: Array.from(faceDescriptor) };
-        const response = await fetch('http://localhost:3030/face', {
+        const response = await fetch(`${apiUrl}/face`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

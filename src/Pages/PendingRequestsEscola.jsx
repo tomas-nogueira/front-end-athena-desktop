@@ -6,10 +6,12 @@ import UserRequestBox from '../Components/BoxUserRequest';
 function PendingRequestsEscola() {
   const [schoolId, setSchoolId] = useState('');
   const [pendingUsers, setPendingUsers] = useState([]);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("http://localhost:3030/school/data", {
+    fetch(`${apiUrl}/school/data`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +27,7 @@ function PendingRequestsEscola() {
   function GetPendingRequests(){
     const token = localStorage.getItem('token');
     if (schoolId) {
-      fetch(`http://localhost:3030/schools/${schoolId}/pending-requests`, {
+      fetch(`${apiUrl}/schools/${schoolId}/pending-requests`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',

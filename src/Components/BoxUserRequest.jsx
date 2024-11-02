@@ -6,8 +6,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const UserRequestBox = ({ name, rm, userId, IdSchool, removeUserFromList }) => {
+  const apiUrl = process.env.BASE_URL_ATHENA; 
+
   const handleApprove = () => {
-    fetch(`http://localhost:3030/user/approve`, {
+    fetch(`${apiUrl}/user/approve`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ const UserRequestBox = ({ name, rm, userId, IdSchool, removeUserFromList }) => {
   };
 
   const handleReject = () => {
-    fetch(`http://localhost:3030/user/reject`, {
+    fetch(`${apiUrl}/user/reject`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

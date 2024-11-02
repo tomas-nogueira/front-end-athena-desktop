@@ -15,6 +15,8 @@ function CadastroClasse() {
   const [errorMessage, setErrorMessage] = useState('');
   const [schoolId, setSchoolId] = useState('');
   const [teachers, setTeachers] = useState([]);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
+
   // Estado para cronograma
   const [scheduleItems, setScheduleItems] = useState([
     { dayOfWeek: '', startTime: '', endTime: '', topic: '' }
@@ -22,7 +24,7 @@ function CadastroClasse() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3030/school/data', {
+    fetch(`${apiUrl}/school/data`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     })
@@ -33,7 +35,7 @@ function CadastroClasse() {
 
   useEffect(() => {
     if (schoolId) {
-      fetch(`http://localhost:3030/user/allteachers/${schoolId}`, {
+      fetch(`${apiUrl}/user/allteachers/${schoolId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       })
@@ -50,7 +52,7 @@ function CadastroClasse() {
   
     if (schoolId) {
       // Primeira requisição: criar a classe
-      fetch('http://localhost:3030/class', {
+      fetch(`${apiUrl}/class`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -71,7 +73,7 @@ function CadastroClasse() {
         const classId = classData.class._id || classData._id;
         
         if (classId) {
-          return fetch('http://localhost:3030/schedule/create', {
+          return fetch(`${apiUrl}/schedule/create`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',

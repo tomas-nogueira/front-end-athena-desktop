@@ -12,7 +12,8 @@ import Header from '../Components/Header';
 function PresencaEscola() {
   const { dadosUser } = useContext(AuthContext);
   const [attendanceData, setAttendanceData] = useState([]);
-  
+  const apiUrl = process.env.BASE_URL_ATHENA; 
+
   const fetchAttendanceData = async () => {
     const userId = dadosUser.message._id;
 
@@ -22,7 +23,7 @@ function PresencaEscola() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3030/attendance/${userId}`);
+      const response = await fetch(`${apiUrl}/attendance/${userId}`);
       if (!response.ok) {
         throw new Error('Erro ao buscar dados de presença');
       }

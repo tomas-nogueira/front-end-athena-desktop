@@ -7,6 +7,7 @@ const NotificationCard = ({ year, userId, userType }) => {
   const [chatLog, setChatLog] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isInsights, setIsInsights] = useState(false); 
+  const apiUrl = process.env.BASE_URL_ASSISTHENA; 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -17,7 +18,7 @@ const NotificationCard = ({ year, userId, userType }) => {
 
     const dynamicMessage = `O professor está pedindo mais detalhes e feedbacks e insights sobre o ${year}`;
 
-    fetch("http://localhost:3030/teste/assisthena/message", {
+    fetch(`${apiUrl}/api/process`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ const NotificationCard = ({ year, userId, userType }) => {
     setChatLog([]); 
     setIsInsights(true);
 
-    fetch("http://localhost:3030/teste/assisthena/insights", {
+    fetch(`${apiUrl}/api/process`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

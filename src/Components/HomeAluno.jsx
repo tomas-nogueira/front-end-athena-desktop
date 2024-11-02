@@ -19,8 +19,11 @@ import ChatForm from './ChatForm';
 
 
 function HomeAluno() {
+  const [id, setId] = useState()
+  const [role, setRole] = useState()
   const { dadosUser } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,7 +34,7 @@ function HomeAluno() {
       }
 
       try {
-        const response = await fetch('http://localhost:3030/user', {
+        const response = await fetch(`${apiUrl}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -40,7 +43,9 @@ function HomeAluno() {
         const data = await response.json();
 
         if (response.ok && data.message) {
-          const { image } = data.message;
+          const { image, _id, role } = data.message;
+          setRole(role)
+          setId(_id)
           if(!image){
             const timeout = setTimeout(() => {
               setShowModal(true);

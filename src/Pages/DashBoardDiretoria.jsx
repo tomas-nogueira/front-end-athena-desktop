@@ -105,7 +105,7 @@ function DashBoardDiretoria() {
         </Grid>
       </Grid>
       <Footer />
-      <ChatForm userType={"diretoria"} userId={"diretoria"} />
+      <ChatForm userType={"diretoria"} userId={dadosUser.message._id} />
 
     </>
   );

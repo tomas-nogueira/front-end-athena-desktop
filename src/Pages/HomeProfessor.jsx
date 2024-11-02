@@ -19,8 +19,10 @@ import ChatForm from '../Components/ChatForm';
 
 
 function HomeProfessor() {
-  
+  const [id, setId] = useState()
+  const [role, setRole] = useState()
   const { dadosUser } = useContext(AuthContext);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   const [showModal, setShowModal] = useState(false);
 
@@ -33,7 +35,7 @@ function HomeProfessor() {
       }
 
       try {
-        const response = await fetch('http://localhost:3030/user', {
+        const response = await fetch(`${apiUrl}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -42,7 +44,9 @@ function HomeProfessor() {
         const data = await response.json();
 
         if (response.ok && data.message) {
-          const { image } = data.message;
+          const { image, _id, role } = data.message;
+          setRole(role)
+          setId(_id)
           if(!image){
             const timeout = setTimeout(() => {
               setShowModal(true);
@@ -183,7 +187,7 @@ function HomeProfessor() {
           </Button>
         </Box>
       </Modal>
-      <ChatForm />
+      <ChatForm userId={id} userType={role} />
       <Footer />
     </Grid>
     </>

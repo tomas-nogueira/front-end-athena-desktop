@@ -13,6 +13,7 @@ const ChatForm = ({ userId, userType }) => {
     const [openTerms, setOpenTerms] = useState(false);
     const [doNotShowAgain, setDoNotShowAgain] = useState(false);
     const [wantsToListen, setWantsToListen] = useState(false); // Novo estado para controlar a preferência de ouvir respostas
+    const apiUrl = process.env.BASE_URL_ASSISTHENA; 
 
     const handleOpenChat = () => {
         if (!localStorage.getItem('termsAccepted')) {
@@ -43,7 +44,7 @@ const ChatForm = ({ userId, userType }) => {
         e.preventDefault();
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
-            fetch("http://localhost:1010/api/process", {
+            fetch(`${apiUrl}/api/process`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

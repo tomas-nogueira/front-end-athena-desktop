@@ -15,6 +15,8 @@ const Presenca = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [studentId, setStudentId] = useState(''); 
+  const apiUrl = process.env.BASE_URL_ATHENA; 
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -24,7 +26,7 @@ const Presenca = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3030/user', {
+        const response = await fetch(`${apiUrl}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -123,7 +125,7 @@ const Presenca = () => {
       setIsSaving(true);
       try {
         const body = { descriptor: Array.from(faceDescriptor), studentId }; 
-        const response = await fetch('http://localhost:3030/attendance/registerWithFaceDescriptor', {
+        const response = await fetch(`${apiUrl}/attendance/registerWithFaceDescriptor`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

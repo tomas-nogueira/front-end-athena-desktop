@@ -35,6 +35,7 @@ function TaskProvider({ children }) {
   const [tasksResponses, setTaskResponses] = useState([])
 
   const [loading, setLoading] = useState(true)
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   useEffect(() => {
     if (dadosUser && dadosUser.message) {
@@ -42,7 +43,7 @@ function TaskProvider({ children }) {
         const studentId = dadosUser.message._id;
 
         // Todas as Tarefas
-        fetch(`http://localhost:3030/task/getall/userbyclass/${studentId}`, {
+        fetch(`${apiUrl}/task/getall/userbyclass/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -61,7 +62,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
         // Tarefas Completas
-        fetch(`http://localhost:3030/tasks/completed-user/${studentId}`, {
+        fetch(`${apiUrl}/tasks/completed-user/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -79,7 +80,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
         // Tarefas em atraso
-        fetch(`http://localhost:3030/tasks/delay/${studentId}`, {
+        fetch(`${apiUrl}/tasks/delay/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -97,7 +98,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
         // Tarefas que vão vencer em breve
-        fetch(`http://localhost:3030/tasks/duesoon-user/${studentId}`, {
+        fetch(`${apiUrl}/tasks/duesoon-user/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -116,7 +117,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
         // Tarefas em progresso
-        fetch(`http://localhost:3030/tasks/inprogress/${studentId}`, {
+        fetch(`${apiUrl}/tasks/inprogress/${studentId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -134,7 +135,7 @@ function TaskProvider({ children }) {
           .catch((error) => console.log(error));
 
           //Pegar tarefas avaliadas
-          fetch(`http://localhost:3030/tasks/usergrade/${studentId}`, {
+          fetch(`${apiUrl}/tasks/usergrade/${studentId}`, {
             method: "GET",
             headers: {
               'Content-Type': 'application/json'
@@ -157,7 +158,7 @@ function TaskProvider({ children }) {
           const professorId = dadosUser.message._id;
           
         //Pegando todas as tarefas do professor
-        fetch(`http://localhost:3030/tasks/getalluser/${professorId}`, {
+        fetch(`${apiUrl}/tasks/getalluser/${professorId}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -188,7 +189,7 @@ function TaskProvider({ children }) {
 
   function EnivarRespostaTask(id, dissertativeResponse, selectedValue){
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3030/tasks/response`, {
+    fetch(`${apiUrl}/tasks/response`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -219,7 +220,7 @@ function TaskProvider({ children }) {
   //Função para pegar os dados individuais da tarefa
   function GetDataTaskById(id){
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3030/tasks/getId/${id}`, {
+    fetch(`${apiUrl}/tasks/getId/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -237,7 +238,7 @@ function TaskProvider({ children }) {
 
   //Função para pegar as classes que o professor da aula
   function GetClassProfessorById(){
-    fetch(`http://localhost:3030/class/${dadosUser.message.IdSchool}`, {
+    fetch(`${apiUrl}/class/${dadosUser.message.IdSchool}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -254,7 +255,7 @@ function TaskProvider({ children }) {
 
   function CadastrarTask(subject, content, dueDate , recipients, IdClass, tipoQuestao, alternativas){
     const token = localStorage.getItem('token');
-    fetch("http://localhost:3030/tasks/create", {
+    fetch(`${apiUrl}/tasks/create`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -292,7 +293,7 @@ function TaskProvider({ children }) {
   }
 
   function getResponsesByTaskById(id){
-    fetch(`http://localhost:3030/tasks/responsesbytask/${id}`, {
+    fetch(`${apiUrl}/tasks/responsesbytask/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -310,7 +311,7 @@ function TaskProvider({ children }) {
 
   function CorrectionTask(studentId, idTask, feedback, grade){
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3030/tasks/correction`, {
+    fetch(`${apiUrl}/tasks/correction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -340,7 +341,7 @@ function TaskProvider({ children }) {
   }
 
   function GetTasksByClass(idClass){
-    fetch(`http://localhost:3030/tasks/getalltasksclass/${idClass}`, {
+    fetch(`${apiUrl}/tasks/getalltasksclass/${idClass}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -9,12 +9,13 @@ export default function PerformanceDashboard ()  {
   const [selectedClass2, setSelectedClass2] = useState(""); // Alterado para string vazia
   const [graphData, setGraphData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const fetchClasses = async () => {
       try {
-        const response = await fetch("http://localhost:3030/classes/teacher", {
+        const response = await fetch(`${apiUrl}/classes/teacher`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ export default function PerformanceDashboard ()  {
   
   const fetchDataForSelectedClass = async (classId) => {
     try {
-      const response = await fetch(`http://localhost:3030/stats/performance/${classId}`, {
+      const response = await fetch(`${apiUrl}/stats/performance/${classId}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',

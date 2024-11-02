@@ -4,6 +4,7 @@ import { message as antdMessage } from 'antd';
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
+    const apiUrl = process.env.BASE_URL_ATHENA; 
 
     const [messageContext, setMessageContext] = useState('');
     const [logado, setLogado] = useState(false);
@@ -14,7 +15,8 @@ function AuthProvider({ children }) {
     const [dadosSchool, setDadosSchool] = useState({})
 
     function LoginFacial(descriptor) {
-        fetch("http://localhost:3030/user/facelogin", {
+
+        fetch(`${apiUrl}/user/facelogin`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -41,7 +43,7 @@ function AuthProvider({ children }) {
     
 
     function Login(email, senha) {
-        fetch("http://localhost:3030/user/login", {
+        fetch(`${apiUrl}/user/login`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -70,7 +72,7 @@ function AuthProvider({ children }) {
         )}
 
     function Cadastrar(nome, email, senha, school, classe, telefone, cpf, role, rua, cep, estado, cidade) {
-        fetch("http://localhost:3030/user/create", {
+        fetch(`${apiUrl}/user/create`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -122,7 +124,7 @@ function AuthProvider({ children }) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetch("http://localhost:3030/user", {
+        fetch(`${apiUrl}/user`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -141,7 +143,7 @@ function AuthProvider({ children }) {
     
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetch("http://localhost:3030/school/data", {
+        fetch(`${apiUrl}/school/data`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
@@ -159,7 +161,7 @@ function AuthProvider({ children }) {
       }, [logado, cnpjContext]);
 
     function LoginEscola(cnpj, password){
-        fetch("http://localhost:3030/school/login", {
+        fetch(`${apiUrl}/school/login`, {
             method: "POST",
             headers: {
               'Content-Type': 'application/json'
@@ -191,7 +193,7 @@ function AuthProvider({ children }) {
     }
 
     function CadastrarEscola(name, email, phone, inepCode, cnpj, street, cep, state, city, institutionType, educationLevels, password){
-        fetch("http://localhost:3030/school/create", {
+        fetch(`${apiUrl}/school/create`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

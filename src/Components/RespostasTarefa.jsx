@@ -15,14 +15,12 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Radio,
 } from '@mui/material';
 import moment from 'moment';
 import Header from './Header';
 import { message as antdMessage } from 'antd';
 import { AuthContext } from '../Context/authProvider';
 import { TaskContext } from '../Context/taskProvider';
-import CardTarefaMateria from './CardTarefaMateria';
 
 function RespostasTarefa() {
   const { id } = useParams(); // id da tarefa

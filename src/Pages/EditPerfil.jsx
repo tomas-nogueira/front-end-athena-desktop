@@ -31,6 +31,7 @@ const EditPerfil = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [home, setHome] = useState('')
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   const { dadosUser } = useContext(AuthContext);
 
@@ -62,7 +63,7 @@ const EditPerfil = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3030/user', {
+        const response = await fetch(`${apiUrl}/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -110,7 +111,7 @@ const EditPerfil = () => {
     console.log("Atualizando usuário com ID:", id);
 
     try {
-      const response = await fetch(`http://localhost:3030/user/edit/${id}`, {
+      const response = await fetch(`${apiUrl}/user/edit/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

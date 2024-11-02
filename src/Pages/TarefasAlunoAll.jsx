@@ -1,8 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CardTarefaMateria from '../Components/CardTarefaMateria';
 import Header from '../Components/Header';
 import { Grid, Container, Typography, Box, TextField, MenuItem } from '@mui/material';
 import { TaskContext } from '../Context/taskProvider';
+import { AuthContext } from '../Context/authProvider';
+import Footer from '../Components/Footer';
+import ChatForm from '../Components/ChatForm';
 
 function TarefasAlunoAll() {
   const [filterSubject, setFilterSubject] = useState('');
@@ -10,7 +13,22 @@ function TarefasAlunoAll() {
 
   const { totalTasksContent, completedTasksContent, delayTasksContent, inProgressContent } = useContext(TaskContext);
 
-  // Função para determinar qual conteúdo exibir com base nos filtros de status e matéria
+  const { dadosUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+      if (dadosUser) {
+        setLoading(false);
+        if (!dadosUser.message.role || !dadosUser.message.name) {
+          setError(true);
+        }
+      }
+      window.scrollTo(0, 0);
+    }, [dadosUser]);
+
+
+
   const filteredContent = () => {
     let content = [];
 
@@ -36,6 +54,15 @@ function TarefasAlunoAll() {
 
     return content;
   };
+
+  
+  if (loading) {
+    return <Typography variant="h5" align="center">Carregando...</Typography>;
+  }
+
+  if (error) {
+    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
+  }
 
   return (
     <>
@@ -143,6 +170,8 @@ function TarefasAlunoAll() {
   )}
 </Grid>
       </Container>
+      <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
+      <Footer />
     </>
   );
 }

@@ -17,6 +17,7 @@ function DashBoardAluno() {
 
   const { dadosUser } = useContext(AuthContext);
   const [performanceData, setPerformanceData] = useState([]);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   const { dueSoon, dueSoonContent } = useContext(TaskContext);
 
@@ -25,7 +26,7 @@ function DashBoardAluno() {
 
     if (dadosUser && dadosUser.message) {
       fetchPerformanceData();
-      fetchAttendanceData();  // Adicione esta linha
+      fetchAttendanceData();  
     }
  }, [dadosUser]); 
 
@@ -38,7 +39,7 @@ function DashBoardAluno() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3030/attendance/${userId}`);
+    const response = await fetch(`${apiUrl}/attendance/${userId}`);
     if (!response.ok) {
       throw new Error('Erro ao buscar dados de presença');
     }
@@ -76,7 +77,7 @@ function DashBoardAluno() {
     }
   
     try {
-      const response = await fetch(`http://localhost:3030/stats/proficiency/${userId}`);
+      const response = await fetch(`${apiUrl}/stats/proficiency/${userId}`);
       if (!response.ok) {
         throw new Error('Erro ao buscar dados de desempenho');
       }
@@ -246,7 +247,7 @@ function DashBoardAluno() {
         </Grid>
       </Grid>
       </Grid>
-      <ChatForm />
+      <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role}/>
 
       <FooterNovo />
     </>

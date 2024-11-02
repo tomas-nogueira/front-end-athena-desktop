@@ -40,6 +40,7 @@ function Login() {
   const [confirmsenha, setConfirmSenha] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const apiUrl = process.env.BASE_URL_ATHENA; 
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -162,7 +163,7 @@ function Login() {
   }, [logado, navigate, roleContext]);
 
   useEffect(() => {
-    fetch("http://localhost:3030/school", {
+    fetch(`${apiUrl}/school`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -180,7 +181,7 @@ function Login() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3030/class/${school}`, {
+    fetch(`h${apiUrl}/class/${school}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
