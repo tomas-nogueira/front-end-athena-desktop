@@ -23,7 +23,7 @@ function HomeAluno() {
   const [role, setRole] = useState()
   const { dadosUser } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   useEffect(() => {
     const fetchUserData = async () => {

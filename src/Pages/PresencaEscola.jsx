@@ -12,7 +12,7 @@ import Header from '../Components/Header';
 function PresencaEscola() {
   const { dadosUser } = useContext(AuthContext);
   const [attendanceData, setAttendanceData] = useState([]);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const fetchAttendanceData = async () => {
     const userId = dadosUser.message._id;

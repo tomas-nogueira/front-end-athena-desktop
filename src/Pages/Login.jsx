@@ -40,7 +40,7 @@ function Login() {
   const [confirmsenha, setConfirmSenha] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);

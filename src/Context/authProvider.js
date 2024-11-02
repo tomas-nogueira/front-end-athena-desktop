@@ -4,7 +4,7 @@ import { message as antdMessage } from 'antd';
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-    const apiUrl = process.env.BASE_URL_ATHENA; 
+    const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
     const [messageContext, setMessageContext] = useState('');
     const [logado, setLogado] = useState(false);
@@ -43,6 +43,7 @@ function AuthProvider({ children }) {
     
 
     function Login(email, senha) {
+        console.log(apiUrl)
         fetch(`${apiUrl}/user/login`, {
             method: "POST",
             headers: {

@@ -15,7 +15,7 @@ function CadastroClasse() {
   const [errorMessage, setErrorMessage] = useState('');
   const [schoolId, setSchoolId] = useState('');
   const [teachers, setTeachers] = useState([]);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   // Estado para cronograma
   const [scheduleItems, setScheduleItems] = useState([

@@ -6,7 +6,7 @@ import UserRequestBox from '../Components/BoxUserRequest';
 function PendingRequestsEscola() {
   const [schoolId, setSchoolId] = useState('');
   const [pendingUsers, setPendingUsers] = useState([]);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
 
   useEffect(() => {

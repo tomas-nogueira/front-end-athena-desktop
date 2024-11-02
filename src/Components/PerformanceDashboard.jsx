@@ -9,7 +9,7 @@ export default function PerformanceDashboard ()  {
   const [selectedClass2, setSelectedClass2] = useState(""); // Alterado para string vazia
   const [graphData, setGraphData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   useEffect(() => {
     const token = localStorage.getItem('token');

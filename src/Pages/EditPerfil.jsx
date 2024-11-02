@@ -31,7 +31,7 @@ const EditPerfil = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [home, setHome] = useState('')
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const { dadosUser } = useContext(AuthContext);
 

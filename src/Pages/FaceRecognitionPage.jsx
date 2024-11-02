@@ -14,7 +14,7 @@ const FaceRecognitionPage = ({ onFaceDetected = () => {} }) => {
   const [loading, setLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const [home, setHome] = useState('')
 

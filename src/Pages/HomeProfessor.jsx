@@ -22,7 +22,7 @@ function HomeProfessor() {
   const [id, setId] = useState()
   const [role, setRole] = useState()
   const { dadosUser } = useContext(AuthContext);
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const [showModal, setShowModal] = useState(false);
 

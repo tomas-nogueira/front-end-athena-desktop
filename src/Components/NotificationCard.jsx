@@ -7,7 +7,7 @@ const NotificationCard = ({ year, userId, userType }) => {
   const [chatLog, setChatLog] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isInsights, setIsInsights] = useState(false); 
-  const apiUrl = process.env.BASE_URL_ASSISTHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

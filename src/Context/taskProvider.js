@@ -35,7 +35,7 @@ function TaskProvider({ children }) {
   const [tasksResponses, setTaskResponses] = useState([])
 
   const [loading, setLoading] = useState(true)
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   useEffect(() => {
     if (dadosUser && dadosUser.message) {

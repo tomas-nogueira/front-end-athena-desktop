@@ -13,7 +13,7 @@ const ChatForm = ({ userId, userType }) => {
     const [openTerms, setOpenTerms] = useState(false);
     const [doNotShowAgain, setDoNotShowAgain] = useState(false);
     const [wantsToListen, setWantsToListen] = useState(false); // Novo estado para controlar a preferência de ouvir respostas
-    const apiUrl = process.env.BASE_URL_ASSISTHENA; 
+    const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
 
     const handleOpenChat = () => {
         if (!localStorage.getItem('termsAccepted')) {

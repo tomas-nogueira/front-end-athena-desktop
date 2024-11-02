@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const UserRequestBox = ({ name, rm, userId, IdSchool, removeUserFromList }) => {
-  const apiUrl = process.env.BASE_URL_ATHENA; 
+  const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
   const handleApprove = () => {
     fetch(`${apiUrl}/user/approve`, {
