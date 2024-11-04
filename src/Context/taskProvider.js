@@ -106,7 +106,6 @@ function TaskProvider({ children }) {
         })
           .then((resposta) => resposta.json())
           .then((json) => {
-            setDueSoon(json.count);
             const filteredDueSoonTasks = json.tasks.map(task => {
               const studentStatus = task.studentStatus.find(status => status.studentId === studentId);
               return { ...task, studentTaskStatus: studentStatus ? studentStatus.status : 'Status não encontrado' };
