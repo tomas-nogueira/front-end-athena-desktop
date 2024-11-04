@@ -22,7 +22,7 @@ function DashBoardTarefas() {
   }, []);
 
     //Verificando se existe os dados do usuário
-    if (!dadosUser || !dadosUser.message) {
+    if (!dadosUser || !dadosUser.message || !totalTasks) {
       return <><Loading /></>;
     }
   
