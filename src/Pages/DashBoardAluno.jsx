@@ -210,38 +210,44 @@ function DashBoardAluno() {
               {dueSoon}
             </Typography>
           </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
-            <List sx={{ width: '100%', maxWidth: '90%', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-              {dueSoonContent.slice(0, 4).map((activity, index) => (
-                <ListItem
-                  key={index}
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
+        {dueSoonContent && dueSoonContent.length > 0 ? (
+          <List sx={{ width: '100%', maxWidth: '90%', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            {dueSoonContent.slice(0, 4).map((activity, index) => (
+              <ListItem
+                key={index}
+                sx={{
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: 2,
+                  marginBottom: 1,
+                  padding: '10px',
+                  boxShadow: 1,
+                  position: 'relative',
+                  '&:last-child': {
+                    marginBottom: 0
+                  }
+                }}
+              >
+                <ListItemText primary={activity.subject} secondary={`Professor: ${activity.teacherName}`} />
+                <Box
                   sx={{
-                    backgroundColor: '#f9f9f9',
-                    borderRadius: 2,
-                    marginBottom: 1,
-                    padding: '10px',
-                    boxShadow: 1,
-                    position: 'relative',
-                    '&:last-child': {
-                      marginBottom: 0
-                    }
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '3px',
+                    backgroundColor: 'red'
                   }}
-                >
-                  <ListItemText primary={activity.subject} secondary={`Professor: ${activity.teacherName}`} />
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '3px',
-                      backgroundColor: 'red'
-                    }}
-                  />
-                </ListItem>
-              ))}
-            </List>
-            </Box>
+                />
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Typography variant="h6" sx={{ color: '#555', textAlign: 'center', fontWeight: 'bolder'}}>
+            Você não possui tarefas para os próximos 2 dias
+          </Typography>
+        )}
+      </Box>
           </Grid>
         </Grid>
       </Grid>
