@@ -33,7 +33,7 @@ function NotasAluno() {
         );
     }
 
-    if (loading || !dadosUser || !dadosUser.message.role ) {
+    if (!dadosUser || !dadosUser.message.role ) {
         return <Loading/>
     }
 
