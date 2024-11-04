@@ -145,6 +145,9 @@ function TaskProvider({ children }) {
               if(json.grades){
                 setGradedTasksContent(json)
               }
+              else{
+                setGradedTasksContent(null)
+              }
             })
             .catch((error) => console.log(error));
 
