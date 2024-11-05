@@ -75,7 +75,7 @@ function Login() {
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false); // Certifique-se de que 'setOpenModal' está corretamente definido.
+    setOpenModal(false);
   };
 
   const roleOptions = [
