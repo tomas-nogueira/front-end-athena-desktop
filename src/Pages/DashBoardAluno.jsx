@@ -10,11 +10,14 @@ import { List, ListItem, ListItemText } from '@mui/material';
 import { AuthContext } from '../Context/authProvider';
 import { TaskContext } from '../Context/taskProvider';
 import ChatForm from '../Components/ChatForm';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../Components/loading';
 
 
 function DashBoardAluno() {
   const [attendanceData, setAttendanceData] = useState([]);
   const [semesterData, setSemesterData] = useState([]); // Novo estado para os dados de "Semestre Atual x Passado"
+  const navigate = useNavigate();
 
   const { dadosUser } = useContext(AuthContext);
   const [performanceData, setPerformanceData] = useState([]);
@@ -63,7 +66,7 @@ function DashBoardAluno() {
 
 
   if (!dadosUser || !dadosUser.message) {
-    return <Typography variant="h5" align="center">Carregando...</Typography>;
+    return <Loading/>
   }
 
   if (!dadosUser.message.role || !dadosUser.message.name) {
@@ -214,7 +217,6 @@ function DashBoardAluno() {
 
             </Box>
           </Grid>
-
           <Grid item xs={12} sm={5} sx={{ backgroundColor: 'white', borderRadius: 5 }}>
           <Box
             sx={{
@@ -222,9 +224,9 @@ function DashBoardAluno() {
               alignItems: 'center', // Alinha verticalmente os itens
               justifyContent: 'center', // Centraliza horizontalmente
               borderBottom: '3px solid #004FFF',
-              width: '70%',
+              width: '100%',
               margin: '0 auto',
-              padding: '8px 0',
+              padding: '10px 0',
             }}
           >
             <Typography
@@ -249,44 +251,69 @@ function DashBoardAluno() {
               {dueSoon}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
-        {dueSoonContent && dueSoonContent.length > 0 ? (
-          <List sx={{ width: '100%', maxWidth: '90%', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            {dueSoonContent.slice(0, 4).map((activity, index) => (
-              <ListItem
-                key={index}
-                sx={{
-                  backgroundColor: '#f9f9f9',
-                  borderRadius: 2,
-                  marginBottom: 1,
-                  padding: '10px',
-                  boxShadow: 1,
-                  position: 'relative',
-                  '&:last-child': {
-                    marginBottom: 0
-                  }
-                }}
-              >
-                <ListItemText primary={activity.subject} secondary={`Professor: ${activity.teacherName}`} />
-                <Box
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '1rem',
+                maxHeight: '400px',
+                overflowY: 'auto', 
+                paddingBottom: '2rem',
+              }}
+            >
+              {dueSoonContent && dueSoonContent.length > 0 ? (
+                <List
                   sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '3px',
-                    backgroundColor: 'red'
+                    width: '95%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.2rem',
+                    padding: 0,
                   }}
-                />
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <Typography variant="h6" sx={{ color: '#555', textAlign: 'center', fontWeight: 'bolder'}}>
-            Você não possui tarefas para os próximos 2 dias
-          </Typography>
-        )}
-      </Box>
+                >
+                  {dueSoonContent.map((activity, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        backgroundColor: '#f9f9f9',
+                        borderRadius: 2,
+                        padding: '10px',
+                        boxShadow: 1,
+                        position: 'relative',
+                        transition: 'transform 0.3s ease',  // Adiciona uma transição suave para o efeito
+                        '&:last-child': {
+                          marginBottom: 0,
+                        },
+                        cursor: 'pointer',  // Altera o cursor para indicar que é clicável
+                        '&:hover': {
+                          transform: 'scale(1.05)',  // Aumenta o tamanho do item ao passar o mouse
+                          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',  // Aumenta a sombra para destacar o item
+                        }
+                      }}
+                      onClick={() => navigate(`/tarefa/${activity._id}`)}
+                      >
+                      <ListItemText primary={activity.subject} secondary={`Professor: ${activity.teacherName}`} />
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '3px',
+                          backgroundColor: 'red',
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Typography variant="h6" sx={{ color: '#555', textAlign: 'center', fontWeight: 'bolder' }}>
+                  Você não possui tarefas para os próximos 2 dias
+                </Typography>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Grid>
