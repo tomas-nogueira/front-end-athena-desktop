@@ -70,10 +70,10 @@ const router = createBrowserRouter([
     path: "/access-denied",
     element: <AccessDenied />,
   },
-  {
-    path: "/cadastro/escola",
-    element: <CadastroEscola />,
-  },
+  // {
+  //   path: "/cadastro/escola",
+  //   element: <CadastroEscola />,
+  // },
   {
     path: "/login/escola",
     element: <LoginEscola />,

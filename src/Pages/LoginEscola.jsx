@@ -89,9 +89,7 @@ const Login = () => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </Box>
-            <div>
-              <a href="/cadastro/escola" className={Style.lowtext}>Não tem uma conta da escola? Faça o cadastro</a>
-            </div>
+
             <div>
               <a href="/login" className={Style.lowtext}>Não é um usuário escola? Clique aqui</a>
             </div>
