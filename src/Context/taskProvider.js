@@ -41,7 +41,6 @@ function TaskProvider({ children }) {
     if (dadosUser && dadosUser.message) {
       if (dadosUser.message.role === "estudante") {
         const studentId = dadosUser.message._id;
-
         // Todas as Tarefas
         fetch(`${apiUrl}/task/getall/userbyclass/${studentId}`, {
           method: "GET",
@@ -185,9 +184,18 @@ function TaskProvider({ children }) {
           })
           .catch((error) => console.log(error));
         }
+        fetch(`${apiUrl}/pong`, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
       }
     }
   }, [dadosUser]);
+
+
+
 
   function EnivarRespostaTask(id, dissertativeResponse, selectedValue){
     const token = localStorage.getItem('token');
@@ -401,7 +409,7 @@ function TaskProvider({ children }) {
       GetTasksByClass,
       completedTasksClass,
       delayTasksClass,
-      inProgressTasksClass
+      inProgressTasksClass,
     }}>
       {children}
     </TaskContext.Provider>
