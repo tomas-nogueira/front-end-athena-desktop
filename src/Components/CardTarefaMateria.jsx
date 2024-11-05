@@ -23,7 +23,7 @@ function CardTarefaMateria({ title, professorName, professorImage, subject, stat
         return require('../Photos/PhotosCardTarefas/IconGeografia.png');
       case 'Inglês':
         return require('../Photos/PhotosCardTarefas/IconInglês.png');
-      case 'Educação_Física':
+      case 'Educação Física':
         return require('../Photos/PhotosCardTarefas/IconEducacaoFisica.png');
       case 'Artes':
         return require('../Photos/PhotosCardTarefas/IconArtes.png');

@@ -6,28 +6,19 @@ import { TaskContext } from '../Context/taskProvider';
 import { AuthContext } from '../Context/authProvider';
 import Footer from '../Components/Footer';
 import ChatForm from '../Components/ChatForm';
+import Loading from '../Components/loading'
 
 function TarefasAlunoAll() {
   const [filterSubject, setFilterSubject] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
-  const { totalTasksContent, completedTasksContent, delayTasksContent, inProgressContent } = useContext(TaskContext);
-
+  const { totalTasksContent, completedTasksContent, delayTasksContent, inProgressContent, totalTasks } = useContext(TaskContext);
   const { dadosUser } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  useEffect(() => {
-      if (dadosUser) {
-        setLoading(false);
-        if (!dadosUser.message.role || !dadosUser.message.name) {
-          setError(true);
-        }
-      }
-      window.scrollTo(0, 0);
-    }, [dadosUser]);
-
-
+  // Verifica se os dados do usuário estão carregados e se o papel (role) e o ID existem
+  if (!dadosUser || !dadosUser.message || !dadosUser.message.role || !dadosUser.message._id || !totalTasks) {
+    return <Loading />; // Exibe o carregamento se os dados não estiverem prontos
+  }
 
   const filteredContent = () => {
     let content = [];
@@ -55,31 +46,22 @@ function TarefasAlunoAll() {
     return content;
   };
 
-  
-  if (loading) {
-    return <Typography variant="h5" align="center">Carregando...</Typography>;
-  }
-
-  if (error) {
-    return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
-  }
-
   return (
     <>
-      <Header textBar1="HOME" textBar2={"Minhas tarefas"}/>
+      <Header textBar1="HOME" textBar2={"Minhas tarefas"} />
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Typography 
-          variant="h4" 
-          align="center" 
-          gutterBottom 
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
           sx={{ fontWeight: 'bold', mb: 4, color: '#333' }}
         >
           Suas Tarefas
         </Typography>
-        <Box 
-          display="flex" 
-          justifyContent="space-between" 
-          alignItems="center" 
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
           sx={{
             mb: 4,
             backgroundColor: '#f5f5f5',
@@ -127,48 +109,48 @@ function TarefasAlunoAll() {
           </TextField>
         </Box>
         <Grid container spacing={4} justifyContent="center">
-  {Array.isArray(filteredContent()) && filteredContent().length > 0 ? (
-    filteredContent().map(task => (
-      <Grid 
-        item 
-        xs={12} 
-        sm={6} 
-        md={4} 
-        key={task._id}
-        sx={{
-          display: 'flex', 
-          justifyContent: 'center', 
-          transition: 'transform 0.3s', 
-          '&:hover': { transform: 'scale(1.05)' }
-        }}
-      >
-        <CardTarefaMateria
-          id={task._id}
-          title={task.subject}
-          imageSrc="path/to/your/image.jpg"
-          professorName={`Professor(a) ${task.teacherName}`}
-          professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
-          subject={task.subject}
-          status={task.studentTaskStatus} 
-          button="Realizar tarefa"
-        />
-      </Grid>
-    ))
-  ) : (
-    <Grid item xs={12}>
-      <Box 
-        display="flex" 
-        justifyContent="center" 
-        alignItems="center" 
-        sx={{ height: '300px' }}
-      >
-        <Typography variant="h6" align="center" sx={{ color: '#777' }}>
-          Nenhuma tarefa encontrada.
-        </Typography>
-      </Box>
-    </Grid>
-  )}
-</Grid>
+          {Array.isArray(filteredContent()) && filteredContent().length > 0 ? (
+            filteredContent().map(task => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key={task._id}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  transition: 'transform 0.3s',
+                  '&:hover': { transform: 'scale(1.05)' }
+                }}
+              >
+                <CardTarefaMateria
+                  id={task._id}
+                  title={task.subject}
+                  imageSrc="path/to/your/image.jpg"
+                  professorName={`Professor(a) ${task.teacherName}`}
+                  professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
+                  subject={task.subject}
+                  status={task.studentTaskStatus}
+                  button="Realizar tarefa"
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ height: '300px' }}
+              >
+                <Typography variant="h6" align="center" sx={{ color: '#777' }}>
+                  Nenhuma tarefa encontrada.
+                </Typography>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
       </Container>
       <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
       <Footer />

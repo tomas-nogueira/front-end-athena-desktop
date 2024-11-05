@@ -17,7 +17,7 @@ function NotasAluno() {
     if (gradedTasksContent === null) {
         return (
             <>
-                <Header textBar1="HOME" textBar2="DASHBOARD" />
+                <Header textBar1="HOME" textBar2="dashboard" />
                 <Container sx={{ padding: 5 }}>
                     <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bolder' }}>
                         SUAS NOTAS
@@ -43,7 +43,7 @@ function NotasAluno() {
 
     return (
         <>
-            <Header textBar1="HOME" textBar2="DASHBOARD" />
+            <Header textBar1="HOME" textBar2="dashboard" />
             <Container sx={{ padding: 5 }}>
                 <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bolder' }}>
                     SUAS NOTAS
