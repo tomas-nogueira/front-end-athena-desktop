@@ -22,7 +22,9 @@ function Graph({ data, type }) {
                     data: data.map(item => item.name),
                     axisLabel: {
                         color: '#333',
-                        fontSize: 12
+                        fontSize: 12,
+                        interval: 0,
+
                     }
                 },
                 yAxis: {
@@ -94,7 +96,10 @@ function Graph({ data, type }) {
                 },
                 xAxis: {
                     type: 'category',
-                    data: data[0]?.categories || [], // Ajuste para usar categorias reais
+                    data: data[0]?.categories || [], 
+                    axisLabel: {
+                        interval: 0, 
+                      }
                 },
                 yAxis: {
                     type: 'value'
