@@ -11,7 +11,7 @@ function NotasProfessor() {
   const { totalTasksContent } = useContext(TaskContext);
   
   const [filterSubject, setFilterSubject] = useState('');
-  const [filterResponses, setFilterResponses] = useState('todas'); // Novo estado para filtro de respostas
+  const [filterResponses, setFilterResponses] = useState('comRespostas'); // Novo estado para filtro de respostas
   
   // Função para filtrar as tarefas com base no assunto e se possuem respostas
   const filteredTasks = () => {
@@ -115,7 +115,7 @@ function NotasProfessor() {
                 sx={{ height: '300px' }}
               >
                 <Typography variant="h6" align="center" sx={{ color: '#777' }}>
-                  Nenhuma tarefa encontrada.
+                  Nenhuma tarefa encontrada com resposta.
                 </Typography>
               </Box>
             </Grid>

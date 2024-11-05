@@ -169,7 +169,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     } else if (page === 'Tarefas') {
                                         navigate('/dashboard/tarefas/aluno');
                                     } else if (page === 'Recados') {
-                                        navigate('/aviso/diretor');
+                                        navigate('/aviso');
                                     }
                                     else if (page === 'DASHBOARD') {
                                         navigate('/dashboard/tarefas/professor');

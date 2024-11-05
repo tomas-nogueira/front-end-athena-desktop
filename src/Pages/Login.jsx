@@ -271,11 +271,11 @@ function Login() {
               </div>
               <div>
                 <a
-                  href="/cadastro/escola"
+                  href="/login/escola"
                   onClick={handleToggle}
                   className={Style.lowtext}
                 >
-                  Quer cadastrar sua escola ou realizar Login Institucional?{" "}
+                  Realizar Login Institucional?
                 </a>
               </div>
               <div className={Style.btndiv}>
@@ -477,11 +477,11 @@ function Login() {
               </div>
               <div>
                 <a
-                  href="/cadastro/escola"
+                  href="/login/escola"
                   onClick={handleToggle}
                   className={Style.lowtext}
                 >
-                  Quer cadastrar sua escola ou realizar Login Institucional?
+                 Realizar Login Institucional?
                   Clique aqui
                 </a>
               </div>

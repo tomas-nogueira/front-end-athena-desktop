@@ -6,6 +6,7 @@ import { Box, TextField, Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 
 function AviseClass() {
   const [selectedClass, setSelectedClass] = useState('');
@@ -160,6 +161,7 @@ function AviseClass() {
         </Box>
         <button className={Style.enviar} onClick={EnviarMensagem}>Enviar Aviso</button>
       </div>
+      <Footer />
     </div>
   );
 }

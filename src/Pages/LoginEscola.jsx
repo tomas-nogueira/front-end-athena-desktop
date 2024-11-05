@@ -24,7 +24,6 @@ const Login = () => {
   };
 
   function isValidCNPJ(cnpj) {
-    // Validação básica de CNPJ formatado (XX.XXX.XXX/XXXX-XX)
     const regex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/; 
     return regex.test(cnpj);
   }
@@ -89,9 +88,7 @@ const Login = () => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </Box>
-            <div>
-              <a href="/cadastro/escola" className={Style.lowtext}>Não tem uma conta da escola? Faça o cadastro</a>
-            </div>
+
             <div>
               <a href="/login" className={Style.lowtext}>Não é um usuário escola? Clique aqui</a>
             </div>

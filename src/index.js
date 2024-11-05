@@ -32,6 +32,7 @@ import Presenca from './Pages/Presenca';
 import NotasAluno from './Pages/NotasAluno'
 import PresencaEscola from './Pages/PresencaEscola';
 import Loading from './Components/loading';
+import CadastroExperiencia from './Pages/CadastroExperiencia';
 
 const router = createBrowserRouter([
   {
@@ -70,13 +71,17 @@ const router = createBrowserRouter([
     path: "/access-denied",
     element: <AccessDenied />,
   },
-  {
-    path: "/cadastro/escola",
-    element: <CadastroEscola />,
-  },
+  // {
+  //   path: "/cadastro/escola",
+  //   element: <CadastroEscola />,
+  // },
   {
     path: "/login/escola",
     element: <LoginEscola />,
+  },
+  {
+    path: "/xp",
+    element: <CadastroExperiencia/>,
   },
   {
     path: "/cadastro/classe",
@@ -111,7 +116,7 @@ const router = createBrowserRouter([
     element: <HomeProfessor/>
   },
   {
-    path: "/aviso/diretor",
+    path: "/aviso",
     element: <AviseClass/>
   },
   {
