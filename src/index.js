@@ -111,7 +111,7 @@ const router = createBrowserRouter([
     element: <HomeProfessor/>
   },
   {
-    path: "/aviso/diretor",
+    path: "/aviso",
     element: <AviseClass/>
   },
   {

@@ -84,7 +84,7 @@ function DashBoardEscola() {
 
   return (
     <>
-      <Header textBar1="Dashboard de Presença" />
+      <Header textBar1="Dashboard de Presença" textBar2="Recados" />
       <HeaderDashboards role={dadosSchool.message.role} name={dadosSchool.message.name} institution='CONTA ADMINISTRATIVA' />
 
       {loading && <Typography>Carregando dados de presença...</Typography>}
