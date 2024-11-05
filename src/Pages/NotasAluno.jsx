@@ -33,10 +33,9 @@ function NotasAluno() {
         );
     }
 
-    if (!dadosUser || !dadosUser.message.role ) {
-        return <Loading/>
-    }
-
+  if (!dadosUser || !dadosUser.message || !gradedTasksContent.grades) {
+    return <Loading />;
+  }
     if (error) {
         return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
     }

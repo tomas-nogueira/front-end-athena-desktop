@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button } from "antd";
+import { Card, Button, Spin } from "antd";
 import { useNavigate } from 'react-router-dom';
 
-function CardTarefaGeral({ title, quantidade, colorBorder }) {
+function CardTarefaGeral({ title, quantidade, colorBorder, isLoading }) {
   const [icon, setIcon] = useState();
   const navigate = useNavigate(); // Hook para navegação
 
@@ -49,34 +49,42 @@ function CardTarefaGeral({ title, quantidade, colorBorder }) {
         />
       }
     >
-      <div style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: colorBorder }}>
-        {quantidade}
-      </div>
-      <div style={{ textAlign: 'center', marginTop: 10 }}>
-        <Button 
-          type="primary" 
-          onClick={handleViewMoreClick} 
-          style={{
-            backgroundColor: colorBorder,
-            borderColor: colorBorder,
-            borderRadius: 5,
-            fontWeight: 'bold',
-            padding: '5px 20px',
-            transition: 'background-color 0.3s, border-color 0.3s',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.backgroundColor = '#ffffff'; // Cor ao passar o mouse
-            e.currentTarget.style.color = colorBorder; // Cor do texto ao passar o mouse
-            e.currentTarget.style.borderColor = colorBorder; // Cor da borda ao passar o mouse
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.backgroundColor = colorBorder; // Cor original
-            e.currentTarget.style.color = '#ffffff'; // Cor do texto original
-          }}
-        >
-          VER MAIS
-        </Button>
-      </div>
+      {isLoading ? (
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <Spin size="large" />
+        </div>
+      ) : (
+        <>
+          <div style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: colorBorder }}>
+            {quantidade}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 10 }}>
+            <Button 
+              type="primary" 
+              onClick={handleViewMoreClick} 
+              style={{
+                backgroundColor: colorBorder,
+                borderColor: colorBorder,
+                borderRadius: 5,
+                fontWeight: 'bold',
+                padding: '5px 20px',
+                transition: 'background-color 0.3s, border-color 0.3s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = '#ffffff'; // Cor ao passar o mouse
+                e.currentTarget.style.color = colorBorder; // Cor do texto ao passar o mouse
+                e.currentTarget.style.borderColor = colorBorder; // Cor da borda ao passar o mouse
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = colorBorder; // Cor original
+                e.currentTarget.style.color = '#ffffff'; // Cor do texto original
+              }}
+            >
+              VER MAIS
+            </Button>
+          </div>
+        </>
+      )}
     </Card>
   );
 }
