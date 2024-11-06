@@ -7,13 +7,18 @@ import Swal from 'sweetalert2';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/authProvider';
+import Loading from '../Components/loading';
 
 function AviseClass() {
   const [selectedClass, setSelectedClass] = useState('');
   const [aviso, setAviso] = useState('');
   const [data, setData] = useState('');
-  const [dadosUser, setDadosUser] = useState({});
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
+
+  const { dadosUser, dadosSchool, cnpjContext } = useContext(AuthContext);
+  const role = localStorage.getItem('role');
 
   // Função para abrir o pop-up que mostra a transcrição ao vivo
   const openTranscriptPopup = () => {
@@ -75,7 +80,6 @@ function AviseClass() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   function EnviarMensagem() {
     if (!aviso || !selectedClass || !data) {
       Swal.fire({
@@ -118,11 +122,12 @@ function AviseClass() {
     }
   };
 
-  return (
-    <div>
+  if(role === "diretor"){
+    return(
       <div>
-        <Header textBar1="home" textBar2="DashBOARD"/>
-      </div>
+      <div>
+          <Header textBar1="DashBOARD"/>   
+    </div>
       <div className={Style.recado}>
         <h3>Envie recados para a Athena</h3>
         <button className={Style.but} onClick={toggleListening}>
@@ -163,7 +168,60 @@ function AviseClass() {
       </div>
       <Footer />
     </div>
-  );
+    )
+  }
+  if(!dadosSchool || !dadosUser){
+    return(<Loading/>)
+  }
+  if(role === "admin"){
+    return(
+      <div>
+      <div>
+          <Header textBar1="Painel de Controle"/>
+    </div>
+      <div className={Style.recado}>
+        <h3>Envie recados para a Athena</h3>
+        <button className={Style.but} onClick={toggleListening}>
+          <MicIcon className={Style.icone} sx={{ fontSize: 60 }} />
+        </button>
+        {listening ? <p>Gravando...</p> : <p>Clique no microfone para começar a gravar</p>}
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 5 }}>
+          <Select
+            label="Selecione a sala"
+            menuItems={classOptions}
+            value={selectedClass}
+            onChange={handleClassChange}
+            sx={{ width: 100 }}
+          />
+        </Box>
+        <input 
+          type="date" 
+          className={Style.dataInput} 
+          value={data} 
+          onChange={handleDateChange}
+        />
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 5 }}>
+          <TextField
+            label="Digite o seu aviso"
+            variant="outlined"
+            type="text"
+            value={aviso}
+            onChange={(e) => setAviso(e.target.value)}
+            sx={{ width: '600px' }}
+          />
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
+          <Button variant="contained" color="primary" onClick={visualizarAviso} sx={{ backgroundColor: '#1E9CFA' }}>
+            Visualizar aviso completo
+          </Button>
+        </Box>
+        <button className={Style.enviar} onClick={EnviarMensagem}>Enviar Aviso</button>
+      </div>
+      <Footer />
+    </div>
+    )
+  }
+
 }
 
 export default AviseClass;

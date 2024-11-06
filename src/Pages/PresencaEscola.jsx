@@ -89,7 +89,7 @@ function PresencaEscola() {
 
   return (
     <>
-      <Header textBar1="Dashboard de Presença" />
+      <Header textBar1="Painel de Controle" />
       <HeaderDashboards role={dadosSchool.message.role} name={dadosSchool.message.name} institution='CONTA ADMINISTRATIVA' />
 
       {loading && <Typography>Carregando dados de presença...</Typography>}
