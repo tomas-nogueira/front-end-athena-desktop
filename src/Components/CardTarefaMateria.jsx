@@ -9,6 +9,8 @@ function CardTarefaMateria({ title, professorName, professorImage, subject, stat
     switch (subject) {
       case 'Língua Portuguesa':
         return require('../Photos/PhotosCardTarefas/IconLinguaPortuguesa.png');
+      case 'Português':
+        return require('../Photos/PhotosCardTarefas/IconLinguaPortuguesa.png');
       case 'Matemática':
         return require('../Photos/PhotosCardTarefas/IconMatematica.png');
       case 'Biologia':
@@ -27,8 +29,14 @@ function CardTarefaMateria({ title, professorName, professorImage, subject, stat
         return require('../Photos/PhotosCardTarefas/IconEducacaoFisica.png');
       case 'Artes':
         return require('../Photos/PhotosCardTarefas/IconArtes.png');
+      case 'Filosofia':
+        return require('../Photos/PhotosCardTarefas/IconFilosofia.png');
+      case 'Sociologia':
+        return require('../Photos/PhotosCardTarefas/IconSociologia.png');
+      case 'Espanhol':
+        return require('../Photos/PhotosCardTarefas/IconEspanhol.png');
       default:
-        return 'caminho/para/icon/default.png';
+        return require('../Photos/PhotosCardTarefas/IconDefault.png');
     }
   };
 
@@ -128,10 +136,11 @@ function CardTarefaMateria({ title, professorName, professorImage, subject, stat
             </Col>
           </Row>
         )}
-
-        <Button type="primary" style={{ width: '100%', backgroundColor: 'transparent', color: 'black', fontWeight: 'bold', border: '1px solid black' }} onClick={RedirecionarTarefa}>
-          {button}
-        </Button>
+        {button && (
+                  <Button type="primary" style={{ width: '100%', backgroundColor: 'transparent', color: 'black', fontWeight: 'bold', border: '1px solid black' }} onClick={RedirecionarTarefa}>
+                  {button}
+                </Button>
+        )}
       </div>
     </Card>
   );

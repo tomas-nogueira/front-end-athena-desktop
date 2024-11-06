@@ -27,6 +27,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
 
     const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
+    /*
     //Requisição para consultar sempre a API
     useEffect(() => {
         // Função para fazer a requisição
@@ -43,7 +44,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
         return () => clearInterval(intervalId);
       }, []); // O array vazio [] garante que o efeito seja executado apenas uma vez, na montagem do componente
       
-
+*/
     const pages = [textBar1, textBar2, textBar3, textBar4]; 
     const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
     const userSettings = isHomeRoute ? ['Entrar'] : ['Sua Conta', 'Sair']; // Define as opções com base na rota
@@ -154,6 +155,10 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         {
                                             navigate('/cadastrar-face/user');
                                         }
+                                        else if (page === "Painel de Controle")
+                                            {
+                                                navigate('/dashboard/escola');
+                                            }
                                     }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
@@ -215,6 +220,10 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     else if( page === 'Minhas Notas'){
                                         navigate('/notas/aluno');
                                     }
+                                    else if (page === "Painel de Controle")
+                                        {
+                                            navigate('/dashboard/escola');
+                                        }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
