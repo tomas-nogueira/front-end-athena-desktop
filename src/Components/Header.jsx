@@ -26,6 +26,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
     const location = useLocation(); // Obtém a rota atual
 
     const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
+    const apiUrlAssisthena = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
 
     /*
     //Requisição para consultar sempre a API
@@ -45,6 +46,20 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
       }, []); // O array vazio [] garante que o efeito seja executado apenas uma vez, na montagem do componente
       
 */
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+          fetch(`${apiUrlAssisthena}/api/ping`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+        }, 60000);
+    
+        return () => clearInterval(intervalId);
+      }, []); 
+      
     const pages = [textBar1, textBar2, textBar3, textBar4]; 
     const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
     const userSettings = isHomeRoute ? ['Entrar'] : ['Sua Conta', 'Sair']; // Define as opções com base na rota
