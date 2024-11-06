@@ -15,6 +15,7 @@ import Logo from '../Photos/logo_athena 3.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react'; 
 import { AuthContext } from '../Context/authProvider'; 
+import { useEffect } from 'react';
 
 function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -23,6 +24,25 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
     const { Logout } = useContext(AuthContext); 
     const navigate = useNavigate();
     const location = useLocation(); // Obtém a rota atual
+
+    const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
+
+    //Requisição para consultar sempre a API
+    useEffect(() => {
+        // Função para fazer a requisição
+        const intervalId = setInterval(() => {
+          fetch(`${apiUrl}/pong`, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+        }, 50000); // Executa a cada 50sec
+    
+        // Função de limpeza do intervalo quando o componente for desmontado
+        return () => clearInterval(intervalId);
+      }, []); // O array vazio [] garante que o efeito seja executado apenas uma vez, na montagem do componente
+      
 
     const pages = [textBar1, textBar2, textBar3, textBar4]; 
     const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
