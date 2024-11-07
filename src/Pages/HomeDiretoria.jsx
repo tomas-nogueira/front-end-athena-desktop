@@ -122,7 +122,7 @@ function HomeDiretoria() {
             <CardsAcesso 
               texto1="Recados"
               texto2="Envie recados para as salas de aula!"
-              rotaBotao="/aviso/diretor"
+              rotaBotao="/aviso"
               imagemSrc={Ipad2}
               imagemAlt="Imagem de exemplo"
             />
