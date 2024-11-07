@@ -24,6 +24,7 @@ import PerformanceDashboard from "../Components/PerformanceDashboard";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/authProvider";
 import { TaskContext } from "../Context/taskProvider";
+import Loading from "../Components/loading";
 
 function DashBoardTarefas() {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -63,7 +64,7 @@ function DashBoardTarefas() {
 
   // Verificando se existe os dados do usuário
   if (!dadosUser || !dadosUser.message) {
-    return <Typography variant="h5" align="center">Carregando...</Typography>;
+    return <Loading />
   }
 
   // Se dadosUser.message existir, mas algumas propriedades específicas faltarem

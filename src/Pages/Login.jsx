@@ -75,7 +75,7 @@ function Login() {
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false); // Certifique-se de que 'setOpenModal' está corretamente definido.
+    setOpenModal(false);
   };
 
   const roleOptions = [
@@ -178,6 +178,13 @@ function Login() {
         setSchoolOptions(options);
       })
       .catch((error) => {});
+
+      fetch(`${apiUrl}/pong`, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
   }, []);
 
   useEffect(() => {
@@ -189,7 +196,6 @@ function Login() {
     })
       .then((resposta) => resposta.json())
       .then((json) => {
-        // Verifica se a resposta contém uma array de classes
         if (Array.isArray(json.message) && json.message.length > 0) {
           const optionsClass = json.message.map((classes) => ({
             value: classes._id,
@@ -197,7 +203,6 @@ function Login() {
           }));
           setClassOptions(optionsClass);
         } else {
-          // Se a array estiver vazia, define um texto padrão
           setClassOptions([{ value: "", label: "Nenhuma sala encontrada" }]);
         }
       })
@@ -272,7 +277,6 @@ function Login() {
               <div>
                 <a
                   href="/login/escola"
-                  onClick={handleToggle}
                   className={Style.lowtext}
                 >
                   Realizar Login Institucional?
@@ -478,11 +482,9 @@ function Login() {
               <div>
                 <a
                   href="/login/escola"
-                  onClick={handleToggle}
                   className={Style.lowtext}
                 >
-                 Realizar Login Institucional?
-                  Clique aqui
+                 Realizar Login Institucional
                 </a>
               </div>
               <div className={Style.btndiv}>

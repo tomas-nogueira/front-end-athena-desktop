@@ -87,11 +87,11 @@ function DashBoardEscola() {
       <Header textBar1="Dashboard de Presença" textBar2="Recados" />
       <HeaderDashboards role={dadosSchool.message.role} name={dadosSchool.message.name} institution='CONTA ADMINISTRATIVA' />
 
-      {loading && <Typography>Carregando dados de presença...</Typography>}
       {error && <Typography color="error">{error}</Typography>}
 
       <Grid item xs={12} sx={{ textAlign: 'center', marginTop: '2rem' }}>
         <Typography variant="h4">Presença de Alunos</Typography>
+        {loading && <Typography>Carregando dados de presença...</Typography>}
       </Grid>
 
       <Grid container sx={{ marginTop: '1rem' }} spacing={1} display="flex" justifyContent="center" alignItems="center"> {/* Ajuste o marginTop e spacing aqui */}

@@ -132,7 +132,8 @@ function TarefasAlunoAll() {
                   professorImage={task.teacherImage ? task.teacherImage : "https://w7.pngwing.com/pngs/794/935/png-transparent-professor-teacher-teacher-class-hand-boy-thumbnail.png"}
                   subject={task.subject}
                   status={task.studentTaskStatus}
-                  button="Realizar tarefa"
+                  // Condicionalmente renderiza o parâmetro "button"
+                  {...(task.studentTaskStatus !== 'pronto' && { button: "Realizar tarefa" })}
                 />
               </Grid>
             ))

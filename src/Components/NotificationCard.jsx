@@ -24,8 +24,8 @@ const NotificationCard = ({ year, userId, userType }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: dynamicMessage,
-        userId: "67102922db9e7ba8075983e9",
+        userInput: dynamicMessage,
+        userId: "professor",
         userType: "default",
       }),
     })
@@ -50,14 +50,18 @@ const NotificationCard = ({ year, userId, userType }) => {
     setChatLog([]); 
     setIsInsights(true);
 
+    const messageInsights = `quais são os tópicos mais importantes para o  ${year}`
+
     fetch(`${apiUrl}/api/process`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        context: "7B",
+        userInput: messageInsights,
         userType: "default",
+        userId: "professor",
+
       }),
     })
       .then(response => response.json())
