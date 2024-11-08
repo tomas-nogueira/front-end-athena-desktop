@@ -58,7 +58,7 @@ function CadastroExperiencia() {
 
   return (
     <>
-      <Header textBar1="Painel de Controle" />
+      <Header textBar1="hoME2" />
       <section
         style={{
           backgroundImage: `url(${CadastroBack})`,

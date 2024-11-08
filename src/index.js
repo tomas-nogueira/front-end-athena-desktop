@@ -113,7 +113,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/home/professor',
-    element: <HomeProfessor/>
+    element:  <ProtectedRoute element={<HomeProfessor/>} requiredRole="professor"/>,
   },
   {
     path: "/aviso",

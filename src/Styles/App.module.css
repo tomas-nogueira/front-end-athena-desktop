@@ -15,7 +15,5 @@
     color: #292E33;
 }
 .boxcard {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 5rem;
+    margin-bottom: 6rem;
 }

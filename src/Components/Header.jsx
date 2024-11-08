@@ -151,6 +151,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         }
                                         else if (page === 'HOME') {
                                             navigate('/home/aluno');
+                                        }else if (page === 'hoME2') {
+                                            navigate('/')
                                         }
                                         else if (page === 'Minhas tarefas') {
                                             navigate('/dashboard/tarefas/aluno');
@@ -179,10 +181,27 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                                 </MenuItem>
                             ))}
+                            <MenuItem  onClick={() => {handleCloseNavMenu();
+                                navigate("/xp")
+            
+                            }}>
+                                <Typography sx={{ textAlign: 'center' }}>Feedbacks</Typography>
+
+                            </MenuItem>
                         </Menu>
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Button
+                                onClick={() => {
+                                    handleCloseNavMenu();
+                                    navigate("/xp")
+                                }}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+
+                            >
+                                Feedbacks
+                            </Button>
                         {pages.map((page, index) => (
                             <Button
                                 key={index} 
@@ -196,6 +215,8 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/dashboard/escola')
                                     } else if (page === "Dashboard de Presença") {
                                         navigate('/presenca/escola')
+                                    }else if (page === 'hoME2') {
+                                        navigate('/')
                                     }
                                     else if (page === 'home') {
                                         navigate('/home/diretoria');
@@ -245,6 +266,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                 {page}
                             </Button>
                         ))}
+         
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
