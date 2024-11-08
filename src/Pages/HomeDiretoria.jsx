@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { notification } from 'antd'; 
+import { notification } from 'antd';
 import Banner from '../Components/Banner';
 import Header from '../Components/Header';
 import Texto from '../Components/Texto';
@@ -26,7 +26,7 @@ function HomeDiretoria() {
         if (response.ok) {
           const data = await response.json();
           const count = data.studentCount;
-          setStudentCount(count); 
+          setStudentCount(count);
           sessionStorage.setItem('studentCount', count);
         } else {
           console.error("Falha ao buscar o número de alunos");
@@ -57,20 +57,20 @@ function HomeDiretoria() {
 
   return (
     <Grid>
-      <Header textBar1="DashBOARD" textBar2="Recados"/> 
+      <Header textBar1="DashBOARD" textBar2="Recados" />
       <Grid sx={{ marginTop: '5rem' }}>
         <Banner />
         <Grid sx={{
-          marginTop: '3rem', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          gap: '2rem', 
+          marginTop: '3rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
         }}>
           <Texto />
-          <Container sx={{display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
-            <Grid sx={{backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem'}}>
+          <Container sx={{ display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
+            <Grid sx={{ backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem' }}>
               <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem', color: '#235BD5' }}>
                   NOVIDADE!
@@ -83,51 +83,106 @@ function HomeDiretoria() {
             </Grid>
           </Container>
           <Container sx={{
-            marginBottom: '5rem', 
-            height: '50vh', 
-            width: '100vw', 
-            backgroundColor: '#394255', 
-            borderRadius: '10px', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
+            marginBottom: '5rem',
+            height: '50vh',
+            width: '100vw',
+            backgroundColor: '#394255',
+            borderRadius: '10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Grid sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Box>
-                <img src={Estudante} className={Style.img}/>
+                <img src={Estudante} className={Style.img} />
               </Box>
-              <Grid sx={{display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center'}}>
-                <Grid sx={{backgroundColor: '#235BD5', borderRadius: '10px', justifyContent: 'center', display: 'flex', width: '40vw', alignItems: 'center', justifyContent: 'center'}}>
-                  <Typography sx={{color: 'white', fontSize: '2.5rem', fontWeight: 'bold'}}>BEM-VINDO AO PORTAL ATHENA! <WavingHandIcon className={Style.hand}/></Typography>
+              <Grid
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  alignItems: 'center',
+                  padding: '1rem',
+                }}
+              >
+                <Grid
+                  sx={{
+                    backgroundColor: '#235BD5',
+                    borderRadius: '10px',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    width: '40vw',
+                    maxWidth: '100%',
+                    alignItems: 'center',
+                    padding: '1rem', // espaçamento interno para evitar quebra de texto
+                    '@media (max-width: 768px)': {
+                      width: '65vw', // ajuste para tablets e celulares
+                    },
+
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: 'white',
+                      fontSize: '2.5rem',
+                      fontWeight: 'bold',
+                      textAlign: 'center', // centralizar o texto
+                      '@media (max-width: 768px)': {
+                        fontSize: '1.3rem',
+                      },
+                      '@media (max-width: 480px)': {
+                        fontSize: '1rem', // diminuir fonte para celulares
+                      },
+                    }}
+                  >
+                    BEM-VINDO AO PORTAL ATHENA! <WavingHandIcon className={Style.hand} />
+                  </Typography>
                 </Grid>
                 <Grid>
-                  <Typography sx={{color: 'white', fontSize: '1.3rem'}}>ABAIXO VOCÊ TERÁ ACESSO AOS RECURSOS DO NOSSO PORTAL</Typography>
+                  <Typography
+                    sx={{
+                      color: 'white',
+                      fontSize: '1.3rem',
+                      textAlign: 'center',
+                      '@media (max-width: 768px)': {
+                        fontSize: '1.1rem', // ajuste para tablets
+                      },
+                      '@media (max-width: 480px)': {
+                        fontSize: '1rem', // ajuste para celulares
+                      },
+                    }}
+                  >
+                    ABAIXO VOCÊ TERÁ ACESSO AOS RECURSOS DO NOSSO PORTAL
+                  </Typography>
                 </Grid>
                 <Grid>
-                  <img src={Down} className={Style.img2}/>
+                  <img
+                    src={Down}
+                    className={Style.img2}
+                  />
                 </Grid>
               </Grid>
             </Grid>
           </Container>
-          <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem'}}>
-            <CardsAcesso 
+          <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem' }}>
+            <CardsAcesso
               texto1="Minha dashboard"
               texto2="Acesse sua dashboard e veja seus dados"
               rotaBotao="/dashboard/diretoria"
               imagemSrc={Macbook}
               imagemAlt="Imagem de exemplo"
             />
-            <img src={Linha}/>
-            <CardsAcesso 
+            <img src={Linha} />
+            <CardsAcesso
               texto1="Recados"
               texto2="Envie recados para as salas de aula!"
               rotaBotao="/aviso"
               imagemSrc={Ipad2}
               imagemAlt="Imagem de exemplo"
             />
-            <img src={Linha}/>
-            <CardsAcesso 
+            <img src={Linha} />
+            <CardsAcesso
               texto1="Reconhecimento facial"
               texto2="Eleve seu desempenho com o nosso Reconhecimento Facial"
               rotaBotao="/cadastrar-face/user"

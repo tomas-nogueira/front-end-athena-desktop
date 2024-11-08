@@ -151,7 +151,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         }
                                         else if (page === 'HOME') {
                                             navigate('/home/aluno');
-                                        }else if (page === 'hoME2') {
+                                        }else if (page === 'Voltar') {
                                             navigate('/')
                                         }
                                         else if (page === 'Minhas tarefas') {
@@ -215,7 +215,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/dashboard/escola')
                                     } else if (page === "Dashboard de Presença") {
                                         navigate('/presenca/escola')
-                                    }else if (page === 'hoME2') {
+                                    }else if (page === 'Voltar') {
                                         navigate('/')
                                     }
                                     else if (page === 'home') {

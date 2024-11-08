@@ -105,22 +105,78 @@ function HomeAluno() {
             alignItems: 'center', 
             justifyContent: 'center'
           }}>
-            <Grid sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+           <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Box>
-                    <img src={Estudante} className={Style.img}/>
+                  <img src={Estudante} className={Style.img} />
                 </Box>
-                <Grid sx={{display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center'}}>
-                    <Grid sx={{backgroundColor: '#235BD5', borderRadius: '10px', justifyContent: 'center', display: 'flex', width: '40vw', alignItems: 'center', justifyContent: 'center'}}>
-                        <Typography sx={{color: 'white', fontSize: '2.5rem', fontWeight: 'bold'}}>BEM-VINDO AO PORTAL ATHENA! <WavingHandIcon className={Style.hand}/></Typography>
-                    </Grid>
-                    <Grid>
-                        <Typography sx={{color: 'white', fontSize: '1.3rem'}}>ABAIXO VOCÊ TERÁ ACESSO AOS RECURSOS DO NOSSO PORTAL</Typography>
-                    </Grid>
-                    <Grid>
-                        <img src={Down} className={Style.img2}/>
-                    </Grid>
+                <Grid
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    alignItems: 'center',
+                    padding: '1rem', 
+                  }}
+                >
+                  <Grid
+                    sx={{
+                      backgroundColor: '#235BD5',
+                      borderRadius: '10px',
+                      justifyContent: 'center',
+                      display: 'flex',
+                      width: '40vw',
+                      maxWidth: '100%',
+                      alignItems: 'center',
+                      padding: '1rem', // espaçamento interno para evitar quebra de texto
+                      '@media (max-width: 768px)': {
+                        width: '65vw', // ajuste para tablets e celulares
+                      },
+                      
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: 'white',
+                        fontSize: '2.5rem',
+                        fontWeight: 'bold',
+                        textAlign: 'center', // centralizar o texto
+                        '@media (max-width: 768px)': {
+                          fontSize: '1.3rem', 
+                        },
+                        '@media (max-width: 480px)': {
+                          fontSize: '1rem', // diminuir fonte para celulares
+                        },
+                      }}
+                    >
+                      BEM-VINDO AO PORTAL ATHENA! <WavingHandIcon className={Style.hand} />
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <Typography
+                      sx={{
+                        color: 'white',
+                        fontSize: '1.3rem',
+                        textAlign: 'center',
+                        '@media (max-width: 768px)': {
+                          fontSize: '1.1rem', // ajuste para tablets
+                        },
+                        '@media (max-width: 480px)': {
+                          fontSize: '1rem', // ajuste para celulares
+                        },
+                      }}
+                    >
+                      ABAIXO VOCÊ TERÁ ACESSO AOS RECURSOS DO NOSSO PORTAL
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    <img
+                      src={Down}
+                      className={Style.img2}
+                    />
+                  </Grid>
                 </Grid>
-            </Grid>
+
+              </Grid>
           </Container>
 
           <Container sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem'}}>

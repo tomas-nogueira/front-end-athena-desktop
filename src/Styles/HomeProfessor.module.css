@@ -2,8 +2,31 @@
     width: 18.6rem;
 }
 .img2 {
-    width: 4rem;
+    width: 20%; /* Adapta a largura conforme a tela */
+    max-width: 4rem; /* Limita o tamanho máximo */
 }
+
+@media (max-width: 768px) {
+    .img2 {
+        width: 30%; /* Ajuste para telas menores, como tablets */
+    }
+    .img{
+        width: 15rem;
+    }
+}
+
+
+
+
+@media (max-width: 480px) {
+    .img2 {
+        width: 40%; /* Ajuste para telas pequenas, como celulares */
+    }
+    .img{
+        width: 10rem;
+    }
+}
+
 .hand {
     font-size: 2.3rem;
     text-align: center;
