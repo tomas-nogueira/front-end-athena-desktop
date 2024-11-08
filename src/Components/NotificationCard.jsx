@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, Button, Modal, Box } from '@mui/material';
+import { Card, CardContent, Typography, Button, Modal, Box, Snackbar, Alert } from '@mui/material';
 import styles from '../Styles/NotificationCard.module.css';
 
 const NotificationCard = ({ year, userId, userType }) => {
   const [open, setOpen] = useState(false);
   const [chatLog, setChatLog] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isInsights, setIsInsights] = useState(false); 
-  const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
+  const [isInsights, setIsInsights] = useState(false);
+  const apiUrl = process.env.REACT_APP_BASE_URL_ASSISTHENA;
+  const [openNotification, setOpenNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleClick = async () => {
+    if (!year) { // Verifica se o ano é inválido
+      setErrorMessage("O ano escolhido é inválido. Por favor, selecione um ano válido.");
+      setOpenNotification(true);
+      return;
+    }
+
     setLoading(true);
-    setChatLog([]); 
+    setChatLog([]);
+    console.log(year);
 
     const dynamicMessage = `O professor está pedindo mais detalhes e feedbacks e insights sobre o ${year}`;
 
@@ -46,11 +55,17 @@ const NotificationCard = ({ year, userId, userType }) => {
   };
 
   const getInsights = async () => {
+    if (!year) { // Verifica se o ano é inválido
+      setErrorMessage("O ano escolhido é inválido. Por favor, selecione um ano válido.");
+      setOpenNotification(true);
+      return;
+    }
+
     setLoading(true);
-    setChatLog([]); 
+    setChatLog([]);
     setIsInsights(true);
 
-    const messageInsights = `quais são os tópicos mais importantes para o  ${year}`
+    const messageInsights = `quais são os tópicos mais importantes para o ${year}`;
 
     fetch(`${apiUrl}/api/process`, {
       method: "POST",
@@ -61,13 +76,12 @@ const NotificationCard = ({ year, userId, userType }) => {
         userInput: messageInsights,
         userType: "default",
         userId: "professor",
-
       }),
     })
       .then(response => response.json())
       .then(json => {
-        if (json.insight) {
-          const formattedResponse = formatResponse(json.insight);
+        if (json.response) {
+          const formattedResponse = formatResponse(json.response);
           setChatLog(prevMessages => [...prevMessages, { text: formattedResponse, sender: 'assisthena' }]);
         }
       })
@@ -87,6 +101,10 @@ const NotificationCard = ({ year, userId, userType }) => {
       .replace(/- \*\*(.+?)\*\*/g, "<li><strong>$1</strong></li>");
   };
 
+  const handleCloseNotification = () => {
+    setOpenNotification(false);
+  };
+
   return (
     <>
       <Card className={styles.notificationCard}>
@@ -103,7 +121,7 @@ const NotificationCard = ({ year, userId, userType }) => {
 
       <Modal open={open} onClose={handleClose} aria-labelledby="chat-modal" aria-describedby="chat-modal-description">
         <Box className={styles.modalBox}>
-          <Box sx={{ display: "flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around" }}>          
+          <Box sx={{ display: "flex", flexDirection:"row", alignItems:"center", justifyContent:"space-around" }}>
             <Typography id="chat-modal" variant="h6" component="h2">
               {isInsights ? "Insight Especial Athena" : "Assisthena"}
             </Typography>
@@ -132,12 +150,15 @@ const NotificationCard = ({ year, userId, userType }) => {
                 </Button>
               </>
             )}
-            <Button variant="outlined" color="success" onClick={() => handleClick('Aplicar Athena')}>
-              Aplicar Athena
-            </Button>
           </Box>
         </Box>
       </Modal>
+
+      <Snackbar open={openNotification} autoHideDuration={6000} onClose={handleCloseNotification}>
+        <Alert onClose={handleCloseNotification} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

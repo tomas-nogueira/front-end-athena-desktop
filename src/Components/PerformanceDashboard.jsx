@@ -8,6 +8,8 @@ export default function PerformanceDashboard ()  {
   const [classOptions2, setClassOptions2] = useState([]);
   const [selectedClass2, setSelectedClass2] = useState(""); // Alterado para string vazia
   const [graphData, setGraphData] = useState([]);
+  const [teste, setTeste] = useState(""); // Alterado para string vazia
+
   const [loading, setLoading] = useState(false);
   const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
 
@@ -49,6 +51,7 @@ export default function PerformanceDashboard ()  {
     
     if (selectedOption) {
       setSelectedClass2(selectedValue);
+      setTeste(selectedOption)
       setLoading(true);
   
       fetchDataForSelectedClass(selectedValue);
@@ -97,7 +100,7 @@ export default function PerformanceDashboard ()  {
         DESEMPENHO DE SUAS SALAS
       </Typography>
       <NotificationCard
-        year={selectedClass2}
+        year={teste.label}
         userId="67102922db9e7ba8075983e9"
         userType="professor"
       />
@@ -112,7 +115,7 @@ export default function PerformanceDashboard ()  {
 <CustomSelect
   label="Selecione uma sala"
   menuItems={classOptions2}
-  value={selectedClass2} // Isso deve ser uma string que corresponde ao valor de uma das opções
+  value={selectedClass2} 
   onChange={handleClassChange2}
 />
 

@@ -17,7 +17,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
+    const role = sessionStorage.getItem("role"); // Alterado para sessionStorage
     if (role) {
       if (role === "estudante") {
         navigate("/home/aluno");
@@ -38,7 +38,7 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-    const hasDownloadedInstructions = localStorage.getItem("hasDownloadedInstructions");
+    const hasDownloadedInstructions = sessionStorage.getItem("hasDownloadedInstructions"); // Alterado para sessionStorage
     if (!hasDownloadedInstructions) {
       setOpenInstructions(true);
     }
@@ -53,14 +53,14 @@ function App() {
     link.click();
     document.body.removeChild(link);
 
-    // Armazena no localStorage que o usuário já baixou o manual
-    localStorage.setItem("hasDownloadedInstructions", "true");
+    // Armazena no sessionStorage que o usuário já baixou o manual
+    sessionStorage.setItem("hasDownloadedInstructions", "true"); // Alterado para sessionStorage
     setOpenInstructions(false);
   };
 
   const handleCloseInstructions = () => {
     // Impede o fechamento do popup enquanto o arquivo não é baixado
-    const hasDownloadedInstructions = localStorage.getItem("hasDownloadedInstructions");
+    const hasDownloadedInstructions = sessionStorage.getItem("hasDownloadedInstructions"); // Alterado para sessionStorage
     if (hasDownloadedInstructions) {
       setOpenInstructions(false);
     }
