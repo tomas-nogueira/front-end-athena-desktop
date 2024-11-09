@@ -24,7 +24,6 @@ function Graph({ data, type }) {
                         color: '#333',
                         fontSize: 12,
                         interval: 0,
-
                     }
                 },
                 yAxis: {
@@ -86,7 +85,7 @@ function Graph({ data, type }) {
                     }
                 ]
             };
-        }else if (type === 'stackedLine') { 
+        } else if (type === 'stackedLine') {
             option = {
                 tooltip: {
                     trigger: 'axis',
@@ -96,10 +95,10 @@ function Graph({ data, type }) {
                 },
                 xAxis: {
                     type: 'category',
-                    data: data[0]?.categories || [], 
+                    data: data[0]?.categories || [],
                     axisLabel: {
-                        interval: 0, 
-                      }
+                        interval: 0,
+                    }
                 },
                 yAxis: {
                     type: 'value'
@@ -107,7 +106,7 @@ function Graph({ data, type }) {
                 series: data.map(item => ({
                     name: item.name,
                     type: 'line',
-                    stack: 'total', 
+                    stack: 'total',
                     data: item.values,
                     itemStyle: {
                         color: item.color
@@ -119,14 +118,21 @@ function Graph({ data, type }) {
                     areaStyle: {} // Para o efeito de preenchimento abaixo da linha
                 }))
             };
-        
-        
         }
 
         chart.setOption(option);
 
+        // Função de redimensionamento para tornar o gráfico responsivo
+        const handleResize = () => {
+            chart.resize();
+        };
+
+        // Adiciona o evento de redimensionamento
+        window.addEventListener('resize', handleResize);
+
         return () => {
             chart.dispose();
+            window.removeEventListener('resize', handleResize);
         };
     }, [data, type]);
 

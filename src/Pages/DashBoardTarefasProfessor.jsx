@@ -48,26 +48,22 @@ function DashBoardTarefas() {
     navigate('/notas/professor');
   }
 
-  // Pegando as salas
   useEffect(() => {
     if (dadosUser && dadosUser.message && dadosUser.message.IdSchool) {
       GetClassProfessorById();
     }
   }, [dadosUser]);
 
-  // Chama GetTasksByClass sempre que selectedClass mudar
   useEffect(() => {
     if (selectedClass) {
-      GetTasksByClass(selectedClass._id); // Passa a classe selecionada, se necessário
+      GetTasksByClass(selectedClass._id);
     }
   }, [selectedClass]);
 
-  // Verificando se existe os dados do usuário
   if (!dadosUser || !dadosUser.message) {
-    return <Loading />
+    return <Loading />;
   }
 
-  // Se dadosUser.message existir, mas algumas propriedades específicas faltarem
   if (!dadosUser.message.role || !dadosUser.message.name) {
     return <Typography variant="h6" align="center">Erro ao carregar os dados do usuário</Typography>;
   }
@@ -85,7 +81,6 @@ function DashBoardTarefas() {
         role="Professor"
       />
 
-      {/* Notificação */}
       <Snackbar
         open={openNotification}
         autoHideDuration={4000}
@@ -106,14 +101,15 @@ function DashBoardTarefas() {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          gap: 8,
+          gap: 3,
+          paddingX: 2,
           marginBottom: 10,
         }}
       >
         <Grid
           item
           xs={12}
-          sm={5}
+          md={5}
           sx={{
             backgroundColor: "white",
             borderRadius: 5,
@@ -122,7 +118,7 @@ function DashBoardTarefas() {
             justifyContent: "center",
             alignItems: "center",
             padding: 2,
-            height: "600px",
+            height: { xs: "auto", md: "600px" },
           }}
         >
           <Typography
@@ -131,10 +127,10 @@ function DashBoardTarefas() {
               borderBottom: "2px solid #004FFF",
               color: "black",
               fontWeight: "bold",
-              width: "50%",
+              width: "80%",
               margin: "0 auto",
               padding: "8px 0",
-              fontSize: 25,
+              fontSize: { xs: 20, md: 25 },
             }}
           >
             FEEDBACKS E AVALIAÇÕES
@@ -148,12 +144,13 @@ function DashBoardTarefas() {
               alignItems: "center",
               boxShadow: "none",
               marginTop: 2,
+              width: "100%",
             }}
           >
             <CardActionArea disableRipple sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
               <Typography
                 sx={{
-                  fontSize: 50,
+                  fontSize: { xs: 40, md: 50 },
                   fontWeight: "bold",
                   color: "#004FFF",
                   textAlign: "center",
@@ -183,10 +180,10 @@ function DashBoardTarefas() {
                 size="large"
                 sx={{
                   fontWeight: "bold",
-                  fontSize: 20,
+                  fontSize: { xs: 16, md: 20 },
                   backgroundColor: "#004FFF",
                   color: "white",
-                  width: "300px",
+                  width: "80%",
                   "&:hover": {
                     backgroundColor: "#002F99",
                   },
@@ -200,8 +197,13 @@ function DashBoardTarefas() {
         <Grid
           item
           xs={12}
-          sm={5}
-          sx={{ backgroundColor: "white", borderRadius: 5, height: "600px" }}
+          md={5}
+          sx={{
+            backgroundColor: "white",
+            borderRadius: 5,
+            height: { xs: "auto", md: "600px" },
+            padding: 2,
+          }}
         >
           <Typography
             sx={{
@@ -209,10 +211,10 @@ function DashBoardTarefas() {
               borderBottom: "2px solid #004FFF",
               color: "black",
               fontWeight: "bold",
-              width: "50%",
+              width: "80%",
               margin: "0 auto",
               padding: "8px 0",
-              fontSize: 25,
+              fontSize: { xs: 20, md: 25 },
             }}
           >
             STATUS DE SUAS TAREFAS
@@ -222,15 +224,15 @@ function DashBoardTarefas() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: 5,
+              padding: { xs: 2, md: 5 },
             }}
           >
             <Autocomplete
-              options={classes || []} // Usa array vazio caso classes seja undefined
-              getOptionLabel={(option) => option.name} // Exibindo o nome da classe
+              options={classes || []}
+              getOptionLabel={(option) => option.name}
               value={selectedClass}
               fullWidth
-              onChange={(event, newValue) => setSelectedClass(newValue)} // Atualizando as classes selecionadas
+              onChange={(event, newValue) => setSelectedClass(newValue)}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -246,10 +248,10 @@ function DashBoardTarefas() {
                 textAlign: "center",
                 color: "black",
                 fontWeight: "bold",
-                width: "50%",
+                width: "80%",
                 margin: "0 auto",
                 padding: "8px 0",
-                fontSize: 25,
+                fontSize: { xs: 20, md: 25 },
               }}>
                 Não há tarefas cadastradas para essa sala
               </Typography>
@@ -265,8 +267,27 @@ function DashBoardTarefas() {
             )}
           </Box>
         </Grid>
-        <PerformanceDashboard />
+        <Grid
+  item
+  xs={12}
+  md={5}
+  sx={{
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: { xs: 2, sm: 3 }, // Ajusta o padding em telas menores
+    marginBottom: { xs: 3, md: 0 }, // Adiciona espaçamento inferior em telas menores
+    height: { xs: 'auto', md: '800px' }, // Altura adaptada conforme a tela
+    display: 'flex', // Usando flexbox para ocupar o espaço disponível
+    flexDirection: 'column', // Garante que os itens sejam empilhados verticalmente
+  }}
+>
+  <PerformanceDashboard /> 
+</Grid>
+
+
+
       </Grid>
+
       <ChatForm userId={dadosUser.message._id} userType={dadosUser.message.role} />
       <Footer />
     </>

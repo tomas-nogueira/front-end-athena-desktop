@@ -154,16 +154,10 @@ const router = createBrowserRouter([
 ]);
 
 
-//CÓDIGO PARA DESABILITAR A INSPEÇÃO DA PÁGINA E IMPEDIR O USER DE USAR O SISTEMA EM RESOLUÇÕES ABAIXO DE 1920X1080
 // function RootComponent() {
-//   const [isResolutionValid, setIsResolutionValid] = useState(true);
 
 //   useEffect(() => {
-//     const checkResolution = () => {
-//       // Define uma margem de segurança na resolução mínima
-//       const isValid = window.innerWidth >= 1800 && window.innerHeight >= 900;
-//       setIsResolutionValid(isValid);
-//     };
+
 
 //     const disableInspection = () => {
 //       // Bloqueia o menu de contexto
@@ -182,35 +176,21 @@ const router = createBrowserRouter([
 
 //     };
 
-//     checkResolution();
 //     disableInspection();
 
-//     // Eventos de redimensionamento para verificar resolução
-//     window.addEventListener('resize', checkResolution);
 
 //     return () => {
 //       // Remove eventos ao desmontar o componente
 //       document.removeEventListener('contextmenu', (e) => e.preventDefault());
 //       document.removeEventListener('keydown', (e) => {});
-//       window.removeEventListener('resize', checkResolution);
 //     };
 //   }, []);
 
 //   return (
 //     <AuthProvider>
 //       <TaskProvider>
-//         {isResolutionValid ? (
 //           <RouterProvider router={router} />
-//         ) : (
-//           <div style={{ padding: '20px', textAlign: 'center', color: '#ff0000' }}>
-//             <h1>Resolução de tela inadequada</h1>
-//             <p>
-//               O sistema Athena não foi projetado para resoluções menores que 1920x1080.
-//               A adaptabilidade para outras resoluções está em desenvolvimento. Para uma
-//               experiência ideal, por favor, utilize a resolução recomendada.
-//             </p>
-//           </div>
-//         )}
+       
 //       </TaskProvider>
 //     </AuthProvider>
 //   );

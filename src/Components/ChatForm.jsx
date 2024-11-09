@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, IconButton, Box, Dialog, DialogContent, DialogTitle, List, ListItem, ListItemText, FormControlLabel, Checkbox } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseIcon from '@mui/icons-material/Close';  // Adicionado
 import Style from "../Styles/ChatForm.module.css";
 import logoMin from '../Photos/logo_min.png';
 import userIcon from '../Photos/user.png';
@@ -9,7 +10,7 @@ import userIcon from '../Photos/user.png';
 const ChatForm = ({ userId, userType }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [isTyping, setIsTyping] = useState(false); // Novo estado para indicar que a Assisthena está digitando
+    const [isTyping, setIsTyping] = useState(false);
     const [openChat, setOpenChat] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
     const [doNotShowAgain, setDoNotShowAgain] = useState(false);
@@ -46,7 +47,7 @@ const ChatForm = ({ userId, userType }) => {
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
             setMessage('');
-            setIsTyping(true); // Define como "digitando" antes de chamar a API
+            setIsTyping(true);
 
             fetch(`${apiUrl}/api/process`, {
                 method: "POST",
@@ -72,7 +73,7 @@ const ChatForm = ({ userId, userType }) => {
                     console.error('Erro ao enviar mensagem:', error);
                 })
                 .finally(() => {
-                    setIsTyping(false); // Define como "não digitando" após a resposta
+                    setIsTyping(false);
                 });
         }
     };
@@ -89,7 +90,12 @@ const ChatForm = ({ userId, userType }) => {
                 maxWidth="md"
                 PaperProps={{ className: Style.dialogPaper, style: { position: 'fixed', bottom: '80px', right: '20px' } }}
             >
-                <DialogTitle className={Style.dialogTitle}>Assisthena</DialogTitle>
+                <DialogTitle className={Style.dialogTitle}>
+                    Assisthena
+                    <IconButton onClick={handleCloseChat} className={Style.closeButton}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent>
                     <List className={Style.messageList}>
                         {messages.map((msg, index) => (
@@ -107,8 +113,6 @@ const ChatForm = ({ userId, userType }) => {
                                 )}
                             </ListItem>
                         ))}
-
-                        {/* Mostrar "Assisthena está digitando..." enquanto isTyping for true */}
                         {isTyping && (
                             <ListItem className={Style.assisthenaMessage}>
                                 <img src={logoMin} alt="Assisthena" className={Style.messageIcon} />
@@ -117,7 +121,6 @@ const ChatForm = ({ userId, userType }) => {
                         )}
                     </List>
 
-                    {/* Checkbox para ouvir respostas */}
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -145,7 +148,6 @@ const ChatForm = ({ userId, userType }) => {
                 </DialogContent>
             </Dialog>
 
-            {/* Termos de uso Popup */}
             <Dialog open={openTerms} onClose={handleCloseTerms} fullWidth maxWidth="sm" className={Style.termsDialog}>
                 <DialogTitle>A Athena Alerta:</DialogTitle>
                 <DialogContent>

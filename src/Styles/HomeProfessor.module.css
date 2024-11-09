@@ -1,29 +1,82 @@
-.img{
+.img {
     width: 18.6rem;
-}
-.img2 {
-    width: 20%; /* Adapta a largura conforme a tela */
-    max-width: 4rem; /* Limita o tamanho máximo */
+    max-width: 100%;
 }
 
+.img2 {
+    width: 20%;
+    max-width: 4rem;
+}
+
+.linhaImg {
+    width: 100%;
+    max-width: 18rem;
+    height: auto;
+    margin: 1rem 0; /* Espaçamento para dar separação da imagem com outros elementos */
+}
+
+/* Ajuste para 1440px */
+@media (max-width: 1440px) {
+    .img {
+        width: 16rem;
+    }
+    .img2 {
+        width: 18%;
+    }
+    .linhaImg {
+        max-width: 16rem;
+    }
+}
+
+/* Ajuste para 1280px */
+@media (max-width: 1280px) {
+    .img {
+        width: 14rem;
+    }
+    .img2 {
+        width: 15%;
+    }
+    .linhaImg {
+        max-width: 14rem;
+    }
+}
+
+/* Ajuste para 1024px */
+@media (max-width: 1024px) {
+    .img {
+        width: 12rem;
+    }
+    .img2 {
+        width: 12%;
+    }
+    .linhaImg {
+        max-width: 12rem;
+    }
+}
+
+/* Ajustes para tablets */
 @media (max-width: 768px) {
     .img2 {
-        width: 30%; /* Ajuste para telas menores, como tablets */
+        width: 30%;
     }
-    .img{
-        width: 15rem;
+    .img {
+        width: 7.5rem;
+    }
+    .linhaImg {
+        max-width: 10rem;
     }
 }
 
-
-
-
+/* Ajustes para celulares */
 @media (max-width: 480px) {
     .img2 {
-        width: 40%; /* Ajuste para telas pequenas, como celulares */
+        width: 40%;
     }
-    .img{
-        width: 10rem;
+    .img {
+        display: none;
+    }
+    .linhaImg {
+        max-width: 8rem;
     }
 }
 

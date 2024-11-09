@@ -6,15 +6,56 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 1rem;
+    transition: width 0.3s ease, height 0.3s ease;
 }
+
 .texto1 {
     font-size: 1.8rem;
     font-weight: 600;
     color: #333;
 }
+
 .high {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     margin-left: 1rem;
+}
+
+.img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .container {
+        width: 90%;
+        height: auto;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .high {
+        margin-left: 0;
+        align-items: center;
+        text-align: center;
+    }
+
+    .texto1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .texto1 {
+        font-size: 1.3rem;
+    }
 }

@@ -13,20 +13,20 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Logo from '../Photos/logo_athena 3.png';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useContext } from 'react'; 
-import { AuthContext } from '../Context/authProvider'; 
+import { useContext } from 'react';
+import { AuthContext } from '../Context/authProvider';
 import { useEffect } from 'react';
 
-function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) { 
+function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const { Logout } = useContext(AuthContext); 
+    const { Logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation(); // Obtém a rota atual
 
-    const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA; 
-    const apiUrlAssisthena = process.env.REACT_APP_BASE_URL_ASSISTHENA; 
+    const apiUrl = process.env.REACT_APP_BASE_URL_ATHENA;
+    const apiUrlAssisthena = process.env.REACT_APP_BASE_URL_ASSISTHENA;
 
     /*
     //Requisição para consultar sempre a API
@@ -49,18 +49,18 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-          fetch(`${apiUrlAssisthena}/api/ping`, {
-            method: "GET",
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+            fetch(`${apiUrlAssisthena}/api/ping`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
         }, 60000);
-    
+
         return () => clearInterval(intervalId);
-      }, []); 
-      
-    const pages = [textBar1, textBar2, textBar3, textBar4]; 
+    }, []);
+
+    const pages = [textBar1, textBar2, textBar3, textBar4];
     const isHomeRoute = location.pathname === "/"; // Verifica se está na rota "/"
     const userSettings = isHomeRoute ? ['Entrar'] : ['Sua Conta', 'Sair']; // Define as opções com base na rota
 
@@ -128,13 +128,21 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
+                            <MenuItem onClick={() => {
+                                handleCloseNavMenu();
+                                navigate("/xp")
+
+                            }}>
+                                <Typography sx={{ textAlign: 'center' }}>Feedbacks</Typography>
+
+                            </MenuItem>
                             {pages.map((page, index) => (
                                 <MenuItem
-                                    key={index} 
+                                    key={index}
                                     onClick={() => {
                                         handleCloseNavMenu();
-                                        if (page === 'Instruções') { 
-                                            onTextBar2Click(); 
+                                        if (page === 'Instruções') {
+                                            onTextBar2Click();
                                         } else if (page === 'Home') {
                                             navigate('/home/professor');
                                         } else if (page === 'Cadastrar uma Tarefa') {
@@ -151,7 +159,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         }
                                         else if (page === 'HOME') {
                                             navigate('/home/aluno');
-                                        }else if (page === 'Voltar') {
+                                        } else if (page === 'Voltar') {
                                             navigate('/')
                                         }
                                         else if (page === 'Minhas tarefas') {
@@ -166,45 +174,37 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         else if (page === 'DashBOARD') {
                                             navigate('/dashboard/diretoria');
                                         }
-                                        else if( page === 'Minhas Notas'){
+                                        else if (page === 'Minhas Notas') {
                                             navigate('/notas/aluno');
-                                        }else if (page === "Reconhecimento Facial")
-                                        {
+                                        } else if (page === "Reconhecimento Facial") {
                                             navigate('/cadastrar-face/user');
                                         }
-                                        else if (page === "Painel de Controle")
-                                            {
-                                                navigate('/dashboard/escola');
-                                            }
+                                        else if (page === "Painel de Controle") {
+                                            navigate('/dashboard/escola');
+                                        }
                                     }}
                                 >
                                     <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem  onClick={() => {handleCloseNavMenu();
-                                navigate("/xp")
-            
-                            }}>
-                                <Typography sx={{ textAlign: 'center' }}>Feedbacks</Typography>
 
-                            </MenuItem>
                         </Menu>
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                    <Button
-                                onClick={() => {
-                                    handleCloseNavMenu();
-                                    navigate("/xp")
-                                }}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                        <Button
+                            onClick={() => {
+                                handleCloseNavMenu();
+                                navigate("/xp")
+                            }}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
 
-                            >
-                                Feedbacks
-                            </Button>
+                        >
+                            Feedbacks
+                        </Button>
                         {pages.map((page, index) => (
                             <Button
-                                key={index} 
+                                key={index}
                                 onClick={() => {
                                     handleCloseNavMenu();
                                     if (page === 'Instruções') {
@@ -215,7 +215,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                         navigate('/dashboard/escola')
                                     } else if (page === "Dashboard de Presença") {
                                         navigate('/presenca/escola')
-                                    }else if (page === 'Voltar') {
+                                    } else if (page === 'Voltar') {
                                         navigate('/')
                                     }
                                     else if (page === 'home') {
@@ -223,7 +223,7 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     }
                                     else if (page === 'Cadastrar uma Tarefa') {
                                         navigate('/cadastro/tarefas');
-                                    } else if (page === 'Login') { 
+                                    } else if (page === 'Login') {
                                         navigate('/login');
                                     } else if (page === 'Cadastro') {
                                         navigate('/login');
@@ -253,20 +253,19 @@ function Header({ textBar1, textBar2, textBar3, textBar4, onTextBar2Click }) {
                                     else if (page === 'DashBOARD') {
                                         navigate('/dashboard/diretoria');
                                     }
-                                    else if( page === 'Minhas Notas'){
+                                    else if (page === 'Minhas Notas') {
                                         navigate('/notas/aluno');
                                     }
-                                    else if (page === "Painel de Controle")
-                                        {
-                                            navigate('/dashboard/escola');
-                                        }
+                                    else if (page === "Painel de Controle") {
+                                        navigate('/dashboard/escola');
+                                    }
                                 }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
                             </Button>
                         ))}
-         
+
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>

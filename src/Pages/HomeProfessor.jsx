@@ -16,6 +16,7 @@ import Ipad from '../Photos/ipad.png';
 import Face from "../Photos/face.png"
 import { AuthContext } from '../Context/authProvider';
 import ChatForm from '../Components/ChatForm';
+import AssisthenaInfo from '../Components/AssisthenaInfo';
 
 
 function HomeProfessor() {
@@ -81,32 +82,32 @@ function HomeProfessor() {
           }}>
             <Texto />
 
-            <Container sx={{ display: 'flex', justifyContent: 'center', width: '100vw', marginBottom: '3rem' }}>
-              <Grid sx={{ backgroundColor: '#BCC7CF', width: '80vw', height: '6.5rem', borderRadius: '10px', padding: '1rem' }}>
-                <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem', color: '#235BD5' }}>
-                    NOVIDADE!
-                  </Typography>
-                </Grid>
-                <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography>A Assisthena é projetada com IA para te ajudar na didática</Typography>
-                  <Button variant="contained">SAIBA MAIS</Button>
-                </Grid>
-              </Grid>
-            </Container>
 
-            <Container sx={{
-              marginBottom: '5rem',
-              height: '50vh',
-              width: '100vw',
-              backgroundColor: '#394255',
-              borderRadius: '10px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <AssisthenaInfo />
+
+            <Container
+              sx={{
+                marginBottom: '5rem',
+                height: '50vh',
+                width: '100vw',
+                backgroundColor: '#394255',
+                borderRadius: '10px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                '@media (max-width: 1440px)': {
+                  height: '55vh',
+                },
+                '@media (max-width: 1280px)': {
+                  height: '60vh',
+                },
+                '@media (max-width: 768px)': {
+                  height: 'auto',
+                },
+              }}
+            >
+              <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
                 <Box>
                   <img src={Estudante} className={Style.img} />
                 </Box>
@@ -116,7 +117,8 @@ function HomeProfessor() {
                     flexDirection: 'column',
                     gap: '1rem',
                     alignItems: 'center',
-                    padding: '1rem', 
+                    padding: '1rem',
+                    textAlign: 'center', // centraliza o texto em todas as resoluções
                   }}
                 >
                   <Grid
@@ -128,11 +130,16 @@ function HomeProfessor() {
                       width: '40vw',
                       maxWidth: '100%',
                       alignItems: 'center',
-                      padding: '1rem', // espaçamento interno para evitar quebra de texto
-                      '@media (max-width: 768px)': {
-                        width: '65vw', // ajuste para tablets e celulares
+                      padding: '1rem',
+                      '@media (max-width: 1440px)': {
+                        width: '50vw',
                       },
-                      
+                      '@media (max-width: 1280px)': {
+                        width: '60vw',
+                      },
+                      '@media (max-width: 768px)': {
+                        width: '80vw',
+                      },
                     }}
                   >
                     <Typography
@@ -140,12 +147,17 @@ function HomeProfessor() {
                         color: 'white',
                         fontSize: '2.5rem',
                         fontWeight: 'bold',
-                        textAlign: 'center', // centralizar o texto
+                        '@media (max-width: 1440px)': {
+                          fontSize: '2rem',
+                        },
+                        '@media (max-width: 1280px)': {
+                          fontSize: '1.8rem',
+                        },
                         '@media (max-width: 768px)': {
-                          fontSize: '1.3rem', 
+                          fontSize: '1.3rem',
                         },
                         '@media (max-width: 480px)': {
-                          fontSize: '1rem', // diminuir fonte para celulares
+                          fontSize: '1rem',
                         },
                       }}
                     >
@@ -158,11 +170,17 @@ function HomeProfessor() {
                         color: 'white',
                         fontSize: '1.3rem',
                         textAlign: 'center',
+                        '@media (max-width: 1440px)': {
+                          fontSize: '1.2rem',
+                        },
+                        '@media (max-width: 1280px)': {
+                          fontSize: '1.1rem',
+                        },
                         '@media (max-width: 768px)': {
-                          fontSize: '1.1rem', // ajuste para tablets
+                          fontSize: '1rem',
                         },
                         '@media (max-width: 480px)': {
-                          fontSize: '1rem', // ajuste para celulares
+                          fontSize: '0.9rem',
                         },
                       }}
                     >
@@ -176,9 +194,9 @@ function HomeProfessor() {
                     />
                   </Grid>
                 </Grid>
-
               </Grid>
             </Container>
+
 
             <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4rem', flexDirection: 'column', gap: '3rem' }}>
               <CardsAcesso
@@ -188,7 +206,7 @@ function HomeProfessor() {
                 imagemSrc={Macbook}
                 imagemAlt="Imagem de exemplo"
               />
-              <img src={Linha} />
+              <img src={Linha} className={Style.linhaImg} />
 
               <CardsAcesso
                 texto1="Reconhecimento facial"
@@ -197,7 +215,7 @@ function HomeProfessor() {
                 imagemSrc={Face}
                 imagemAlt="Imagem de exemplo"
               />
-              <img src={Linha} />
+              <img src={Linha} className={Style.linhaImg} />
               <CardsAcesso
                 texto1="Tarefas"
                 texto2="Cadastre novas tarefas e avalie as realizadas"
