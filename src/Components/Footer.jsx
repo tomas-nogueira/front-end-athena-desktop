@@ -57,6 +57,10 @@ const Footer = () => {
                         <a href="https://www.facebook.com/profile.php?id=61568133594675&mibextid=ZbWKwL" target='_blank' className={`${Style.footerlink} ${Style.facebook}`}>
                             <i className="fa-brands fa-facebook-f"></i>
                         </a>
+                        <a href="https://youtu.be/BjfrteI9PEM" target="_blank" className={`${Style.footerlink} ${Style.youtube}`}>
+                            <i className="fa-brands fa-youtube"></i>
+                        </a>
+
                     </div>
                 </div>
 
